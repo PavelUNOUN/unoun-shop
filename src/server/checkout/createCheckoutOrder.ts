@@ -9,6 +9,7 @@ import type { CreateCheckoutOrderResponse } from "@/lib/checkout";
 import { getPrismaClient } from "@/lib/prisma";
 import { getCheckoutStorageMode } from "@/server/config";
 import type { CreateCheckoutOrderInput } from "@/server/checkout/schema";
+import { sendTelegramOrderNotification } from "@/server/notifications/telegram";
 
 function createOrderNumber(): string {
   const date = new Date();
@@ -86,6 +87,22 @@ export async function createCheckoutOrder(
       id: true,
       orderNumber: true,
     },
+  });
+
+  void sendTelegramOrderNotification({
+    orderNumber: order.orderNumber,
+    customerName: input.contact.name,
+    customerPhone: input.contact.phone.replace(/\s+/g, " ").trim(),
+    customerEmail: input.contact.email.trim().toLowerCase(),
+    city: input.contact.city,
+    pickupPointTitle: input.pickupPoint.title,
+    pickupPointAddress: input.pickupPoint.address,
+    grandTotal,
+    itemLines: input.items.map(
+      (item) => `${item.title} × ${item.quantity} — ${item.price * item.quantity} ₽`
+    ),
+  }).catch((error) => {
+    console.error("Telegram order notification error", error);
   });
 
   return {

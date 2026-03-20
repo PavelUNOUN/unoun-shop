@@ -21,6 +21,7 @@ import type {
   CreateCheckoutOrderPayload,
   CreateCheckoutOrderResponse,
 } from "@/lib/checkout";
+import { reachMetrikaGoal } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
 
@@ -136,6 +137,13 @@ export default function CheckoutFlow() {
 
       const result =
         (await response.json()) as CreateCheckoutOrderResponse;
+
+      reachMetrikaGoal("checkout_success", {
+        payment_method: paymentMethod,
+        order_number: result.orderNumber,
+        storage_mode: result.storageMode,
+        total: subtotal,
+      });
 
       router.push(
         `/checkout/success?orderNumber=${encodeURIComponent(

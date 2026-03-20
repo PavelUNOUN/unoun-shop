@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "https://uknown.ru";
+const DEFAULT_SITE_URL = "https://unoun.shop";
 
 function normalizeUrl(url: string): string {
   return url.endsWith("/") ? url.slice(0, -1) : url;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { reachMetrikaGoal } from "@/lib/analytics";
 import { FLAGSHIP_PRODUCT } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
@@ -21,6 +22,11 @@ export default function AddToCartButton({
 
   const handleClick = () => {
     addItem(FLAGSHIP_PRODUCT);
+    reachMetrikaGoal("add_to_cart", {
+      product: FLAGSHIP_PRODUCT.slug,
+      redirect_to: redirectTo,
+      price: FLAGSHIP_PRODUCT.price,
+    });
     router.push(redirectTo);
   };
 
