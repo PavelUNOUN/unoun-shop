@@ -91,8 +91,8 @@ export default function Header() {
             <Image
               src={
                 scrolled
-                  ? "/images/логотип unoun черный без фона.png"
-                  : "/images/логотип unoun белый без фона.png"
+                  ? "/images/logo-black.png"
+                  : "/images/logo-white.png"
               }
               alt="UNOUN"
               width={108}

@@ -6,11 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const SLIDES = [
-  "/images/главная 0.png",
-  "/images/главная 1.png",
-  "/images/главная 2.png",
-  "/images/главная 3.png",
-  "/images/главная 4 .png",
+  "/images/main-0.png",
+  "/images/main-1.png",
+  "/images/main-2.png",
+  "/images/main-3.png",
+  "/images/main-4.png",
 ];
 
 const SUBTITLE = "Уборка, которая занимает минуты, а не часы.";

@@ -115,7 +115,7 @@ export default function SpecsSection() {
           {/* Фото — пока любое, позже заменим на чертёж */}
           <div className="relative w-full overflow-hidden rounded-3xl bg-white aspect-[3/4]">
             <Image
-              src="/images/чертеж.png"
+              src="/images/specs-blueprint.png"
               alt="Паровая швабра UNOUN — чертёж с габаритами"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

@@ -9,10 +9,10 @@ import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 
 const GALLERY_IMAGES = [
-  "/images/карточка 1 .png",
-  "/images/карточка 2 .png",
-  "/images/карточка 3 .jpg",
-  "/images/карточка 4 .jpg",
+  "/images/card-1.png",
+  "/images/card-2.png",
+  "/images/card-3.jpg",
+  "/images/card-4.jpg",
 ];
 
 const NAV_TABS = [

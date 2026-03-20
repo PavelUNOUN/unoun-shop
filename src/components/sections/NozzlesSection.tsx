@@ -9,62 +9,62 @@ const NOZZLES = [
   {
     name: "Насадка из нержавеющей стали",
     description: "Для удаления стойких загрязнений на плите и плитке",
-    image: "/images/насадка из нержавеющей.png",
+    image: "/images/nozzle-steel.png",
   },
   {
     name: "Нейлоновая щётка",
     description: "Для углов, кухни, гостиной",
-    image: "/images/Нейлоновая щетка.png",
+    image: "/images/nozzle-nylon.png",
   },
   {
     name: "Скребок для стёкол",
     description: "Для окон и гладких поверхностей",
-    image: "/images/Скребок для стекол.png",
+    image: "/images/nozzle-glass-scraper.png",
   },
   {
     name: "Головка для текстиля",
     description: "Для глажки одежды и штор",
-    image: "/images/Головка для текстиля.png",
+    image: "/images/nozzle-textile-head.png",
   },
   {
     name: "Круглая щётка",
     description: "Для кафеля и мраморных поверхностей",
-    image: "/images/Круглая щетка.png",
+    image: "/images/nozzle-round-brush.png",
   },
   {
     name: "Насадка-швабра",
     description: "Для паркета, ламината, плитки",
-    image: "/images/насадка швабра.png",
+    image: "/images/nozzle-mop.png",
   },
   {
     name: "Скребок для жира",
     description: "Для нагара с кухонной плиты",
-    image: "/images/скребок.png",
+    image: "/images/nozzle-scraper.png",
   },
   {
     name: "Насадка-уголок",
     description: "Для углов и щелей",
-    image: "/images/насадка уголок.png",
+    image: "/images/nozzle-angle.png",
   },
   {
     name: "Щётка для стыков и швов",
     description: "Для межплиточных швов",
-    image: "/images/Щетка для стыков и швов.png",
+    image: "/images/nozzle-joints-brush.png",
   },
   {
     name: "Удлинённый переходник",
     description: "Для труднодоступных мест",
-    image: "/images/удленитель-переходник.png",
+    image: "/images/nozzle-extension-adapter.png",
   },
   {
     name: "Переходник-шланг",
     description: "Для высоких мест и узких углов",
-    image: "/images/переходник-шланг.png",
+    image: "/images/nozzle-hose-adapter.png",
   },
   {
     name: "Тряпка тканевая",
     description: "В комплекте 3 штуки",
-    image: "/images/Тряпка для швабры.png",
+    image: "/images/nozzle-mop-cloth.png",
   },
 ] as const;
 

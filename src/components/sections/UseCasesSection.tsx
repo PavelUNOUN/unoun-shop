@@ -9,7 +9,7 @@ const USE_CASES = [
     description:
       "Помогает поддерживать чистоту в зоне плиты, фартука и рабочих поверхностей без лишней рутины.",
     caption: "Пар для ежедневной чистоты рядом с плитой",
-    image: "/images/кухня .png",
+    image: "/images/use-kitchen.png",
     imageClassName: "object-cover",
     tag: "Кухня",
   },
@@ -18,7 +18,7 @@ const USE_CASES = [
     description:
       "Подходит для плитки, стыков, смесителей и других зон, где особенно важны аккуратность и свежесть.",
     caption: "Комфортный уход за плиткой и сантехникой",
-    image: "/images/ванна .png",
+    image: "/images/use-bathroom.png",
     imageClassName: "object-cover",
     tag: "Ванная",
   },
@@ -27,7 +27,7 @@ const USE_CASES = [
     description:
       "Лёгкая насадка и манёвренная форма делают ежедневную уборку спокойной и удобной, в том числе вдоль плинтусов и у мебели.",
     caption: "Бережная уборка пола и сложных зон",
-    image: "/images/пол.png",
+    image: "/images/use-floor.png",
     imageClassName: "object-cover object-center object-[center_78%]",
     tag: "Пол и углы",
   },
@@ -36,7 +36,7 @@ const USE_CASES = [
     description:
       "С текстильной насадкой устройство подходит для деликатного отпаривания штор, одежды и домашнего текстиля.",
     caption: "Отпаривает вещи и шторы без громоздкой техники",
-    image: "/images/одежда.png",
+    image: "/images/use-textile.png",
     imageClassName: "object-cover",
     tag: "Текстиль",
   },
