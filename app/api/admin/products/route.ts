@@ -1,13 +1,18 @@
 import { NextResponse } from "next/server";
 import { getPrismaClient } from "@/lib/prisma";
 import { FLAGSHIP_PRODUCT } from "@/lib/catalog";
+import { getSiteUrl } from "@/lib/site";
 import { isAdminAuthenticated } from "@/server/admin/auth";
+
+function buildAbsoluteUrl(pathname: string) {
+  return new URL(pathname, getSiteUrl());
+}
 
 export async function POST(request: Request) {
   const authenticated = await isAdminAuthenticated();
 
   if (!authenticated) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    return NextResponse.redirect(buildAbsoluteUrl("/admin/login"));
   }
 
   const formData = await request.formData();
@@ -20,7 +25,7 @@ export async function POST(request: Request) {
   const isActive = formData.get("isActive") === "on";
 
   if (!title || !shortTitle || !Number.isFinite(price) || price < 0) {
-    return NextResponse.redirect(new URL("/admin/products?error=invalid", request.url));
+    return NextResponse.redirect(buildAbsoluteUrl("/admin/products?error=invalid"));
   }
 
   const prisma = getPrismaClient();
@@ -50,5 +55,5 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.redirect(new URL("/admin/products?saved=1", request.url));
+  return NextResponse.redirect(buildAbsoluteUrl("/admin/products?saved=1"));
 }
