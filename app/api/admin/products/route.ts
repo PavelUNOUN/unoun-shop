@@ -1,0 +1,54 @@
+import { NextResponse } from "next/server";
+import { getPrismaClient } from "@/lib/prisma";
+import { FLAGSHIP_PRODUCT } from "@/lib/catalog";
+import { isAdminAuthenticated } from "@/server/admin/auth";
+
+export async function POST(request: Request) {
+  const authenticated = await isAdminAuthenticated();
+
+  if (!authenticated) {
+    return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+
+  const formData = await request.formData();
+
+  const title = String(formData.get("title") ?? "").trim();
+  const shortTitle = String(formData.get("shortTitle") ?? "").trim();
+  const price = Number(formData.get("price") ?? 0);
+  const originalPrice = Number(formData.get("originalPrice") ?? 0);
+  const stock = Number(formData.get("stock") ?? 0);
+  const isActive = formData.get("isActive") === "on";
+
+  if (!title || !shortTitle || !Number.isFinite(price) || price < 0) {
+    return NextResponse.redirect(new URL("/admin/products?error=invalid", request.url));
+  }
+
+  const prisma = getPrismaClient();
+
+  await prisma.product.upsert({
+    where: {
+      slug: FLAGSHIP_PRODUCT.slug,
+    },
+    update: {
+      title,
+      shortTitle,
+      price,
+      originalPrice: Number.isFinite(originalPrice) ? originalPrice : price,
+      stock: Number.isFinite(stock) ? stock : 0,
+      isActive,
+      image: FLAGSHIP_PRODUCT.image,
+    },
+    create: {
+      slug: FLAGSHIP_PRODUCT.slug,
+      title,
+      shortTitle,
+      price,
+      originalPrice: Number.isFinite(originalPrice) ? originalPrice : price,
+      stock: Number.isFinite(stock) ? stock : 0,
+      isActive,
+      image: FLAGSHIP_PRODUCT.image,
+    },
+  });
+
+  return NextResponse.redirect(new URL("/admin/products?saved=1", request.url));
+}

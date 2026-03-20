@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import AddToCartButton from "@/components/ui/AddToCartButton";
+import { useFlagshipProduct } from "@/hooks/useFlagshipProduct";
 import { formatPrice } from "@/lib/catalog";
 
 // Порог скролла в пикселях, после которого панель появляется
@@ -12,6 +13,7 @@ const SCROLL_THRESHOLD = 400;
 export default function StickyBottomCTA() {
   const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
+  const product = useFlagshipProduct();
   const isAccountRoute = pathname.startsWith("/account");
   const isCommerceRoute =
     pathname.startsWith("/cart") || pathname.startsWith("/checkout");
@@ -42,27 +44,23 @@ export default function StickyBottomCTA() {
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           // z-40 — под FloatingConsultant (z-50), но поверх контента
-          className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-zinc-200 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]"
+          className="fixed bottom-3 left-3 right-3 z-40 md:bottom-auto md:left-auto md:right-6 md:top-24 lg:right-8 lg:top-28"
         >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
-            {/* Цена */}
-            <div className="flex flex-col">
-              <span className="text-xs text-zinc-400 leading-none mb-0.5">
-                Цена
-              </span>
-              <span className="text-2xl font-bold text-zinc-900 leading-none">
-                {formatPrice(7990)} ₽
-              </span>
+          <div className="mx-auto flex max-w-6xl items-center gap-2 rounded-[28px] border border-white/20 bg-[rgba(92,80,74,0.48)] p-2.5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)] backdrop-blur-xl md:mx-0 md:w-[404px] md:gap-2 md:rounded-full md:border-[rgba(255,255,255,0.10)] md:bg-[rgba(75,66,61,0.5)] md:px-3 md:py-3">
+            <div className="min-w-0 flex-1 pl-4 md:max-w-[216px] md:pl-8">
+              <p className="text-[14px] font-medium leading-[1.05] text-white sm:text-[15px]">
+                {product.shortTitle}
+              </p>
+              <p className="mt-0.5 text-right text-[13px] leading-none text-white/66 md:pr-1 md:text-[14px]">
+                {formatPrice(product.price)} ₽
+              </p>
             </div>
 
-            {/* Кнопка покупки */}
-            <Link
-              href="/cart"
-              aria-label="Купить паровую швабру UNOUN"
-              className="flex-shrink-0 h-12 px-8 rounded-full bg-[#E5FF00] text-zinc-900 font-semibold text-base hover:brightness-95 active:scale-95 transition-all duration-150"
-            >
-              Купить
-            </Link>
+            <AddToCartButton
+              label="Купить"
+              redirectTo="/cart"
+              className="flex h-10 shrink-0 items-center justify-center rounded-full border border-[#E5FF00] bg-transparent px-3 text-xs font-semibold uppercase tracking-[0.06em] text-[#F5F7D5] transition-all duration-150 hover:bg-[#E5FF00]/10 active:scale-[0.98] md:h-10 md:min-w-[120px] md:px-4 md:text-sm"
+            />
           </div>
         </motion.div>
       )}

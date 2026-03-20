@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useFlagshipProduct } from "@/hooks/useFlagshipProduct";
 import { reachMetrikaGoal } from "@/lib/analytics";
-import { FLAGSHIP_PRODUCT } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
 
@@ -19,13 +19,18 @@ export default function AddToCartButton({
 }: AddToCartButtonProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
+  const product = useFlagshipProduct();
 
   const handleClick = () => {
-    addItem(FLAGSHIP_PRODUCT);
+    if (!product.isActive || product.stock <= 0) {
+      return;
+    }
+
+    addItem(product);
     reachMetrikaGoal("add_to_cart", {
-      product: FLAGSHIP_PRODUCT.slug,
+      product: product.slug,
       redirect_to: redirectTo,
-      price: FLAGSHIP_PRODUCT.price,
+      price: product.price,
     });
     router.push(redirectTo);
   };
@@ -34,9 +39,10 @@ export default function AddToCartButton({
     <button
       type="button"
       onClick={handleClick}
+      disabled={!product.isActive || product.stock <= 0}
       className={cn(className)}
     >
-      {label}
+      {!product.isActive || product.stock <= 0 ? "Нет в наличии" : label}
     </button>
   );
 }

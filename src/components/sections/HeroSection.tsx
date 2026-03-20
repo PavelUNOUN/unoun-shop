@@ -5,6 +5,8 @@ import Image from "next/image";
 import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import AddToCartButton from "@/components/ui/AddToCartButton";
+import { useFlagshipProduct } from "@/hooks/useFlagshipProduct";
+import { formatPrice } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -26,6 +28,7 @@ const NAV_TABS = [
 export default function HeroSection() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [activeIndex, setActiveIndex] = useState(0);
+  const product = useFlagshipProduct();
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -132,12 +135,32 @@ export default function HeroSection() {
 
             {/* Цена */}
             <div className="flex items-baseline gap-3">
-              <span className="text-4xl font-bold text-zinc-900">7 990 ₽</span>
-              <span className="text-lg text-zinc-400 line-through">12 990 ₽</span>
+              <span className="text-4xl font-bold text-zinc-900">
+                {formatPrice(product.price)} ₽
+              </span>
+              <span className="text-lg text-zinc-400 line-through">
+                {formatPrice(product.originalPrice)} ₽
+              </span>
               <span className="rounded-full bg-[#E5FF00] px-2.5 py-0.5 text-xs font-semibold text-zinc-900">
-                −38%
+                {product.originalPrice > product.price
+                  ? `−${Math.round(
+                      ((product.originalPrice - product.price) /
+                        product.originalPrice) *
+                        100
+                    )}%`
+                  : "Цена online"}
               </span>
             </div>
+
+            {!product.isActive || product.stock <= 0 ? (
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900">
+                Сейчас товар временно недоступен для заказа.
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-600">
+                В наличии: <span className="font-semibold text-zinc-900">{product.stock} шт.</span>
+              </div>
+            )}
 
             {/* Кнопки покупки */}
             <div className="flex flex-col gap-3 sm:flex-row">
