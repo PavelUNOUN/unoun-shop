@@ -138,7 +138,7 @@ export const ACADEMY_ARTICLES: AcademyArticle[] = [
     readTime: "7 минут",
     publishedAt: "20 марта 2026",
     publishedAtIso: "2026-03-20",
-    image: "/images/кухня .png",
+    image: "/images/use-kitchen.png",
     imageAlt: "Паровая швабра UNOUN для уборки кухни",
     seoDescription:
       "SEO-статья о том, чем паровая швабра полезна для кухни: уход за плиткой, фартуком, столешницей и зонами возле плиты без лишней рутины.",
@@ -179,7 +179,7 @@ export const ACADEMY_ARTICLES: AcademyArticle[] = [
     readTime: "7 минут",
     publishedAt: "20 марта 2026",
     publishedAtIso: "2026-03-20",
-    image: "/images/ванна .png",
+    image: "/images/use-bathroom.png",
     imageAlt: "Паровая швабра UNOUN для уборки ванной комнаты",
     seoDescription:
       "Подробная статья о том, как использовать паровую швабру для ванной: плитка, швы, смесители, сантехника и регулярный уход за влажными зонами.",
@@ -220,7 +220,7 @@ export const ACADEMY_ARTICLES: AcademyArticle[] = [
     readTime: "6 минут",
     publishedAt: "20 марта 2026",
     publishedAtIso: "2026-03-20",
-    image: "/images/пол.png",
+    image: "/images/use-floor.png",
     imageAlt: "Паровая швабра UNOUN для уборки пола",
     seoDescription:
       "SEO-материал о преимуществах паровой швабры для пола: ежедневная уборка, маневренность, уход за плиткой и сложными зонами вдоль мебели и плинтусов.",
@@ -261,7 +261,7 @@ export const ACADEMY_ARTICLES: AcademyArticle[] = [
     readTime: "6 минут",
     publishedAt: "20 марта 2026",
     publishedAtIso: "2026-03-20",
-    image: "/images/одежда.png",
+    image: "/images/use-textile.png",
     imageAlt: "Паровая швабра UNOUN для отпаривания текстиля",
     seoDescription:
       "Статья о том, как использовать паровую швабру для текстиля: отпаривание штор, одежды и домашнего текстиля с помощью подходящей насадки.",
