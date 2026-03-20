@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Sparkles, ArrowUpRight } from "lucide-react";
 
 const USE_CASES = [
@@ -9,36 +10,36 @@ const USE_CASES = [
     description:
       "Помогает поддерживать чистоту в зоне плиты, фартука и рабочих поверхностей без лишней рутины.",
     caption: "Пар для ежедневной чистоты рядом с плитой",
-    image: "/images/use-kitchen.png",
-    imageClassName: "object-cover",
+    image: "/images/кухня .png",
     tag: "Кухня",
+    href: "/academy/parovaya-shvabra-dlya-kuhni",
   },
   {
     title: "Для ванной",
     description:
       "Подходит для плитки, стыков, смесителей и других зон, где особенно важны аккуратность и свежесть.",
     caption: "Комфортный уход за плиткой и сантехникой",
-    image: "/images/use-bathroom.png",
-    imageClassName: "object-cover",
+    image: "/images/ванна .png",
     tag: "Ванная",
+    href: "/academy/parovaya-shvabra-dlya-vannoy",
   },
   {
     title: "Для пола",
     description:
       "Лёгкая насадка и манёвренная форма делают ежедневную уборку спокойной и удобной, в том числе вдоль плинтусов и у мебели.",
     caption: "Бережная уборка пола и сложных зон",
-    image: "/images/use-floor.png",
-    imageClassName: "object-cover object-center object-[center_78%]",
+    image: "/images/пол.png",
     tag: "Пол и углы",
+    href: "/academy/parovaya-shvabra-dlya-pola",
   },
   {
     title: "Для текстиля",
     description:
       "С текстильной насадкой устройство подходит для деликатного отпаривания штор, одежды и домашнего текстиля.",
     caption: "Отпаривает вещи и шторы без громоздкой техники",
-    image: "/images/use-textile.png",
-    imageClassName: "object-cover",
+    image: "/images/одежда.png",
     tag: "Текстиль",
+    href: "/academy/parovaya-shvabra-dlya-tekstilya",
   },
 ] as const;
 
@@ -67,14 +68,14 @@ export default function UseCasesSection() {
               key={item.title}
               className="group overflow-hidden rounded-[28px] border border-white/70 bg-white shadow-[0_24px_80px_-40px_rgba(24,24,27,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_-42px_rgba(24,24,27,0.4)]"
             >
-              <a href="/cart" className="block">
+              <Link href={item.href} className="block">
                 <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className={`${item.imageClassName} transition-transform duration-500 group-hover:scale-[1.03]`}
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
                   <div className="absolute left-4 top-4">
@@ -100,21 +101,9 @@ export default function UseCasesSection() {
                     {item.description}
                   </p>
                 </div>
-              </a>
+              </Link>
             </article>
           ))}
-        </div>
-
-        <div className="mt-8 rounded-[28px] border border-zinc-200 bg-white p-6 text-center shadow-[0_18px_60px_-36px_rgba(24,24,27,0.3)] sm:p-7">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-400">
-            Дальше можно расширить
-          </p>
-          <p className="mx-auto mt-2 max-w-3xl text-sm leading-relaxed text-zinc-600 sm:text-[15px]">
-            Стрелка на карточке уже работает как задел под будущие статьи или
-            подробные инструкции по каждому сценарию. Пока карточки ведут в новый
-            commerce-flow через корзину, а позже их можно перевести на отдельные
-            SEO-страницы.
-          </p>
         </div>
       </div>
     </section>

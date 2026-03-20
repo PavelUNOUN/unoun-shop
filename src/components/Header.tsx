@@ -10,7 +10,7 @@ import { useCartStore } from "@/store/cartStore";
 
 // Пункты дропдауна "Устройства"
 const DEVICES_MENU = [
-  { label: "Купить UNOUN 12-в-1", href: "/cart" },
+  { label: "Паровая швабра", href: "/#description" },
   { label: "Способы применения", href: "/#use-cases" },
   { label: "Комплектация", href: "/#nozzles" },
   { label: "Инструкция", href: "/#instruction" },
@@ -146,13 +146,8 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            {/* О бренде */}
-            <Link href="/#description" className={textClass}>
-              О бренде
-            </Link>
-
             <Link href="/academy" className={textClass}>
-              UNOUN Academy
+              Статьи
             </Link>
 
             {/* Покупателям */}
@@ -349,20 +344,6 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              {/* О бренде */}
-              <Link
-                href="/#description"
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  "py-4 text-base font-medium border-b transition-colors duration-150",
-                  scrolled
-                    ? "text-zinc-800 border-zinc-100 hover:text-zinc-950"
-                    : "text-white/90 border-white/10 hover:text-white"
-                )}
-              >
-                О бренде
-              </Link>
-
               <Link
                 href="/academy"
                 onClick={() => setMobileOpen(false)}
@@ -373,7 +354,7 @@ export default function Header() {
                     : "text-white/90 border-white/10 hover:text-white"
                 )}
               >
-                UNOUN Academy
+                Статьи
               </Link>
 
               <Link

@@ -116,7 +116,7 @@ export default function DescriptionSection() {
       className="w-full overflow-x-clip bg-zinc-50 py-16 md:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 md:mb-14">
+        <div className="relative z-20 mb-10 md:mb-14 lg:pr-[430px] xl:pr-[460px]">
           <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
             О продукте
           </p>
@@ -129,7 +129,7 @@ export default function DescriptionSection() {
           </p>
         </div>
 
-        <div className="mx-auto max-w-[1360px] overflow-x-clip">
+        <div className="relative z-0 mx-auto max-w-[1360px] overflow-x-clip">
         <div className="relative overflow-x-clip">
           <div
             className="relative flex items-center justify-center overflow-hidden px-2 pb-2 pt-2 sm:px-10 md:overflow-visible lg:px-16"
