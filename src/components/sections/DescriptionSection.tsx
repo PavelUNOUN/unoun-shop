@@ -111,7 +111,10 @@ export default function DescriptionSection() {
   const slide = SLIDES[active];
 
   return (
-    <section id="description" className="w-full bg-zinc-50 py-16 md:py-24">
+    <section
+      id="description"
+      className="w-full overflow-x-clip bg-zinc-50 py-16 md:py-24"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 md:mb-14">
           <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
@@ -126,10 +129,10 @@ export default function DescriptionSection() {
           </p>
         </div>
 
-        <div className="mx-auto max-w-[1360px]">
-        <div className="relative">
+        <div className="mx-auto max-w-[1360px] overflow-x-clip">
+        <div className="relative overflow-x-clip">
           <div
-            className="relative flex items-center justify-center overflow-visible px-2 pb-2 pt-2 sm:px-10 lg:px-16"
+            className="relative flex items-center justify-center overflow-hidden px-2 pb-2 pt-2 sm:px-10 md:overflow-visible lg:px-16"
             style={{ height: "clamp(240px, 38vw, 460px)" }}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
@@ -151,15 +154,18 @@ export default function DescriptionSection() {
                     isActive
                       ? "z-10 cursor-default shadow-[0_35px_100px_-45px_rgba(24,24,27,0.45)]"
                       : "z-0 cursor-pointer shadow-[0_20px_60px_-45px_rgba(24,24,27,0.4)]",
-                    !isVisible && "pointer-events-none"
+                    !isVisible && "pointer-events-none",
+                    !isActive && "hidden md:block"
                   )}
                   style={{
                     width: isActive
-                      ? "clamp(320px, 58vw, 820px)"
+                      ? "min(820px, calc(100vw - 1.5rem))"
                       : "clamp(280px, 30vw, 420px)",
                     aspectRatio: "16 / 10",
                     opacity: isActive ? 1 : Math.abs(offset) === 1 ? 0.3 : 0,
-                    transform: `translateX(calc(${offset} * (clamp(320px, 58vw, 820px) * 0.88))) scale(${isActive ? 1 : 0.8})`,
+                    transform: isActive
+                      ? "translateX(0) scale(1)"
+                      : `translateX(calc(${offset} * (clamp(320px, 58vw, 820px) * 0.88))) scale(0.8)`,
                   }}
                 >
                   <div className="relative h-full w-full">

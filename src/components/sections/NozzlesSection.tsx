@@ -82,7 +82,7 @@ export default function NozzlesSection() {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <section id="nozzles" className="w-full bg-white py-16 md:py-24">
+    <section id="nozzles" className="w-full overflow-x-clip bg-white py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Заголовок */}
@@ -96,13 +96,13 @@ export default function NozzlesSection() {
         </div>
 
         {/* Обёртка с кнопками по бокам */}
-        <div className="relative">
+        <div className="relative overflow-x-clip">
 
           {/* Кнопка влево */}
           <button
             onClick={scrollPrev}
             aria-label="Предыдущие насадки"
-            className={`${BTN_CLASSES} absolute -left-5 top-1/2 z-10 -translate-y-1/2 sm:-left-6`}
+            className={`${BTN_CLASSES} absolute left-2 top-1/2 z-10 -translate-y-1/2 sm:-left-6`}
           >
             <ChevronLeft size={18} strokeWidth={1.75} />
           </button>
@@ -148,7 +148,7 @@ export default function NozzlesSection() {
           <button
             onClick={scrollNext}
             aria-label="Следующие насадки"
-            className={`${BTN_CLASSES} absolute -right-5 top-1/2 z-10 -translate-y-1/2 sm:-right-6`}
+            className={`${BTN_CLASSES} absolute right-2 top-1/2 z-10 -translate-y-1/2 sm:-right-6`}
           >
             <ChevronRight size={18} strokeWidth={1.75} />
           </button>
