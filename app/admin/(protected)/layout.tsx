@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { isAdminAuthenticated, isAdminConfigured } from "@/server/admin/auth";
 
-export default async function AdminLayout({
+export default async function ProtectedAdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
