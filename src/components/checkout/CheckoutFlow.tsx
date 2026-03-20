@@ -14,26 +14,17 @@ import {
   WalletCards,
 } from "lucide-react";
 import { formatPrice } from "@/lib/catalog";
+import type {
+  CheckoutContactData,
+  CheckoutPickupPoint,
+  CheckoutPaymentMethod,
+  CreateCheckoutOrderPayload,
+  CreateCheckoutOrderResponse,
+} from "@/lib/checkout";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
 
-type PaymentMethod = "full_online" | "split" | "";
-
-type ContactData = {
-  name: string;
-  phone: string;
-  email: string;
-  city: string;
-};
-
-type PickupPoint = {
-  id: string;
-  title: string;
-  address: string;
-  eta: string;
-};
-
-const PICKUP_POINTS: PickupPoint[] = [
+const PICKUP_POINTS: CheckoutPickupPoint[] = [
   {
     id: "nn-rodionova-165a",
     title: "СДЭК ПВЗ на Родионова",
@@ -82,16 +73,18 @@ export default function CheckoutFlow() {
   const items = useCartStore((state) => state.items);
   const subtotal = useCartStore((state) => state.subtotal());
 
-  const [contact, setContact] = useState<ContactData>({
+  const [contact, setContact] = useState<CheckoutContactData>({
     name: "",
     phone: "",
     email: "",
     city: "Нижний Новгород",
   });
   const [selectedPickupPointId, setSelectedPickupPointId] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("full_online");
+  const [paymentMethod, setPaymentMethod] =
+    useState<CheckoutPaymentMethod>("full_online");
   const [consentAccepted, setConsentAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const selectedPickupPoint = useMemo(
     () => PICKUP_POINTS.find((item) => item.id === selectedPickupPointId) ?? null,
@@ -108,7 +101,6 @@ export default function CheckoutFlow() {
     items.length > 0 &&
     isContactValid &&
     selectedPickupPoint !== null &&
-    paymentMethod !== "" &&
     consentAccepted;
 
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,11 +108,46 @@ export default function CheckoutFlow() {
   };
 
   const handleSubmit = async () => {
-    if (!isCheckoutReady) return;
+    if (!isCheckoutReady || !selectedPickupPoint) return;
 
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    router.push("/checkout/success");
+    setSubmitError(null);
+
+    try {
+      const payload: CreateCheckoutOrderPayload = {
+        contact,
+        pickupPoint: selectedPickupPoint,
+        paymentMethod,
+        consentAccepted,
+        items,
+      };
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("checkout_request_failed");
+      }
+
+      const result =
+        (await response.json()) as CreateCheckoutOrderResponse;
+
+      router.push(
+        `/checkout/success?orderNumber=${encodeURIComponent(
+          result.orderNumber
+        )}&mode=${encodeURIComponent(result.storageMode)}`
+      );
+    } catch {
+      setSubmitError(
+        "Не удалось отправить заказ на сервер. Попробуйте еще раз через несколько секунд."
+      );
+      setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
@@ -455,6 +482,12 @@ export default function CheckoutFlow() {
               <span>{formatPrice(subtotal)} ₽</span>
             </div>
           </div>
+
+          {submitError ? (
+            <div className="mt-6 rounded-[24px] border border-red-500/20 bg-red-500/10 p-4 text-sm leading-relaxed text-red-100">
+              {submitError}
+            </div>
+          ) : null}
 
           <button
             type="button"

@@ -1,0 +1,184 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum AuthProvider {
+  YANDEX
+  PHONE
+  VK
+}
+
+enum OrderStatus {
+  NEW
+  AWAITING_PAYMENT
+  PAID
+  READY_FOR_SHIPPING
+  IN_DELIVERY
+  READY_FOR_PICKUP
+  DONE
+  CANCELLED
+}
+
+enum PaymentMethod {
+  FULL_ONLINE
+  SPLIT
+}
+
+enum PaymentStatus {
+  PENDING
+  REQUIRES_ACTION
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum DeliveryMethod {
+  CDEK_PICKUP
+}
+
+enum BonusTransactionType {
+  WELCOME_ISSUED
+  ORDER_APPLIED
+  MANUAL_ADJUSTMENT
+}
+
+model User {
+  id             String        @id @default(cuid())
+  email          String?       @unique
+  phone          String?       @unique
+  fullName       String?
+  provider       AuthProvider?
+  providerUserId String?       @unique
+  loyaltyEnabled Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  orders         Order[]
+  addresses      Address[]
+  bonusAccount   BonusAccount?
+}
+
+model Address {
+  id                 String   @id @default(cuid())
+  userId             String
+  title              String
+  city               String
+  recipientName      String?
+  recipientPhone     String?
+  pickupPointCode    String?
+  pickupPointTitle   String?
+  pickupPointAddress String
+  preferred          Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id            String      @id @default(cuid())
+  slug          String      @unique
+  title         String
+  shortTitle    String?
+  description   String?
+  price         Int
+  originalPrice Int?
+  image         String
+  isActive      Boolean     @default(true)
+  stock         Int?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderItems    OrderItem[]
+}
+
+model Order {
+  id                 String         @id @default(cuid())
+  orderNumber        String         @unique
+  userId             String?
+  status             OrderStatus    @default(NEW)
+  paymentMethod      PaymentMethod
+  paymentStatus      PaymentStatus  @default(PENDING)
+  deliveryMethod     DeliveryMethod @default(CDEK_PICKUP)
+  checkoutMode       String         @default("guest")
+  customerName       String
+  customerPhone      String
+  customerEmail      String
+  city               String
+  consentAccepted    Boolean
+  pickupPointCode    String
+  pickupPointTitle   String
+  pickupPointAddress String
+  pickupPointEta     String?
+  subtotal           Int
+  discountTotal      Int            @default(0)
+  deliveryTotal      Int            @default(0)
+  grandTotal         Int
+  bonusApplied       Int            @default(0)
+  currencyCode       String         @default("RUB")
+  paymentReference   String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  user               User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items              OrderItem[]
+  bonusTransactions  BonusTransaction[]
+}
+
+model OrderItem {
+  id            String   @id @default(cuid())
+  orderId       String
+  productId     String?
+  productSlug   String
+  productTitle  String
+  image         String
+  unitPrice     Int
+  originalPrice Int?
+  quantity      Int
+  lineTotal     Int
+  createdAt     DateTime @default(now())
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product       Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+}
+
+model BonusAccount {
+  id            String             @id @default(cuid())
+  userId        String             @unique
+  balance       Int                @default(0)
+  welcomeIssued Boolean            @default(false)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  BonusTransaction[]
+}
+
+model BonusTransaction {
+  id           String               @id @default(cuid())
+  accountId    String
+  orderId      String?
+  type         BonusTransactionType
+  amount       Int
+  balanceAfter Int
+  description  String?
+  createdAt    DateTime             @default(now())
+  account      BonusAccount         @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  order        Order?               @relation(fields: [orderId], references: [id], onDelete: SetNull)
+}
+
+model Article {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  category        String
+  title           String
+  excerpt         String
+  seoDescription  String
+  heroDescription String
+  takeaway        String
+  readTime        String
+  publishedAt     DateTime?
+  isPublished     Boolean  @default(false)
+  tags            Json?
+  sections        Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

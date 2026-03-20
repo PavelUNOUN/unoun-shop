@@ -9,7 +9,8 @@ const USE_CASES = [
     description:
       "Помогает поддерживать чистоту в зоне плиты, фартука и рабочих поверхностей без лишней рутины.",
     caption: "Пар для ежедневной чистоты рядом с плитой",
-    image: "/images/карточка 1 .png",
+    image: "/images/кухня .png",
+    imageClassName: "object-cover",
     tag: "Кухня",
   },
   {
@@ -17,7 +18,8 @@ const USE_CASES = [
     description:
       "Подходит для плитки, стыков, смесителей и других зон, где особенно важны аккуратность и свежесть.",
     caption: "Комфортный уход за плиткой и сантехникой",
-    image: "/images/2.jpg",
+    image: "/images/ванна .png",
+    imageClassName: "object-cover",
     tag: "Ванная",
   },
   {
@@ -25,7 +27,8 @@ const USE_CASES = [
     description:
       "Лёгкая насадка и манёвренная форма делают ежедневную уборку спокойной и удобной, в том числе вдоль плинтусов и у мебели.",
     caption: "Бережная уборка пола и сложных зон",
-    image: "/images/карточка 2 .png",
+    image: "/images/пол.png",
+    imageClassName: "object-cover object-center object-[center_78%]",
     tag: "Пол и углы",
   },
   {
@@ -33,7 +36,8 @@ const USE_CASES = [
     description:
       "С текстильной насадкой устройство подходит для деликатного отпаривания штор, одежды и домашнего текстиля.",
     caption: "Отпаривает вещи и шторы без громоздкой техники",
-    image: "/images/карточка 4 .jpg",
+    image: "/images/одежда.png",
+    imageClassName: "object-cover",
     tag: "Текстиль",
   },
 ] as const;
@@ -70,7 +74,7 @@ export default function UseCasesSection() {
                     alt={item.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    className={`${item.imageClassName} transition-transform duration-500 group-hover:scale-[1.03]`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
                   <div className="absolute left-4 top-4">

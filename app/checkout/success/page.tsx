@@ -10,7 +10,21 @@ export const metadata: Metadata = {
     "UNOUN: заказ подтвержден, следующий шаг — оплата, личный кабинет и welcome-бонус после авторизации.",
 };
 
-export default function CheckoutSuccessPage() {
+type CheckoutSuccessPageProps = {
+  searchParams: Promise<{
+    orderNumber?: string;
+    mode?: string;
+  }>;
+};
+
+export default async function CheckoutSuccessPage({
+  searchParams,
+}: CheckoutSuccessPageProps) {
+  const params = await searchParams;
+  const orderNumber = params.orderNumber ?? "UNOUN-DEMO";
+  const storageModeLabel =
+    params.mode === "database" ? "MySQL / Prisma" : "mock-режим до подключения БД";
+
   return (
     <>
       <CheckoutSuccessClearCart />
@@ -19,7 +33,7 @@ export default function CheckoutSuccessPage() {
         eyebrow="Order Success"
         badge="Первый success-flow"
         title="Заказ подтвержден и передан в следующий этап обработки"
-        description="Это первая рабочая success-страница нового commerce-сценария. После подключения backend и оплаты сюда придут реальные статусы заказа, платежа и доставки."
+        description="Success-экран уже получает ответ от server-side checkout. После подключения боевой базы, оплаты и СДЭК сюда придут реальные статусы заказа, платежа и доставки."
         className="bg-zinc-50"
       />
 
@@ -35,10 +49,29 @@ export default function CheckoutSuccessPage() {
             </h2>
 
             <p className="mt-4 text-sm leading-relaxed text-zinc-600 sm:text-base">
-              Сейчас success-экран работает как подтверждение первого живого checkout
-              flow. Когда подключим backend, оплату и СДЭК, здесь появятся номер
-              заказа, статус платежа, выбранный ПВЗ и дальнейшие шаги клиента.
+              Checkout уже отдает номер заказа с backend-слоя. Пока база данных не
+              подключена в production, мы можем работать через безопасный mock-режим,
+              не ломая пользовательский сценарий.
             </p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                  Номер заказа
+                </p>
+                <p className="mt-2 text-sm font-semibold text-zinc-900">
+                  {orderNumber}
+                </p>
+              </div>
+              <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                  Режим хранения
+                </p>
+                <p className="mt-2 text-sm font-semibold text-zinc-900">
+                  {storageModeLabel}
+                </p>
+              </div>
+            </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
