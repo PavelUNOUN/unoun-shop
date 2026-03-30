@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, LockKeyhole, Phone, ShieldCheck } from "lucide-react";
+import { isYandexOAuthConfigured } from "@/server/account/yandex";
 
 const SECONDARY_METHODS = [
   {
@@ -23,6 +24,8 @@ const BENEFITS = [
 ] as const;
 
 export default function AuthMethodsPanel() {
+  const isConfigured = isYandexOAuthConfigured();
+
   return (
     <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
       <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_24px_80px_-52px_rgba(24,24,27,0.35)] sm:p-8">
@@ -43,22 +46,25 @@ export default function AuthMethodsPanel() {
           кабинета пользователя.
         </p>
 
-        <button
-          type="button"
+        <Link
+          href="/api/auth/yandex"
           className="mt-8 flex h-14 w-full items-center justify-between rounded-[20px] bg-zinc-950 px-5 text-left text-white transition-colors duration-150 hover:bg-black"
         >
           <span className="flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FC3F1D] text-sm font-bold text-white">
               Я
             </span>
-            <span className="text-base font-semibold">Войти через Яндекс</span>
+            <span className="text-base font-semibold">
+              {isConfigured ? "Войти через Яндекс" : "Подключить вход через Яндекс"}
+            </span>
           </span>
           <ArrowRight size={18} />
-        </button>
+        </Link>
 
         <p className="mt-4 text-xs leading-relaxed text-zinc-400">
-          Кнопка пока работает как UI-элемент без реального OAuth-подключения.
-          После следующего этапа она будет вести в полноценный flow авторизации.
+          {isConfigured
+            ? "Кнопка уже ведет в реальный OAuth-flow Яндекса. Как только пользователь вернется с callback, мы создадим или обновим его аккаунт в UNOUN."
+            : "Кнопка уже подготовлена под реальный OAuth-flow, осталось только добавить client_id и client_secret Яндекса в production env."}
         </p>
 
         <div className="mt-8 rounded-[24px] border border-zinc-200 bg-zinc-50 p-5">

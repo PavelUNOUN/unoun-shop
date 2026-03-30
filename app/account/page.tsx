@@ -8,6 +8,7 @@ import {
   LOYALTY_SUMMARY,
 } from "@/lib/account";
 import { formatPrice } from "@/lib/catalog";
+import { getAuthenticatedAccountUser } from "@/server/account/auth";
 
 export const metadata: Metadata = {
   title: "Личный кабинет | UNOUN",
@@ -15,14 +16,23 @@ export const metadata: Metadata = {
     "Каркас личного кабинета UNOUN: обзор заказов, бонусов, получателей и сервисных сценариев перед подключением реальной авторизации.",
 };
 
-export default function AccountPage() {
+export default async function AccountPage() {
+  const user = await getAuthenticatedAccountUser();
   const latestOrder = ACCOUNT_RECENT_ORDERS[0];
 
   return (
     <AccountShell
       eyebrow="Личный кабинет"
-      title="Структура кабинета уже готова под заказы, бонусы и сервис"
-      description="На этом этапе мы собираем правильную архитектуру интерфейса: обзор, заказы, бонусы, сохраненные получатели и сервисный контур. После подключения backend сюда подставятся реальные данные пользователя."
+      title={
+        user?.fullName
+          ? `Здравствуйте, ${user.fullName}`
+          : "Структура кабинета уже готова под заказы, бонусы и сервис"
+      }
+      description={
+        user?.email
+          ? `Вы уже вошли через Яндекс как ${user.email}. Следующий шаг — связать сессию с реальной историей заказов, бонусами и адресами.`
+          : "На этом этапе мы собираем правильную архитектуру интерфейса: обзор, заказы, бонусы, сохраненные получатели и сервисный контур. После подключения backend сюда подставятся реальные данные пользователя."
+      }
       currentPath="/account"
     >
       <section className="grid gap-5 md:grid-cols-3">

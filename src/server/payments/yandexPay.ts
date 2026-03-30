@@ -1,5 +1,7 @@
+import { OrderStatus, PaymentStatus } from "@prisma/client";
 import { getSiteUrl } from "@/lib/site";
 import type { CheckoutItem, CheckoutPaymentMethod } from "@/lib/checkout";
+import { getPrismaClient } from "@/lib/prisma";
 
 const SANDBOX_API_BASE = "https://sandbox.pay.yandex.ru/api/merchant";
 const PRODUCTION_API_BASE = "https://pay.yandex.ru/api/merchant";
@@ -16,6 +18,20 @@ type CreateYandexPayLinkInput = {
 type YandexPayCreateOrderResponse = {
   data?: {
     paymentUrl?: string;
+  };
+};
+
+type YandexPayWebhookPayload = {
+  event?: string;
+  merchantId?: string;
+  order?: {
+    orderId?: string;
+    status?: string;
+    paymentStatus?: string;
+  };
+  operation?: {
+    orderId?: string;
+    status?: string;
   };
 };
 
@@ -65,6 +81,107 @@ function mapAvailablePaymentMethods(
 
 export function isYandexPayEnabled(): boolean {
   return Boolean(getYandexPayMerchantId() && getYandexPayApiKey());
+}
+
+export function getDefaultYandexPayNotificationUrl() {
+  return `${getSiteUrl()}/api/payments/yandex-pay/webhook`;
+}
+
+function normalizeYandexPaymentStatus(
+  payload: YandexPayWebhookPayload
+): string | null {
+  return (
+    payload.order?.paymentStatus?.trim() ||
+    payload.order?.status?.trim() ||
+    payload.operation?.status?.trim() ||
+    null
+  );
+}
+
+function normalizeYandexOrderId(payload: YandexPayWebhookPayload): string | null {
+  return payload.order?.orderId?.trim() || payload.operation?.orderId?.trim() || null;
+}
+
+function mapYandexPaymentStatus(
+  status: string
+): { paymentStatus: PaymentStatus; orderStatus?: OrderStatus } {
+  switch (status) {
+    case "AUTHORIZED":
+    case "CAPTURED":
+    case "CONFIRMED":
+      return {
+        paymentStatus: PaymentStatus.PAID,
+        orderStatus: OrderStatus.PAID,
+      };
+    case "REFUNDED":
+    case "PARTIALLY_REFUNDED":
+      return {
+        paymentStatus: PaymentStatus.REFUNDED,
+        orderStatus: OrderStatus.CANCELLED,
+      };
+    case "FAILED":
+    case "VOIDED":
+    case "CANCELLED":
+      return {
+        paymentStatus: PaymentStatus.FAILED,
+        orderStatus: OrderStatus.AWAITING_PAYMENT,
+      };
+    case "PENDING":
+    case "NEW":
+    default:
+      return {
+        paymentStatus: PaymentStatus.REQUIRES_ACTION,
+        orderStatus: OrderStatus.AWAITING_PAYMENT,
+      };
+  }
+}
+
+export async function applyYandexPayWebhook(payload: YandexPayWebhookPayload) {
+  const merchantId = getYandexPayMerchantId();
+  const orderId = normalizeYandexOrderId(payload);
+  const paymentStatusRaw = normalizeYandexPaymentStatus(payload);
+
+  if (!merchantId || !orderId || !paymentStatusRaw) {
+    return { updated: false, reason: "missing-required-fields" as const };
+  }
+
+  if (payload.merchantId && payload.merchantId !== merchantId) {
+    return { updated: false, reason: "merchant-id-mismatch" as const };
+  }
+
+  const prisma = getPrismaClient();
+  const statusMapping = mapYandexPaymentStatus(paymentStatusRaw);
+
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!order) {
+    return { updated: false, reason: "order-not-found" as const };
+  }
+
+  await prisma.order.update({
+    where: {
+      id: orderId,
+    },
+    data: {
+      paymentStatus: statusMapping.paymentStatus,
+      status: statusMapping.orderStatus,
+      paymentReference: orderId,
+    },
+  });
+
+  return {
+    updated: true,
+    reason: "ok" as const,
+    paymentStatus: statusMapping.paymentStatus,
+    orderStatus: statusMapping.orderStatus ?? null,
+  };
 }
 
 export async function createYandexPayPaymentLink({
