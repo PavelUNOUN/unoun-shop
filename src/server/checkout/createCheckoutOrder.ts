@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import {
+  BonusTransactionType,
   DeliveryMethod,
   OrderStatus,
   PaymentMethod,
@@ -59,7 +60,6 @@ export async function createCheckoutOrder(
     0
   );
   const orderNumber = createOrderNumber();
-  const grandTotal = subtotal;
   const storageMode = getCheckoutStorageMode();
 
   if (storageMode === "mock") {
@@ -73,6 +73,21 @@ export async function createCheckoutOrder(
   }
 
   const prisma = getPrismaClient();
+  const canApplyBonuses = Boolean(
+    options.authenticatedUserId && input.applyAvailableBonuses
+  );
+  let bonusApplied = 0;
+
+  if (canApplyBonuses && options.authenticatedUserId) {
+    const bonusAccount = await prisma.bonusAccount.findUnique({
+      where: { userId: options.authenticatedUserId },
+      select: { balance: true },
+    });
+
+    bonusApplied = Math.min(bonusAccount?.balance ?? 0, subtotal);
+  }
+
+  const grandTotal = Math.max(subtotal - bonusApplied, 0);
 
   const order = await prisma.order.create({
     data: {
@@ -93,6 +108,8 @@ export async function createCheckoutOrder(
       pickupPointAddress: input.pickupPoint.address,
       pickupPointEta: input.pickupPoint.eta ?? null,
       subtotal,
+      discountTotal: bonusApplied,
+      bonusApplied,
       grandTotal,
       items: {
         create: input.items.map((item) => ({
@@ -127,6 +144,33 @@ export async function createCheckoutOrder(
   }).catch((error) => {
     console.error("Telegram order notification error", error);
   });
+
+  if (bonusApplied > 0 && options.authenticatedUserId) {
+    const bonusAccount = await prisma.bonusAccount.findUnique({
+      where: { userId: options.authenticatedUserId },
+      select: { id: true, balance: true },
+    });
+
+    if (bonusAccount) {
+      const balanceAfter = Math.max(bonusAccount.balance - bonusApplied, 0);
+
+      await prisma.bonusAccount.update({
+        where: { userId: options.authenticatedUserId },
+        data: {
+          balance: balanceAfter,
+          transactions: {
+            create: {
+              orderId: order.id,
+              type: BonusTransactionType.ORDER_APPLIED,
+              amount: -bonusApplied,
+              balanceAfter,
+              description: `Бонусы применены к заказу ${order.orderNumber}.`,
+            },
+          },
+        },
+      });
+    }
+  }
 
   if (options.authenticatedUserId) {
     await syncAccountCommerceProfile(

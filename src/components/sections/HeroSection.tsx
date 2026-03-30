@@ -133,6 +133,18 @@ export default function HeroSection() {
               Идеальная чистота без усилий.
             </p>
 
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
+                Яндекс Pay уже в checkout
+              </span>
+              <span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
+                Можно оплатить в Split
+              </span>
+              <span className="rounded-full border border-[#E5FF00] bg-[#F7FFB8] px-3 py-1 text-xs font-semibold text-zinc-900">
+                +500 бонусов за вход через Яндекс
+              </span>
+            </div>
+
             {/* Цена */}
             <div className="flex items-baseline gap-3">
               <span className="text-4xl font-bold text-zinc-900">
@@ -176,11 +188,13 @@ export default function HeroSection() {
               />
             </div>
 
-            {/* Яндекс Пэй — заглушка */}
-            <div className="flex items-center justify-center rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 px-4 py-3">
-              <span className="text-xs font-medium text-zinc-300">
-                Яндекс Pay и Split подключим в отдельном payment-этапе
-              </span>
+            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3">
+              <p className="text-sm font-medium text-zinc-800">
+                Оплата уже доступна через Яндекс Pay, а Split можно выбрать прямо в оформлении.
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                После входа через Яндекс checkout подставит данные аккаунта и позволит использовать приветственные бонусы без повторного заполнения формы.
+              </p>
             </div>
 
           </div>

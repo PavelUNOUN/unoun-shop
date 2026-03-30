@@ -35,6 +35,15 @@ type YandexPayWebhookPayload = {
   };
 };
 
+type YandexPayCartItemPayload = {
+  productId: string;
+  title: string;
+  total: string;
+  quantity: {
+    count: string;
+  };
+};
+
 function getYandexPayEnv(): "sandbox" | "production" {
   return process.env.YANDEX_PAY_ENV === "production" ? "production" : "sandbox";
 }
@@ -77,6 +86,55 @@ function mapAvailablePaymentMethods(
   paymentMethod: CheckoutPaymentMethod
 ): Array<"CARD" | "SPLIT"> {
   return paymentMethod === "split" ? ["SPLIT"] : ["CARD"];
+}
+
+function buildYandexPayCartItems(
+  items: CheckoutItem[],
+  total: number
+): YandexPayCartItemPayload[] {
+  const sourceItems = items.map((item) => ({
+    ...item,
+    lineTotalCents: item.price * item.quantity * 100,
+  }));
+  const subtotalCents = sourceItems.reduce(
+    (sum, item) => sum + item.lineTotalCents,
+    0
+  );
+  const targetCents = Math.max(Math.round(total * 100), 0);
+
+  if (subtotalCents <= 0 || subtotalCents === targetCents) {
+    return items.map((item) => ({
+      productId: item.slug,
+      title: item.title,
+      total: item.price.toFixed(2),
+      quantity: {
+        count: String(item.quantity),
+      },
+    }));
+  }
+
+  let remainingTargetCents = targetCents;
+
+  return sourceItems.map((item, index) => {
+    const isLast = index === sourceItems.length - 1;
+    const adjustedLineCents = isLast
+      ? remainingTargetCents
+      : Math.max(
+          Math.round((item.lineTotalCents / subtotalCents) * targetCents),
+          0
+        );
+
+    remainingTargetCents -= adjustedLineCents;
+
+    return {
+      productId: item.slug,
+      title: item.title,
+      total: (adjustedLineCents / item.quantity / 100).toFixed(2),
+      quantity: {
+        count: String(item.quantity),
+      },
+    };
+  });
 }
 
 export function isYandexPayEnabled(): boolean {
@@ -216,14 +274,7 @@ export async function createYandexPayPaymentLink({
         onError: buildReturnUrl(orderNumber, storageMode, "error"),
       },
       cart: {
-        items: items.map((item) => ({
-          productId: item.slug,
-          title: item.title,
-          total: item.price.toFixed(2),
-          quantity: {
-            count: String(item.quantity),
-          },
-        })),
+        items: buildYandexPayCartItems(items, total),
         total: {
           amount: total.toFixed(2),
         },

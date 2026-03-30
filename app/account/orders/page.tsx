@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import AccountShell from "@/components/account/AccountShell";
 import InfoCard from "@/components/ui/page/InfoCard";
 import { formatPrice } from "@/lib/catalog";
@@ -101,6 +102,15 @@ export default async function AccountOrdersPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          <div className="mt-4">
+            <Link
+              href={`/account/orders/${order.id}`}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 px-5 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-50"
+            >
+              Открыть заказ полностью
+            </Link>
           </div>
         </InfoCard>
       ))}

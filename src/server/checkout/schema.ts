@@ -21,13 +21,16 @@ export const checkoutPickupPointSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
   address: z.string().min(1),
-  eta: z.string().min(1),
+  eta: z.string().trim().min(1).optional().nullable(),
+  note: z.string().trim().min(1).optional().nullable(),
 });
 
 export const createCheckoutOrderSchema = z.object({
   contact: checkoutContactSchema,
+  deliveryMethod: z.literal("yandex_pickup"),
   pickupPoint: checkoutPickupPointSchema,
   paymentMethod: z.enum(["full_online", "split"]),
+  applyAvailableBonuses: z.boolean().optional(),
   consentAccepted: z.literal(true),
   items: z.array(checkoutItemSchema).min(1),
 });

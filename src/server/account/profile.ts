@@ -4,6 +4,7 @@ import {
   PaymentMethod,
   PaymentStatus,
 } from "@prisma/client";
+import type { CheckoutAccountProfile } from "@/lib/checkout";
 import { getPrismaClient } from "@/lib/prisma";
 
 const WELCOME_BONUS_AMOUNT = 500;
@@ -71,6 +72,73 @@ export type AccountDashboardData = {
   addresses: AccountAddressView[];
   loyalty: AccountLoyaltyView;
 };
+
+export async function getCheckoutAccountProfile(
+  user: AccountUser | null
+): Promise<CheckoutAccountProfile | null> {
+  if (!user) {
+    return null;
+  }
+
+  const prisma = getPrismaClient();
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: {
+      addresses: {
+        orderBy: [{ preferred: "desc" }, { updatedAt: "desc" }],
+      },
+      orders: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      },
+      bonusAccount: true,
+    },
+  });
+
+  if (!dbUser) {
+    return null;
+  }
+
+  const preferredAddress = dbUser.addresses[0] ?? null;
+  const latestOrder = dbUser.orders[0] ?? null;
+
+  return {
+    isAuthenticated: true,
+    fullName:
+      dbUser.fullName ??
+      preferredAddress?.recipientName ??
+      latestOrder?.customerName ??
+      null,
+    email: dbUser.email ?? latestOrder?.customerEmail ?? null,
+    phone:
+      preferredAddress?.recipientPhone ??
+      latestOrder?.customerPhone ??
+      dbUser.phone ??
+      null,
+    city: preferredAddress?.city ?? latestOrder?.city ?? "Нижний Новгород",
+    bonusBalance: dbUser.bonusAccount?.balance ?? 0,
+    welcomeIssued: dbUser.bonusAccount?.welcomeIssued ?? false,
+    preferredPickupPoint: preferredAddress
+      ? {
+          id: preferredAddress.pickupPointCode ?? preferredAddress.id,
+          title: preferredAddress.pickupPointTitle ?? preferredAddress.title,
+          address: preferredAddress.pickupPointAddress,
+          note: preferredAddress.preferred
+            ? "Сохранённый основной ПВЗ из личного кабинета."
+            : "Сохранённый ПВЗ из предыдущего заказа.",
+          eta: latestOrder?.pickupPointEta ?? null,
+        }
+      : latestOrder
+        ? {
+            id: latestOrder.pickupPointCode,
+            title: latestOrder.pickupPointTitle,
+            address: latestOrder.pickupPointAddress,
+            note: "Последний использованный пункт выдачи.",
+            eta: latestOrder.pickupPointEta ?? null,
+          }
+        : null,
+  };
+}
 
 function formatDate(date: Date) {
   return new Intl.DateTimeFormat("ru-RU", {
@@ -382,5 +450,47 @@ export async function getAccountDashboardData(
     orders,
     addresses,
     loyalty,
+  };
+}
+
+export async function getAccountOrderDetail(
+  userId: string,
+  orderId: string
+): Promise<AccountOrderView | null> {
+  const prisma = getPrismaClient();
+  const order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+      userId,
+    },
+    include: {
+      items: {
+        orderBy: { createdAt: "asc" },
+      },
+    },
+  });
+
+  if (!order) {
+    return null;
+  }
+
+  return {
+    id: order.id,
+    orderNumber: order.orderNumber,
+    dateLabel: formatDate(order.createdAt),
+    statusLabel: formatOrderStatusLabel(order.status),
+    paymentLabel: formatPaymentMethodLabel(order.paymentMethod),
+    paymentStatusLabel: formatPaymentStatusLabel(order.paymentStatus),
+    itemsCount: order.items.reduce((total, item) => total + item.quantity, 0),
+    total: order.grandTotal,
+    deliveryLabel: `${order.pickupPointTitle}, ${order.pickupPointAddress}`,
+    bonusUsed: order.bonusApplied,
+    createdAt: order.createdAt,
+    items: order.items.map((item) => ({
+      id: item.id,
+      title: item.productTitle,
+      quantity: item.quantity,
+      lineTotal: item.lineTotal,
+    })),
   };
 }

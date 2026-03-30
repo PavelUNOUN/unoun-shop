@@ -82,7 +82,7 @@ export default async function AccountPage() {
           <InfoCard
             eyebrow="Первые заказы"
             title="Заказов пока нет"
-            description="Как только вы оформите первую покупку, здесь появится актуальный статус, сумма, способ оплаты и выбранный пункт выдачи."
+            description="Вы уже вошли в аккаунт, поэтому при переходе в checkout контакты, бонусы и сохранённый ПВЗ подставятся автоматически."
           >
             <Link
               href="/checkout"
@@ -98,7 +98,7 @@ export default async function AccountPage() {
           title={`${formatPrice(account.loyalty.balance)} ₽ на счёте`}
           description={
             account.loyalty.welcomeIssued
-              ? "Приветственный бонус уже начислен. Следующий этап — применение бонусов в реальном checkout."
+              ? "Приветственный бонус уже начислен и теперь может применяться прямо в checkout после входа."
               : "Бонусный счёт уже создан и готов к начислениям."
           }
         >
