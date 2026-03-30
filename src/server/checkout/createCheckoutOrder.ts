@@ -10,6 +10,10 @@ import { getPrismaClient } from "@/lib/prisma";
 import { getCheckoutStorageMode } from "@/server/config";
 import type { CreateCheckoutOrderInput } from "@/server/checkout/schema";
 import { sendTelegramOrderNotification } from "@/server/notifications/telegram";
+import {
+  createYandexPayPaymentLink,
+  isYandexPayEnabled,
+} from "@/server/payments/yandexPay";
 
 function createOrderNumber(): string {
   const date = new Date();
@@ -47,6 +51,8 @@ export async function createCheckoutOrder(
       orderId: randomUUID(),
       orderNumber,
       storageMode,
+      paymentUrl: null,
+      paymentProvider: null,
     };
   }
 
@@ -105,9 +111,42 @@ export async function createCheckoutOrder(
     console.error("Telegram order notification error", error);
   });
 
+  let paymentUrl: string | null = null;
+  let paymentProvider: "yandex_pay" | null = null;
+
+  if (isYandexPayEnabled()) {
+    try {
+      paymentUrl = await createYandexPayPaymentLink({
+        orderId: order.id,
+        orderNumber: order.orderNumber,
+        items: input.items,
+        total: grandTotal,
+        paymentMethod: input.paymentMethod,
+        storageMode,
+      });
+
+      if (paymentUrl) {
+        paymentProvider = "yandex_pay";
+
+        await prisma.order.update({
+          where: { id: order.id },
+          data: {
+            status: OrderStatus.AWAITING_PAYMENT,
+            paymentStatus: PaymentStatus.REQUIRES_ACTION,
+            paymentReference: order.id,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Yandex Pay link creation error", error);
+    }
+  }
+
   return {
     orderId: order.id,
     orderNumber: order.orderNumber,
     storageMode,
+    paymentUrl,
+    paymentProvider,
   };
 }

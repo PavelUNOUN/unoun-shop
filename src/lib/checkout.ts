@@ -36,4 +36,6 @@ export type CreateCheckoutOrderResponse = {
   orderId: string;
   orderNumber: string;
   storageMode: "mock" | "database";
+  paymentUrl?: string | null;
+  paymentProvider?: "yandex_pay" | null;
 };

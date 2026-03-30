@@ -14,6 +14,8 @@ type CheckoutSuccessPageProps = {
   searchParams: Promise<{
     orderNumber?: string;
     mode?: string;
+    provider?: string;
+    payment?: string;
   }>;
 };
 
@@ -24,6 +26,18 @@ export default async function CheckoutSuccessPage({
   const orderNumber = params.orderNumber ?? "UNOUN-DEMO";
   const storageModeLabel =
     params.mode === "database" ? "MySQL / Prisma" : "mock-режим до подключения БД";
+  const isYandexPayFlow = params.provider === "yandex_pay";
+  const hasPaymentError = params.payment === "error";
+  const title = hasPaymentError
+    ? "Заказ создан, но оплата не была завершена"
+    : isYandexPayFlow
+      ? "Заказ создан, статус оплаты сейчас уточняется"
+      : "Заказ подтвержден и передан в следующий этап обработки";
+  const description = hasPaymentError
+    ? "Мы сохранили заказ, но тестовая форма Яндекс Pay вернула пользователя без успешной оплаты. Заказ можно будет повторно оплатить после следующего этапа интеграции."
+    : isYandexPayFlow
+      ? "Заказ уже создан в системе. Пользователь вернулся с формы Яндекс Pay, а следующий шаг для нас — подключить webhook и автоматически синхронизировать статусы оплаты."
+      : "Success-экран уже получает ответ от server-side checkout. После подключения боевой базы, оплаты и СДЭК сюда придут реальные статусы заказа, платежа и доставки.";
 
   return (
     <>
@@ -32,8 +46,8 @@ export default async function CheckoutSuccessPage({
       <PageHero
         eyebrow="Order Success"
         badge="Первый success-flow"
-        title="Заказ подтвержден и передан в следующий этап обработки"
-        description="Success-экран уже получает ответ от server-side checkout. После подключения боевой базы, оплаты и СДЭК сюда придут реальные статусы заказа, платежа и доставки."
+        title={title}
+        description={description}
         className="bg-zinc-50"
       />
 
@@ -45,13 +59,19 @@ export default async function CheckoutSuccessPage({
             </div>
 
             <h2 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-              Мы сохранили новый путь покупки и закрыли текущий этап
+              {hasPaymentError
+                ? "Заказ сохранен, но оплата пока не завершена"
+                : isYandexPayFlow
+                  ? "Заказ сохранен, а статус оплаты уточняется"
+                  : "Мы сохранили новый путь покупки и закрыли текущий этап"}
             </h2>
 
             <p className="mt-4 text-sm leading-relaxed text-zinc-600 sm:text-base">
-              Checkout уже отдает номер заказа с backend-слоя. Пока база данных не
-              подключена в production, мы можем работать через безопасный mock-режим,
-              не ломая пользовательский сценарий.
+              {hasPaymentError
+                ? "Заказ уже записан в системе, поэтому его можно обработать вручную. Следующий шаг — довести оплату и автоматические статусы до полностью боевого состояния."
+                : isYandexPayFlow
+                  ? "Checkout уже умеет создавать заказ и отправлять пользователя на тестовую форму Яндекс Pay. На следующем шаге свяжем success-экран и админку с реальным webhook от оплаты."
+                  : "Checkout уже отдает номер заказа с backend-слоя. После подключения боевой оплаты и доставки сюда придут реальные статусы заказа, платежа и доставки."}
             </p>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2">

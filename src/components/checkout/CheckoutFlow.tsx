@@ -145,6 +145,16 @@ export default function CheckoutFlow() {
         total: subtotal,
       });
 
+      if (result.paymentUrl) {
+        reachMetrikaGoal("checkout_payment_redirect", {
+          payment_method: paymentMethod,
+          payment_provider: result.paymentProvider ?? "yandex_pay",
+          order_number: result.orderNumber,
+        });
+        window.location.assign(result.paymentUrl);
+        return;
+      }
+
       router.push(
         `/checkout/success?orderNumber=${encodeURIComponent(
           result.orderNumber
@@ -365,8 +375,8 @@ export default function CheckoutFlow() {
                   Оплатить полностью
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-zinc-600">
-                  Базовый сценарий покупки через онлайн-оплату после подключения
-                  платежного провайдера.
+                  Если тестовый Яндекс Pay подключен, после оформления заказа мы
+                  отправим покупателя на платежную форму.
                 </p>
               </div>
               <WalletCards size={18} className="shrink-0 text-zinc-500" />
@@ -387,8 +397,8 @@ export default function CheckoutFlow() {
                   Оплатить частями
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-zinc-600">
-                  Подготовлено под будущую интеграцию `Яндекс Pay / Split` без оплаты
-                  при получении.
+                  Если тестовый Split активирован, отправим покупателя на форму
+                  оплаты частями в Яндекс Pay.
                 </p>
               </div>
               <PackageCheck size={18} className="shrink-0 text-zinc-500" />
