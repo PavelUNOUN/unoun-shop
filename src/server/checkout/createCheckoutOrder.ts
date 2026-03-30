@@ -40,6 +40,16 @@ function mapPaymentMethod(
     : PaymentMethod.FULL_ONLINE;
 }
 
+function resolveDeliveryMethod(): DeliveryMethod {
+  const deliveryEnum = DeliveryMethod as Record<string, string>;
+
+  return (
+    deliveryEnum.YANDEX_PICKUP ??
+    deliveryEnum.CDEK_PICKUP ??
+    Object.values(deliveryEnum)[0]
+  ) as DeliveryMethod;
+}
+
 export async function createCheckoutOrder(
   input: CreateCheckoutOrderInput,
   options: CreateCheckoutOrderOptions = {}
@@ -70,7 +80,7 @@ export async function createCheckoutOrder(
       status: OrderStatus.NEW,
       paymentMethod: mapPaymentMethod(input.paymentMethod),
       paymentStatus: PaymentStatus.PENDING,
-      deliveryMethod: DeliveryMethod.YANDEX_PICKUP,
+      deliveryMethod: resolveDeliveryMethod(),
       userId: options.authenticatedUserId ?? null,
       checkoutMode: options.authenticatedUserId ? "account" : "guest",
       customerName: input.contact.name,
