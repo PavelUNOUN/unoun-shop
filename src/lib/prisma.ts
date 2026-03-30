@@ -23,6 +23,7 @@ function buildAdapter() {
     user: decodeURIComponent(parsedUrl.username),
     password: decodeURIComponent(parsedUrl.password),
     database,
+    allowPublicKeyRetrieval: true,
     connectionLimit: 5,
   });
 }
