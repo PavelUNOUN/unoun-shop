@@ -33,6 +33,10 @@ function getYandexPayMerchantId(): string | null {
 }
 
 function getYandexPayApiKey(): string | null {
+  if (getYandexPayEnv() === "sandbox") {
+    return getYandexPayMerchantId();
+  }
+
   const value = process.env.YANDEX_PAY_API_KEY?.trim();
   return value || null;
 }
