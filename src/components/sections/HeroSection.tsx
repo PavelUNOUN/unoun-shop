@@ -174,43 +174,46 @@ export default function HeroSection() {
               Идеальная чистота без усилий.
             </p>
 
-            {/* Цена */}
-            <div className="grid gap-3 sm:grid-cols-[220px_minmax(0,1fr)]">
-              <div className="rounded-[28px] bg-[#F1EEEA] px-6 py-5">
-                <p className="text-base text-zinc-400 line-through">
-                  {formatPrice(product.originalPrice)} ₽
-                </p>
-                <p className="mt-2 text-5xl font-semibold tracking-tight text-zinc-800">
-                  {formatPrice(product.price)} ₽
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <AddToCartButton
-                  label="В корзину"
-                  redirectTo="/cart"
-                  className="flex h-16 items-center justify-center rounded-full bg-[#8FB3F3] px-6 text-2xl font-medium text-white transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleQuickCheckout("full_online")}
-                  disabled={!product.isActive || product.stock <= 0}
-                  className="flex h-16 items-center justify-center rounded-full border-2 border-[#8FB3F3] bg-white px-6 text-2xl font-medium text-[#8FB3F3] transition-all duration-150 hover:bg-[#F4F8FF] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Купить в 1 клик
-                </button>
-              </div>
+            <div className="flex items-baseline gap-3">
+              <span className="text-4xl font-bold text-zinc-900">
+                {formatPrice(product.price)} ₽
+              </span>
+              <span className="text-lg text-zinc-400 line-through">
+                {formatPrice(product.originalPrice)} ₽
+              </span>
+              <span className="rounded-full bg-[#E5FF00] px-2.5 py-0.5 text-xs font-semibold text-zinc-900">
+                {product.originalPrice > product.price
+                  ? `−${Math.round(
+                      ((product.originalPrice - product.price) /
+                        product.originalPrice) *
+                        100
+                    )}%`
+                  : "Цена online"}
+              </span>
             </div>
 
             {!product.isActive || product.stock <= 0 ? (
               <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900">
                 Сейчас товар временно недоступен для заказа.
               </div>
-            ) : (
-              <div className="rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-600">
-                В наличии: <span className="font-semibold text-zinc-900">{product.stock} шт.</span>
-              </div>
-            )}
+            ) : null}
+
+            {/* Кнопки покупки */}
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <AddToCartButton
+                label="В корзину"
+                redirectTo="/cart"
+                className="flex h-14 flex-1 items-center justify-center rounded-full bg-[#E5FF00] px-6 text-base font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
+              />
+              <button
+                type="button"
+                onClick={() => handleQuickCheckout("full_online")}
+                disabled={!product.isActive || product.stock <= 0}
+                className="flex h-14 flex-1 items-center justify-center rounded-full border border-zinc-200 bg-white px-6 text-base font-semibold text-zinc-900 transition-all duration-150 hover:border-zinc-900 hover:bg-zinc-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Купить в 1 клик
+              </button>
+            </div>
 
             <div className="grid gap-4 rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_24px_80px_-56px_rgba(24,24,27,0.18)]">
               <button
@@ -285,10 +288,7 @@ export default function HeroSection() {
 
               <div className="rounded-[24px] border border-[#E5FF00] bg-[#F9FFC8] px-5 py-4">
                 <p className="text-sm font-medium text-zinc-900">
-                  После входа через Яндекс в checkout автоматически подтянутся ваши контакты, ПВЗ и бонусы.
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-zinc-600">
-                  За авторизацию пользователь получает 500 бонусов и может применить их прямо при оформлении.
+                  За авторизацию получите 500 бонусов и сможете применить их в checkout.
                 </p>
               </div>
             </div>
