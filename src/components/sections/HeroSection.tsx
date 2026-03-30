@@ -203,70 +203,48 @@ export default function HeroSection() {
               <AddToCartButton
                 label="В корзину"
                 redirectTo="/cart"
-                className="flex h-14 flex-1 items-center justify-center rounded-full bg-[#E5FF00] px-6 text-base font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
+                className="flex h-15 w-full items-center justify-center rounded-full bg-[#E5FF00] px-7 text-base font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98] sm:h-14 sm:flex-1 sm:px-6"
               />
               <button
                 type="button"
                 onClick={() => handleQuickCheckout("full_online")}
                 disabled={!product.isActive || product.stock <= 0}
-                className="flex h-14 flex-1 items-center justify-center rounded-full border border-zinc-200 bg-white px-6 text-base font-semibold text-zinc-900 transition-all duration-150 hover:border-zinc-900 hover:bg-zinc-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-15 w-full items-center justify-center rounded-full border border-zinc-200 bg-white px-7 text-base font-semibold text-zinc-900 transition-all duration-150 hover:border-zinc-900 hover:bg-zinc-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 sm:h-14 sm:flex-1 sm:px-6"
               >
                 Купить в 1 клик
               </button>
             </div>
 
-            <div className="grid gap-4 rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_24px_80px_-56px_rgba(24,24,27,0.18)]">
-              <button
-                type="button"
-                onClick={() => handleQuickCheckout("full_online")}
-                disabled={!product.isActive || product.stock <= 0}
-                className="flex items-center justify-between gap-4 rounded-[24px] border border-zinc-200 bg-zinc-50 px-5 py-4 text-left transition-colors duration-150 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[linear-gradient(135deg,#FF5D8F_0%,#8B49FF_100%)] text-lg font-bold text-white">
-                    +
-                  </div>
-                  <div>
-                    <p className="text-sm text-zinc-700">
-                      Яндекс Пэй — оплата с кешбэком
-                    </p>
-                    <p className="text-xl font-semibold text-zinc-900">
-                      Быстрый переход к оплате
-                    </p>
-                  </div>
-                </div>
-                <ChevronRightIcon className="shrink-0 text-zinc-400" size={22} />
-              </button>
-
+            <div className="grid gap-3 rounded-[28px] border border-zinc-200 bg-white p-4 shadow-[0_24px_80px_-56px_rgba(24,24,27,0.18)] sm:gap-4 sm:rounded-[32px] sm:p-6">
               <button
                 type="button"
                 onClick={() => handleQuickCheckout("split")}
                 disabled={!product.isActive || product.stock <= 0}
-                className="rounded-[24px] border border-zinc-200 bg-zinc-50 px-5 py-5 text-left transition-colors duration-150 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-[22px] border border-zinc-200 bg-zinc-50 px-4 py-4 text-left transition-colors duration-150 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-[24px] sm:px-5 sm:py-5"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4">
-                    <div className="mt-1 flex h-11 w-11 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#88F59A_0%,#3FDB66_48%,#2FC06D_100%)] text-lg font-bold text-white">
+                    <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#88F59A_0%,#3FDB66_48%,#2FC06D_100%)] text-base font-bold text-white sm:mt-1 sm:h-11 sm:w-11 sm:text-lg">
                       ◔
                     </div>
                     <div>
-                      <p className="text-sm text-zinc-700">
+                      <p className="text-xs text-zinc-700 sm:text-sm">
                         Яндекс Сплит — оплата частями
                       </p>
                       <div className="mt-1 flex flex-wrap items-center gap-2">
-                        <p className="text-3xl font-semibold tracking-tight text-zinc-900">
+                        <p className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
                           {formatPrice(splitPlan[0]?.amount ?? 0)} ₽ × 4
                         </p>
-                        <span className="rounded-full bg-[#55D67A] px-3 py-1 text-sm font-semibold text-white">
+                        <span className="rounded-full bg-[#55D67A] px-2.5 py-1 text-xs font-semibold text-white sm:px-3 sm:text-sm">
                           без переплат
                         </span>
                       </div>
                     </div>
                   </div>
-                  <ChevronRightIcon className="shrink-0 text-zinc-400" size={22} />
+                  <ChevronRightIcon className="shrink-0 text-zinc-400" size={20} />
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-4 sm:mt-5">
                   <div className="grid grid-cols-4 gap-2">
                     {splitPlan.map((step, index) => (
                       <div key={step.label} className="space-y-2">
@@ -276,8 +254,8 @@ export default function HeroSection() {
                             index === 0 ? "bg-[#55D67A]" : "bg-[#E7ECF2]"
                           )}
                         />
-                        <p className="text-sm text-zinc-500">{step.label}</p>
-                        <p className="text-xl font-semibold text-zinc-900">
+                        <p className="text-xs text-zinc-500 sm:text-sm">{step.label}</p>
+                        <p className="text-base font-semibold text-zinc-900 sm:text-xl">
                           {formatPrice(step.amount)} ₽
                         </p>
                       </div>
@@ -286,7 +264,7 @@ export default function HeroSection() {
                 </div>
               </button>
 
-              <div className="rounded-[24px] border border-[#E5FF00] bg-[#F9FFC8] px-5 py-4">
+              <div className="rounded-[22px] border border-[#E5FF00] bg-[#F9FFC8] px-4 py-3 sm:rounded-[24px] sm:px-5 sm:py-4">
                 <p className="text-sm font-medium text-zinc-900">
                   За авторизацию получите 500 бонусов и сможете применить их в checkout.
                 </p>
