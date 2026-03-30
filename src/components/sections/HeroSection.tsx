@@ -1,13 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Sparkles, ChevronLeft, ChevronRight, ChevronRightIcon } from "lucide-react";
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import AddToCartButton from "@/components/ui/AddToCartButton";
 import { useFlagshipProduct } from "@/hooks/useFlagshipProduct";
 import { formatPrice } from "@/lib/catalog";
+import { reachMetrikaGoal } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { useCartStore } from "@/store/cartStore";
 import useEmblaCarousel from "embla-carousel-react";
 
 const GALLERY_IMAGES = [
@@ -26,12 +29,50 @@ const NAV_TABS = [
 ];
 
 export default function HeroSection() {
+  const router = useRouter();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [activeIndex, setActiveIndex] = useState(0);
   const product = useFlagshipProduct();
+  const addItem = useCartStore((state) => state.addItem);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const splitPlan = useMemo(() => {
+    const installments = 4;
+    const base = Math.floor(product.price / installments);
+    const remainder = product.price % installments;
+    const today = new Date();
+
+    return Array.from({ length: installments }, (_, index) => {
+      const date = new Date(today);
+      date.setDate(today.getDate() + index * 14);
+
+      return {
+        label:
+          index === 0
+            ? "сегодня"
+            : new Intl.DateTimeFormat("ru-RU", {
+                day: "numeric",
+                month: "short",
+              }).format(date),
+        amount: base + (index < remainder ? 1 : 0),
+      };
+    });
+  }, [product.price]);
+
+  const handleQuickCheckout = (payment: "full_online" | "split") => {
+    if (!product.isActive || product.stock <= 0) {
+      return;
+    }
+
+    addItem(product);
+    reachMetrikaGoal("hero_quick_checkout", {
+      payment_method: payment,
+      price: product.price,
+      product: product.slug,
+    });
+    router.push(`/checkout?payment=${payment}`);
+  };
 
   // Синхронизируем активную точку с текущим слайдом
   useEffect(() => {
@@ -133,35 +174,32 @@ export default function HeroSection() {
               Идеальная чистота без усилий.
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
-                Яндекс Pay уже в checkout
-              </span>
-              <span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
-                Можно оплатить в Split
-              </span>
-              <span className="rounded-full border border-[#E5FF00] bg-[#F7FFB8] px-3 py-1 text-xs font-semibold text-zinc-900">
-                +500 бонусов за вход через Яндекс
-              </span>
-            </div>
-
             {/* Цена */}
-            <div className="flex items-baseline gap-3">
-              <span className="text-4xl font-bold text-zinc-900">
-                {formatPrice(product.price)} ₽
-              </span>
-              <span className="text-lg text-zinc-400 line-through">
-                {formatPrice(product.originalPrice)} ₽
-              </span>
-              <span className="rounded-full bg-[#E5FF00] px-2.5 py-0.5 text-xs font-semibold text-zinc-900">
-                {product.originalPrice > product.price
-                  ? `−${Math.round(
-                      ((product.originalPrice - product.price) /
-                        product.originalPrice) *
-                        100
-                    )}%`
-                  : "Цена online"}
-              </span>
+            <div className="grid gap-3 sm:grid-cols-[220px_minmax(0,1fr)]">
+              <div className="rounded-[28px] bg-[#F1EEEA] px-6 py-5">
+                <p className="text-base text-zinc-400 line-through">
+                  {formatPrice(product.originalPrice)} ₽
+                </p>
+                <p className="mt-2 text-5xl font-semibold tracking-tight text-zinc-800">
+                  {formatPrice(product.price)} ₽
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <AddToCartButton
+                  label="В корзину"
+                  redirectTo="/cart"
+                  className="flex h-16 items-center justify-center rounded-full bg-[#8FB3F3] px-6 text-2xl font-medium text-white transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleQuickCheckout("full_online")}
+                  disabled={!product.isActive || product.stock <= 0}
+                  className="flex h-16 items-center justify-center rounded-full border-2 border-[#8FB3F3] bg-white px-6 text-2xl font-medium text-[#8FB3F3] transition-all duration-150 hover:bg-[#F4F8FF] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Купить в 1 клик
+                </button>
+              </div>
             </div>
 
             {!product.isActive || product.stock <= 0 ? (
@@ -174,27 +212,85 @@ export default function HeroSection() {
               </div>
             )}
 
-            {/* Кнопки покупки */}
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <AddToCartButton
-                label="В корзину"
-                redirectTo="/cart"
-                className="flex h-14 flex-1 items-center justify-center rounded-full bg-[#E5FF00] px-6 text-base font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
-              />
-              <AddToCartButton
-                label="Купить в 1 клик"
-                redirectTo="/checkout"
-                className="flex h-14 flex-1 items-center justify-center rounded-full border border-zinc-200 bg-white px-6 text-base font-semibold text-zinc-900 transition-all duration-150 hover:border-zinc-900 hover:bg-zinc-50 active:scale-[0.98]"
-              />
-            </div>
+            <div className="grid gap-4 rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_24px_80px_-56px_rgba(24,24,27,0.18)]">
+              <button
+                type="button"
+                onClick={() => handleQuickCheckout("full_online")}
+                disabled={!product.isActive || product.stock <= 0}
+                className="flex items-center justify-between gap-4 rounded-[24px] border border-zinc-200 bg-zinc-50 px-5 py-4 text-left transition-colors duration-150 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[linear-gradient(135deg,#FF5D8F_0%,#8B49FF_100%)] text-lg font-bold text-white">
+                    +
+                  </div>
+                  <div>
+                    <p className="text-sm text-zinc-700">
+                      Яндекс Пэй — оплата с кешбэком
+                    </p>
+                    <p className="text-xl font-semibold text-zinc-900">
+                      Быстрый переход к оплате
+                    </p>
+                  </div>
+                </div>
+                <ChevronRightIcon className="shrink-0 text-zinc-400" size={22} />
+              </button>
 
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3">
-              <p className="text-sm font-medium text-zinc-800">
-                Оплата уже доступна через Яндекс Pay, а Split можно выбрать прямо в оформлении.
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                После входа через Яндекс checkout подставит данные аккаунта и позволит использовать приветственные бонусы без повторного заполнения формы.
-              </p>
+              <button
+                type="button"
+                onClick={() => handleQuickCheckout("split")}
+                disabled={!product.isActive || product.stock <= 0}
+                className="rounded-[24px] border border-zinc-200 bg-zinc-50 px-5 py-5 text-left transition-colors duration-150 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1 flex h-11 w-11 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#88F59A_0%,#3FDB66_48%,#2FC06D_100%)] text-lg font-bold text-white">
+                      ◔
+                    </div>
+                    <div>
+                      <p className="text-sm text-zinc-700">
+                        Яндекс Сплит — оплата частями
+                      </p>
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <p className="text-3xl font-semibold tracking-tight text-zinc-900">
+                          {formatPrice(splitPlan[0]?.amount ?? 0)} ₽ × 4
+                        </p>
+                        <span className="rounded-full bg-[#55D67A] px-3 py-1 text-sm font-semibold text-white">
+                          без переплат
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <ChevronRightIcon className="shrink-0 text-zinc-400" size={22} />
+                </div>
+
+                <div className="mt-5">
+                  <div className="grid grid-cols-4 gap-2">
+                    {splitPlan.map((step, index) => (
+                      <div key={step.label} className="space-y-2">
+                        <div
+                          className={cn(
+                            "h-1.5 rounded-full",
+                            index === 0 ? "bg-[#55D67A]" : "bg-[#E7ECF2]"
+                          )}
+                        />
+                        <p className="text-sm text-zinc-500">{step.label}</p>
+                        <p className="text-xl font-semibold text-zinc-900">
+                          {formatPrice(step.amount)} ₽
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </button>
+
+              <div className="rounded-[24px] border border-[#E5FF00] bg-[#F9FFC8] px-5 py-4">
+                <p className="text-sm font-medium text-zinc-900">
+                  После входа через Яндекс в checkout автоматически подтянутся ваши контакты, ПВЗ и бонусы.
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-zinc-600">
+                  За авторизацию пользователь получает 500 бонусов и может применить их прямо при оформлении.
+                </p>
+              </div>
             </div>
 
           </div>

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   Circle,
@@ -57,6 +57,7 @@ export default function CheckoutFlow({
   accountProfile = null,
 }: CheckoutFlowProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const items = useCartStore((state) => state.items);
   const subtotal = useCartStore((state) => state.subtotal());
   const isAuthenticated = Boolean(accountProfile?.isAuthenticated);
@@ -90,6 +91,14 @@ export default function CheckoutFlow({
   const [submitError, setSubmitError] = useState<string | null>(null);
   const appliedBonus = applyAvailableBonuses ? Math.min(bonusBalance, subtotal) : 0;
   const totalAfterBonus = Math.max(subtotal - appliedBonus, 0);
+
+  useEffect(() => {
+    const payment = searchParams.get("payment");
+
+    if (payment === "split" || payment === "full_online") {
+      setPaymentMethod(payment);
+    }
+  }, [searchParams]);
 
   const selectedPickupPoint = useMemo(
     () => pickupPoints.find((item) => item.id === selectedPickupPointId) ?? null,

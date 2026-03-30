@@ -8,7 +8,7 @@ import { useCartStore } from "@/store/cartStore";
 
 type AddToCartButtonProps = {
   label: string;
-  redirectTo?: "/cart" | "/checkout";
+  redirectTo?: string;
   className?: string;
 };
 
