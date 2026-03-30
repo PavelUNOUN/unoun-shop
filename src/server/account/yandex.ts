@@ -1,5 +1,6 @@
 import { getSiteUrl } from "@/lib/site";
 import { getPrismaClient } from "@/lib/prisma";
+import { syncAccountCommerceProfile } from "@/server/account/profile";
 
 const YANDEX_AUTHORIZE_URL = "https://oauth.yandex.ru/authorize";
 const YANDEX_TOKEN_URL = "https://oauth.yandex.ru/token";
@@ -122,7 +123,7 @@ export async function authenticateWithYandexCode(code: string) {
   });
 
   if (existingByProvider) {
-    return prisma.user.update({
+    const user = await prisma.user.update({
       where: {
         id: existingByProvider.id,
       },
@@ -137,6 +138,9 @@ export async function authenticateWithYandexCode(code: string) {
         email: true,
       },
     });
+
+    await syncAccountCommerceProfile(user.id, user.email);
+    return user;
   }
 
   if (email) {
@@ -147,7 +151,7 @@ export async function authenticateWithYandexCode(code: string) {
     });
 
     if (existingByEmail) {
-      return prisma.user.update({
+      const user = await prisma.user.update({
         where: {
           id: existingByEmail.id,
         },
@@ -162,10 +166,13 @@ export async function authenticateWithYandexCode(code: string) {
           email: true,
         },
       });
+
+      await syncAccountCommerceProfile(user.id, user.email);
+      return user;
     }
   }
 
-  return prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       provider: "YANDEX",
       providerUserId: profile.id,
@@ -178,4 +185,7 @@ export async function authenticateWithYandexCode(code: string) {
       email: true,
     },
   });
+
+  await syncAccountCommerceProfile(user.id, user.email);
+  return user;
 }

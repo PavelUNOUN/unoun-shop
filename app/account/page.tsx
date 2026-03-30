@@ -2,41 +2,31 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import AccountShell from "@/components/account/AccountShell";
 import InfoCard from "@/components/ui/page/InfoCard";
-import {
-  ACCOUNT_DASHBOARD_STATS,
-  ACCOUNT_RECENT_ORDERS,
-  LOYALTY_SUMMARY,
-} from "@/lib/account";
 import { formatPrice } from "@/lib/catalog";
-import { getAuthenticatedAccountUser } from "@/server/account/auth";
+import { requireAuthenticatedAccountUser } from "@/server/account/auth";
+import { getAccountDashboardData } from "@/server/account/profile";
 
 export const metadata: Metadata = {
   title: "Личный кабинет | UNOUN",
   description:
-    "Каркас личного кабинета UNOUN: обзор заказов, бонусов, получателей и сервисных сценариев перед подключением реальной авторизации.",
+    "Личный кабинет UNOUN: реальные заказы, бонусы, получатели и сервисные сценарии.",
 };
 
 export default async function AccountPage() {
-  const user = await getAuthenticatedAccountUser();
-  const latestOrder = ACCOUNT_RECENT_ORDERS[0];
+  const user = await requireAuthenticatedAccountUser();
+  const account = await getAccountDashboardData(user);
+  const latestOrder = account.latestOrder;
 
   return (
     <AccountShell
+      user={account.user}
       eyebrow="Личный кабинет"
-      title={
-        user?.fullName
-          ? `Здравствуйте, ${user.fullName}`
-          : "Структура кабинета уже готова под заказы, бонусы и сервис"
-      }
-      description={
-        user?.email
-          ? `Вы уже вошли через Яндекс как ${user.email}. Следующий шаг — связать сессию с реальной историей заказов, бонусами и адресами.`
-          : "На этом этапе мы собираем правильную архитектуру интерфейса: обзор, заказы, бонусы, сохраненные получатели и сервисный контур. После подключения backend сюда подставятся реальные данные пользователя."
-      }
+      title={`Здравствуйте, ${account.user.fullName || "покупатель UNOUN"}`}
+      description="Здесь собраны ваши заказы, бонусный баланс, сохранённые пункты выдачи и быстрые действия после покупки."
       currentPath="/account"
     >
       <section className="grid gap-5 md:grid-cols-3">
-        {ACCOUNT_DASHBOARD_STATS.map((item) => (
+        {account.stats.map((item) => (
           <InfoCard
             key={item.label}
             eyebrow={item.label}
@@ -47,51 +37,70 @@ export default async function AccountPage() {
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <InfoCard
-          eyebrow="Последний заказ"
-          title={latestOrder.id}
-          description="Ключевой сценарий кабинета: быстро увидеть текущий заказ, способ оплаты и точку выдачи, не открывая checkout заново."
-        >
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                Статус
-              </p>
-              <p className="mt-2 text-sm font-semibold text-zinc-900">
-                {latestOrder.status}
-              </p>
+        {latestOrder ? (
+          <InfoCard
+            eyebrow="Последний заказ"
+            title={latestOrder.orderNumber}
+            description="Самый свежий заказ уже подтягивается из базы и показывает реальный статус, оплату и пункт выдачи."
+          >
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                  Статус заказа
+                </p>
+                <p className="mt-2 text-sm font-semibold text-zinc-900">
+                  {latestOrder.statusLabel}
+                </p>
+              </div>
+              <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                  Доставка
+                </p>
+                <p className="mt-2 text-sm font-semibold text-zinc-900">
+                  {latestOrder.deliveryLabel}
+                </p>
+              </div>
+              <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                  Оплата
+                </p>
+                <p className="mt-2 text-sm font-semibold text-zinc-900">
+                  {latestOrder.paymentLabel} · {latestOrder.paymentStatusLabel}
+                </p>
+              </div>
+              <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
+                  Сумма
+                </p>
+                <p className="mt-2 text-sm font-semibold text-zinc-900">
+                  {formatPrice(latestOrder.total)} ₽
+                </p>
+              </div>
             </div>
-            <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                Доставка
-              </p>
-              <p className="mt-2 text-sm font-semibold text-zinc-900">
-                {latestOrder.delivery}
-              </p>
-            </div>
-            <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                Оплата
-              </p>
-              <p className="mt-2 text-sm font-semibold text-zinc-900">
-                {latestOrder.paymentLabel}
-              </p>
-            </div>
-            <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                Сумма
-              </p>
-              <p className="mt-2 text-sm font-semibold text-zinc-900">
-                {formatPrice(latestOrder.total)} ₽
-              </p>
-            </div>
-          </div>
-        </InfoCard>
+          </InfoCard>
+        ) : (
+          <InfoCard
+            eyebrow="Первые заказы"
+            title="Заказов пока нет"
+            description="Как только вы оформите первую покупку, здесь появится актуальный статус, сумма, способ оплаты и выбранный пункт выдачи."
+          >
+            <Link
+              href="/checkout"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[#E5FF00] px-5 text-sm font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
+            >
+              Перейти к оформлению
+            </Link>
+          </InfoCard>
+        )}
 
         <InfoCard
           eyebrow="Бонусы"
-          title={`${LOYALTY_SUMMARY.balance} ₽ доступны после входа`}
-          description="Такой блок поможет сразу объяснить ценность авторизации и не терять пользователя между checkout, лояльностью и повторным заказом."
+          title={`${formatPrice(account.loyalty.balance)} ₽ на счёте`}
+          description={
+            account.loyalty.welcomeIssued
+              ? "Приветственный бонус уже начислен. Следующий этап — применение бонусов в реальном checkout."
+              : "Бонусный счёт уже создан и готов к начислениям."
+          }
         >
           <Link
             href="/account/loyalty"
@@ -104,8 +113,8 @@ export default async function AccountPage() {
 
       <InfoCard
         eyebrow="Быстрые действия"
-        title="Кабинет уже связан с commerce-flow сайта"
-        description="Я сохранил логику так, чтобы маршруты аккаунта работали в связке с покупкой, документами и Academy, а не существовали отдельно от реального пользовательского пути."
+        title="Кабинет уже связан с покупкой, оплатой и поддержкой"
+        description="Отсюда можно перейти к новому заказу, посмотреть полную историю покупок или открыть бонусный раздел."
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link
@@ -115,10 +124,10 @@ export default async function AccountPage() {
             Перейти в корзину
           </Link>
           <Link
-            href="/account/auth"
+            href="/account/orders"
             className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 px-5 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-50"
           >
-            Открыть вход через Яндекс
+            Открыть историю заказов
           </Link>
           <Link
             href="/academy"

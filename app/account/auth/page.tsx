@@ -1,21 +1,29 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import PageHero from "@/components/ui/page/PageHero";
 import AuthMethodsPanel from "@/components/account/AuthMethodsPanel";
+import { getAuthenticatedAccountUser } from "@/server/account/auth";
 
 export const metadata: Metadata = {
   title: "Авторизация | UNOUN",
   description:
-    "Страница авторизации UNOUN с главным сценарием входа через Яндекс и подготовкой альтернатив под телефон и VK ID.",
+    "Страница авторизации UNOUN с входом через Яндекс и доступом к личному кабинету, заказам и бонусам.",
 };
 
-export default function AccountAuthPage() {
+export default async function AccountAuthPage() {
+  const user = await getAuthenticatedAccountUser();
+
+  if (user) {
+    redirect("/account");
+  }
+
   return (
     <>
       <PageHero
         eyebrow="Авторизация"
-        badge="UI-этап перед подключением OAuth"
-        title="Точка входа в будущий личный кабинет UNOUN"
-        description="По вашему сценарию основным способом входа станет Яндекс. На этом этапе мы подготавливаем UX-страницу, визуальную иерархию методов входа и связку с программой лояльности, не подключая пока реальную backend-авторизацию."
+        badge="Безопасный вход"
+        title="Войдите в личный кабинет UNOUN"
+        description="Вход через Яндекс уже работает и открывает доступ к вашим заказам, бонусному счёту, сохранённым получателям и сервисной информации."
         className="bg-zinc-50"
       />
 

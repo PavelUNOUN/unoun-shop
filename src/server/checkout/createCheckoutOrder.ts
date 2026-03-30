@@ -14,6 +14,11 @@ import {
   createYandexPayPaymentLink,
   isYandexPayEnabled,
 } from "@/server/payments/yandexPay";
+import { syncAccountCommerceProfile } from "@/server/account/profile";
+
+type CreateCheckoutOrderOptions = {
+  authenticatedUserId?: string | null;
+};
 
 function createOrderNumber(): string {
   const date = new Date();
@@ -36,7 +41,8 @@ function mapPaymentMethod(
 }
 
 export async function createCheckoutOrder(
-  input: CreateCheckoutOrderInput
+  input: CreateCheckoutOrderInput,
+  options: CreateCheckoutOrderOptions = {}
 ): Promise<CreateCheckoutOrderResponse> {
   const subtotal = input.items.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -64,8 +70,9 @@ export async function createCheckoutOrder(
       status: OrderStatus.NEW,
       paymentMethod: mapPaymentMethod(input.paymentMethod),
       paymentStatus: PaymentStatus.PENDING,
-      deliveryMethod: DeliveryMethod.CDEK_PICKUP,
-      checkoutMode: "guest",
+      deliveryMethod: DeliveryMethod.YANDEX_PICKUP,
+      userId: options.authenticatedUserId ?? null,
+      checkoutMode: options.authenticatedUserId ? "account" : "guest",
       customerName: input.contact.name,
       customerPhone: input.contact.phone.replace(/\s+/g, " ").trim(),
       customerEmail: input.contact.email.trim().toLowerCase(),
@@ -74,7 +81,8 @@ export async function createCheckoutOrder(
       pickupPointCode: input.pickupPoint.id,
       pickupPointTitle: input.pickupPoint.title,
       pickupPointAddress: input.pickupPoint.address,
-      pickupPointEta: input.pickupPoint.eta,
+      pickupPointEta: input.pickupPoint.eta ?? null,
+      deliveryStatus: "PICKUP_POINT_SELECTED",
       subtotal,
       grandTotal,
       items: {
@@ -110,6 +118,13 @@ export async function createCheckoutOrder(
   }).catch((error) => {
     console.error("Telegram order notification error", error);
   });
+
+  if (options.authenticatedUserId) {
+    await syncAccountCommerceProfile(
+      options.authenticatedUserId,
+      input.contact.email.trim().toLowerCase()
+    );
+  }
 
   let paymentUrl: string | null = null;
   let paymentProvider: "yandex_pay" | null = null;

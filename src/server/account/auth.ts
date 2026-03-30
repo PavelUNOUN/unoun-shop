@@ -1,5 +1,6 @@
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { getPrismaClient } from "@/lib/prisma";
 
 const ACCOUNT_SESSION_COOKIE = "unoun_account_session";
@@ -168,4 +169,14 @@ export async function getAuthenticatedAccountUser() {
       provider: true,
     },
   });
+}
+
+export async function requireAuthenticatedAccountUser() {
+  const user = await getAuthenticatedAccountUser();
+
+  if (!user) {
+    redirect("/account/auth");
+  }
+
+  return user;
 }

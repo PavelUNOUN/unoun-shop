@@ -3,19 +3,25 @@ import Link from "next/link";
 import AccountShell from "@/components/account/AccountShell";
 import InfoCard from "@/components/ui/page/InfoCard";
 import { SERVICE_TOUCHPOINTS } from "@/lib/account";
+import { requireAuthenticatedAccountUser } from "@/server/account/auth";
+import { getAccountDashboardData } from "@/server/account/profile";
 
 export const metadata: Metadata = {
   title: "Сервис и поддержка | UNOUN",
   description:
-    "Сервисный раздел личного кабинета UNOUN: инструкция, гарантия 24 месяца и будущие обращения в поддержку.",
+    "Сервисный раздел личного кабинета UNOUN: инструкция, гарантия 24 месяца и поддержка.",
 };
 
-export default function AccountServicePage() {
+export default async function AccountServicePage() {
+  const user = await requireAuthenticatedAccountUser();
+  const account = await getAccountDashboardData(user);
+
   return (
     <AccountShell
+      user={account.user}
       eyebrow="Сервис"
-      title="Сервисный контур кабинета уже связан с гарантией и инструкцией"
-      description="Этот раздел нужен, чтобы после покупки пользователь быстро находил нужные документы, условия гарантии и будущие сервисные действия в одном месте, без поиска по всему сайту."
+      title="Сервис и поддержка"
+      description="Здесь собраны инструкция, гарантийные условия и основные точки поддержки после покупки."
       currentPath="/account/service"
     >
       <section className="grid gap-5 lg:grid-cols-3">
@@ -38,8 +44,12 @@ export default function AccountServicePage() {
 
       <InfoCard
         eyebrow="Почему это важно"
-        title="Хороший кабинет уменьшает нагрузку на поддержку"
-        description="Если пользователь быстро видит заказ, инструкцию, гарантийные правила и свой бонусный статус, доверие к бренду выше, а количество типовых вопросов заметно снижается."
+        title="Ваш кабинет уже связан с реальными покупками"
+        description={
+          account.orders.length > 0
+            ? "У вас уже есть оформленные заказы, поэтому кабинет показывает реальные данные и помогает быстро перейти от покупки к сервису."
+            : "Даже до первой покупки здесь уже собраны инструкция, гарантия и основные сервисные сценарии."
+        }
       />
     </AccountShell>
   );

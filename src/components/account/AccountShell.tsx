@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, LogOut, UserRound } from "lucide-react";
 import { ACCOUNT_NAV_ITEMS } from "@/lib/account";
 import { cn } from "@/lib/utils";
 
 type AccountShellProps = {
+  user?: {
+    fullName: string | null;
+    email: string | null;
+  };
   eyebrow: string;
   title: string;
   description: string;
@@ -13,6 +17,7 @@ type AccountShellProps = {
 };
 
 export default function AccountShell({
+  user,
   eyebrow,
   title,
   description,
@@ -26,7 +31,7 @@ export default function AccountShell({
         <div className="max-w-3xl">
           <div className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3.5 py-1.5">
             <span className="text-xs font-semibold text-zinc-600">
-              UI-каркас кабинета до подключения backend
+              Личный кабинет UNOUN
             </span>
           </div>
 
@@ -81,15 +86,38 @@ export default function AccountShell({
               </nav>
             </div>
 
-            <div className="rounded-[28px] border border-zinc-200 bg-zinc-950 p-5 text-white shadow-[0_24px_80px_-56px_rgba(24,24,27,0.45)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/45">
-                Следующий backend-этап
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-white/70">
-                Сюда без переделки интерфейса подключатся OAuth через Яндекс, история
-                заказов из базы, статусы СДЭК и реальный бонусный баланс.
-              </p>
-            </div>
+            {user ? (
+              <div className="rounded-[28px] border border-zinc-200 bg-zinc-950 p-5 text-white shadow-[0_24px_80px_-56px_rgba(24,24,27,0.45)]">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white">
+                    <UserRound size={20} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/45">
+                      Аккаунт
+                    </p>
+                    <p className="mt-2 text-base font-semibold text-white">
+                      {user.fullName || "Пользователь UNOUN"}
+                    </p>
+                    {user.email ? (
+                      <p className="mt-1 break-all text-sm text-white/70">
+                        {user.email}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+
+                <form action="/api/account/logout" method="POST" className="mt-5">
+                  <button
+                    type="submit"
+                    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-white/10"
+                  >
+                    <LogOut size={16} />
+                    Выйти
+                  </button>
+                </form>
+              </div>
+            ) : null}
 
             {aside}
           </aside>

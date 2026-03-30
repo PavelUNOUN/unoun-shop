@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getAuthenticatedAccountUser } from "@/server/account/auth";
 import { createCheckoutOrder } from "@/server/checkout/createCheckoutOrder";
 import { createCheckoutOrderSchema } from "@/server/checkout/schema";
 
@@ -17,7 +18,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await createCheckoutOrder(parsed.data);
+    const user = await getAuthenticatedAccountUser();
+    const result = await createCheckoutOrder(parsed.data, {
+      authenticatedUserId: user?.id ?? null,
+    });
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
