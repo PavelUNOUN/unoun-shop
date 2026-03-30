@@ -92,7 +92,6 @@ export async function createCheckoutOrder(
       pickupPointTitle: input.pickupPoint.title,
       pickupPointAddress: input.pickupPoint.address,
       pickupPointEta: input.pickupPoint.eta ?? null,
-      deliveryStatus: "PICKUP_POINT_SELECTED",
       subtotal,
       grandTotal,
       items: {
