@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Sparkles, ChevronLeft, ChevronRight, ChevronRightIcon } from "lucide-react";
@@ -14,8 +14,11 @@ import { useCartStore } from "@/store/cartStore";
 import useEmblaCarousel from "embla-carousel-react";
 
 const GALLERY_IMAGES = [
-  "/images/card-1.png",
   "/images/card-2.png",
+  "/images/use-kitchen.png",
+  "/images/use-bathroom.png",
+  "/images/use-floor.png",
+  "/images/use-textile.png",
   "/images/card-3.jpg",
   "/images/card-4.jpg",
 ];
@@ -23,8 +26,8 @@ const GALLERY_IMAGES = [
 const NAV_TABS = [
   { label: "Описание", href: "#description" },
   { label: "Способы применения", href: "#use-cases" },
-  { label: "Характеристики", href: "#features" },
   { label: "Аксессуары", href: "#nozzles" },
+  { label: "Характеристики", href: "#features" },
   { label: "Инструкция", href: "#instruction" },
 ];
 
@@ -32,8 +35,17 @@ export default function HeroSection() {
   const router = useRouter();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<(typeof NAV_TABS)[number]["href"]>(
+    NAV_TABS[0].href
+  );
+  const [isNavPinned, setIsNavPinned] = useState(false);
+  const [navHeight, setNavHeight] = useState(0);
   const product = useFlagshipProduct();
   const addItem = useCartStore((state) => state.addItem);
+  const navRef = useRef<HTMLDivElement | null>(null);
+  const navAnchorRef = useRef<HTMLDivElement | null>(null);
+
+  const headerOffset = 80;
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -82,30 +94,98 @@ export default function HeroSection() {
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
 
+  useEffect(() => {
+    const updateNavMetrics = () => {
+      setNavHeight(navRef.current?.offsetHeight ?? 0);
+    };
+
+    updateNavMetrics();
+    window.addEventListener("resize", updateNavMetrics);
+
+    return () => window.removeEventListener("resize", updateNavMetrics);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const anchorTop = navAnchorRef.current?.getBoundingClientRect().top ?? 0;
+      setIsNavPinned(anchorTop <= headerOffset);
+
+      const checkpoint = window.scrollY + headerOffset + (navHeight || 56) + 12;
+      let currentTab = NAV_TABS[0].href;
+
+      for (let index = 0; index < NAV_TABS.length; index += 1) {
+        const currentSection = document.querySelector(NAV_TABS[index].href);
+        if (!currentSection) continue;
+
+        const currentTop =
+          currentSection.getBoundingClientRect().top + window.scrollY;
+        const nextSection =
+          index < NAV_TABS.length - 1
+            ? document.querySelector(NAV_TABS[index + 1].href)
+            : null;
+        const nextTop = nextSection
+          ? nextSection.getBoundingClientRect().top + window.scrollY
+          : Number.POSITIVE_INFINITY;
+
+        if (checkpoint >= currentTop && checkpoint < nextTop) {
+          currentTab = NAV_TABS[index].href;
+          break;
+        }
+      }
+
+      setActiveTab(currentTab);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [navHeight]);
+
+  const handleTabClick = (href: string) => {
+    const section = document.querySelector(href);
+    if (!section) return;
+
+    const top =
+      section.getBoundingClientRect().top +
+      window.scrollY -
+      headerOffset -
+      (navRef.current?.offsetHeight ?? 56) -
+      16;
+
+    window.scrollTo({
+      top,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-0 md:pt-16">
+      <div className="mx-auto max-w-7xl px-4 pt-8 pb-0 sm:px-6 md:pt-12 lg:px-8 lg:pt-16">
 
-        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 md:gap-10 lg:gap-14 xl:grid-cols-[1.08fr_0.92fr]">
 
           {/* ── ЛЕВАЯ КОЛОНКА: ГАЛЕРЕЯ ── */}
-          <div className="relative w-full">
+          <div className="relative -mx-4 w-[calc(100%+2rem)] sm:mx-0 sm:w-full">
 
             {/* Embla viewport — свайп работает здесь */}
-            <div className="overflow-hidden" ref={emblaRef}>
+            <div
+              className="overflow-hidden rounded-none sm:rounded-[32px]"
+              ref={emblaRef}
+            >
               <div className="flex">
                 {GALLERY_IMAGES.map((src, i) => (
                   <div
                     key={i}
-                    className="relative aspect-[4/3] w-full shrink-0 md:aspect-square"
+                    className="relative h-[62svh] min-h-[480px] w-full shrink-0 sm:h-[68svh] md:h-[44rem] md:min-h-0 lg:h-[48rem] xl:h-[52rem]"
                   >
                     <Image
                       src={src}
                       alt={`Паровая швабра UNOUN — фото ${i + 1}`}
                       fill
                       priority={i === 0}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-contain select-none"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 52vw, 58vw"
+                      className="object-cover object-center select-none"
                     />
                   </div>
                 ))}
@@ -116,7 +196,7 @@ export default function HeroSection() {
             <button
               onClick={scrollPrev}
               aria-label="Предыдущее фото"
-              className="absolute left-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md"
+              className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md sm:left-4"
             >
               <ChevronLeft size={18} strokeWidth={1.75} className="text-zinc-700" />
             </button>
@@ -125,13 +205,13 @@ export default function HeroSection() {
             <button
               onClick={scrollNext}
               aria-label="Следующее фото"
-              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md"
+              className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md sm:right-4"
             >
               <ChevronRight size={18} strokeWidth={1.75} className="text-zinc-700" />
             </button>
 
             {/* Точки-индикаторы */}
-            <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+            <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1.5 sm:bottom-5">
               {GALLERY_IMAGES.map((_, i) => (
                 <button
                   key={i}
@@ -149,7 +229,7 @@ export default function HeroSection() {
           </div>
 
           {/* ── ПРАВАЯ КОЛОНКА: КОНТЕНТ ── */}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 px-0 md:pt-4">
 
             {/* Shiny-бейдж */}
             <div className="flex items-center">
@@ -275,16 +355,41 @@ export default function HeroSection() {
         </div>
 
         {/* ── НАВИГАЦИОННЫЕ ТАБЫ ── */}
-        <div className="mt-10 flex justify-center gap-1 overflow-x-auto border-b border-zinc-100">
-          {NAV_TABS.map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              className="shrink-0 border-b-2 border-transparent px-4 pb-3 pt-1 text-sm font-medium text-zinc-400 transition-all duration-200 hover:border-zinc-300 hover:text-zinc-700"
-            >
-              {label}
-            </a>
-          ))}
+        <div ref={navAnchorRef} className="mt-10">
+          <div style={{ height: isNavPinned ? navHeight : 0 }} />
+          <div
+            ref={navRef}
+            className={cn(
+              "z-30 border-b border-zinc-100 bg-white/95 backdrop-blur-md transition-all duration-200",
+              isNavPinned
+                ? "fixed left-0 right-0 top-16 shadow-[0_14px_40px_-30px_rgba(24,24,27,0.28)] lg:top-20"
+                : "relative"
+            )}
+          >
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-center gap-1 overflow-x-auto">
+                {NAV_TABS.map(({ label, href }) => {
+                  const isActive = activeTab === href;
+
+                  return (
+                    <button
+                      key={label}
+                      type="button"
+                      onClick={() => handleTabClick(href)}
+                      className={cn(
+                        "shrink-0 rounded-t-[18px] px-4 pb-3 pt-3 text-sm font-medium transition-all duration-200",
+                        isActive
+                          ? "bg-zinc-100 text-zinc-900"
+                          : "text-zinc-400 hover:bg-zinc-50 hover:text-zinc-700"
+                      )}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>

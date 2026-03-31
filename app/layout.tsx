@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Dancing_Script } from "next/font/google";
+import { Caveat, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -14,11 +14,11 @@ const manrope = Manrope({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-// Рукописный шрифт для анимации «выписывания» на SplashScreen
-const dancingScript = Dancing_Script({
-  variable: "--font-dancing",
-  subsets: ["latin"],
-  weight: ["400", "700"],
+// Рукописный шрифт для мягких акцентов в hero и splash
+const caveat = Caveat({
+  variable: "--font-script",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -51,7 +51,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={`${manrope.variable} ${dancingScript.variable} font-body antialiased`}
+        className={`${manrope.variable} ${caveat.variable} font-body antialiased`}
       >
         <YandexMetrika />
         <Header />

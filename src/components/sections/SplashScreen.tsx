@@ -15,6 +15,9 @@ const SLIDES = [
 
 const SUBTITLE = "Уборка, которая занимает минуты, а не часы.";
 const TITLE = "Чистота без компромиссов.";
+const AMBIENT_TITLE = "Чистота в доме.";
+const HANDWRITTEN_NOTE = "без тяжёлой уборки";
+const SCROLL_HINT = "Листайте ниже — дальше кухня, ванная, пол и текстиль.";
 
 // Варианты для контейнера — управляет stagger-задержкой дочерних слов
 const containerVariants = {
@@ -88,7 +91,7 @@ export default function SplashScreen() {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-[82svh] min-h-[640px] w-full overflow-hidden md:h-[84vh] md:min-h-[720px] lg:h-[86vh]">
       {/* ── ФОНОВЫЕ СЛАЙДЫ ── */}
       <AnimatePresence initial={false}>
         <motion.div
@@ -111,9 +114,10 @@ export default function SplashScreen() {
       </AnimatePresence>
 
       {/* ── ГРАДИЕНТНОЕ ЗАТЕМНЕНИЕ ── */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(16,12,10,0.28)_0%,rgba(16,12,10,0.12)_28%,rgba(16,12,10,0.16)_56%,rgba(16,12,10,0.64)_100%)]" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-[linear-gradient(90deg,rgba(10,8,7,0.34)_0%,rgba(10,8,7,0.12)_28%,rgba(10,8,7,0)_54%)]" />
 
-      {/* ── ТЕКСТОВЫЙ БЛОК — появляется заново при каждой смене слайда ── */}
+      {/* ── ЛЕВЫЙ ТЕКСТОВЫЙ БЛОК ── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -121,7 +125,7 @@ export default function SplashScreen() {
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="absolute bottom-20 left-6 right-6 z-10 md:left-14 md:max-w-3xl"
+          className="absolute bottom-18 left-6 right-6 z-10 md:bottom-22 md:left-14 md:max-w-3xl"
         >
           <AnimatedText
             text={SUBTITLE}
@@ -131,6 +135,49 @@ export default function SplashScreen() {
             text={TITLE}
             className="text-white text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ── ПРАВЫЙ АКЦЕНТНЫЙ БЛОК ── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`accent-${current}`}
+          initial={{ opacity: 0, x: 28 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 18 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute right-10 top-24 z-10 hidden max-w-[34rem] text-right lg:block xl:right-14 xl:top-26"
+        >
+          <p className="text-[4rem] leading-[0.92] font-light tracking-[-0.05em] text-white/22 xl:text-[5.15rem]">
+            {AMBIENT_TITLE}
+          </p>
+
+          <motion.div
+            initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
+            animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }}
+            exit={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
+            transition={{ duration: 1.15, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-4 overflow-visible pr-1 pb-3 pt-3"
+          >
+            <p
+              className="text-[3.1rem] leading-[1.18] font-medium tracking-[0.01em] text-white/74 xl:text-[3.95rem]"
+              style={{ fontFamily: "var(--font-script)" }}
+            >
+              {HANDWRITTEN_NOTE}
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.75, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="ml-auto mt-6 max-w-sm"
+          >
+            <p className="text-sm leading-relaxed text-white/74">
+              {SCROLL_HINT}
+            </p>
+          </motion.div>
         </motion.div>
       </AnimatePresence>
 

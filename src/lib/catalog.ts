@@ -21,7 +21,7 @@ export const FLAGSHIP_PRODUCT: StorefrontProduct = {
   id: "unoun-steam-mop-12-in-1",
   slug: "unoun-steam-mop-12-in-1",
   title: "Паровая швабра UNOUN 12 в 1",
-  shortTitle: "UNOUN 12 в 1",
+  shortTitle: "Паровая швабра UNOUN",
   price: 7990,
   originalPrice: 12990,
   image: "/images/1.jpg",
