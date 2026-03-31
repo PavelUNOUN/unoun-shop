@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyBottomCTA from "@/components/StickyBottomCTA";
 import FloatingConsultant from "@/components/FloatingConsultant";
-import YandexMetrika from "@/components/analytics/YandexMetrika";
+import CookieConsentManager from "@/components/legal/CookieConsentManager";
 import { getMetadataBase, SITE_NAME } from "@/lib/site";
 
 const manrope = Manrope({
@@ -53,7 +53,7 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${dancingScript.variable} font-body antialiased`}
       >
-        <YandexMetrika />
+        <CookieConsentManager />
         <Header />
         <main>{children}</main>
         <Footer />

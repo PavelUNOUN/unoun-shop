@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, FileText, ShieldCheck, Undo2, Wrench } from "lucide-react";
 import PageHero from "@/components/ui/page/PageHero";
 import InfoCard from "@/components/ui/page/InfoCard";
+import { LEGAL_CONTACT_CHANNELS, SELLER_DETAILS } from "@/lib/legal";
 
 export const metadata: Metadata = {
   title: "Гарантия, возврат и сервис | UNOUN",
@@ -189,24 +190,73 @@ export default function ServicePage() {
 
       <section className="bg-white py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[32px] border border-zinc-200 bg-zinc-950 p-6 text-white sm:p-8">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              Что мы еще добавим на следующем этапе
-            </h2>
-            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-white/65 sm:text-base">
-              После подключения backend и кабинета сюда можно добавить форму
-              сервисного обращения, статусы заявок, историю гарантийных случаев и
-              отдельные контакты клиентского сервиса. Сейчас страница уже закрывает
-              базовые доверительные и юридические вопросы по покупке техники.
-            </p>
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.95fr]">
+            <div className="rounded-[32px] border border-zinc-200 bg-zinc-950 p-6 text-white sm:p-8">
+              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                Контакты и адрес для сервисных обращений
+              </h2>
+              <div className="mt-6 space-y-4">
+                {LEGAL_CONTACT_CHANNELS.map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-[24px] border border-white/10 bg-white/5 p-5"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/40">
+                      {item.label}
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-white/70">
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
+                <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/40">
+                    Рекомендуемый состав обращения
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-white/70">
+                    Укажите номер заказа, ФИО, телефон, email, описание вопроса и,
+                    если речь идет о недостатке товара, приложите фото или видео.
+                  </p>
+                </div>
+              </div>
+            </div>
 
-            <Link
-              href="/account/auth"
-              className="mt-8 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-100"
-            >
-              Перейти ко входу
-              <ArrowRight size={16} />
-            </Link>
+            <div className="rounded-[32px] border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400">
+                Возврат товара
+              </p>
+              <h2 className="mt-4 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+                Куда направлять товар и документы
+              </h2>
+              <div className="mt-6 space-y-4">
+                <div className="rounded-[24px] border border-zinc-200 bg-white p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">
+                    Адрес для возврата
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-700">
+                    {SELLER_DETAILS.returnAddress}
+                  </p>
+                </div>
+                <div className="rounded-[24px] border border-zinc-200 bg-white p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">
+                    Важно
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-700">
+                    Перед отправкой возврата рекомендуется согласовать комплект
+                    документов, адресата и способ отправки с продавцом, чтобы избежать
+                    задержек в приемке и проверке товара.
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                href="/account/auth"
+                className="mt-8 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-zinc-950 px-6 text-sm font-semibold text-white transition-colors duration-150 hover:bg-black"
+              >
+                Перейти ко входу
+                <ArrowRight size={16} />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
