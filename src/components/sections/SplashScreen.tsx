@@ -5,12 +5,19 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const SLIDES = [
+const DESKTOP_SLIDES = [
   "/images/main-0.png",
   "/images/main-1.png",
   "/images/main-2.png",
   "/images/main-3.png",
   "/images/main-4.png",
+];
+
+const MOBILE_SLIDES = [
+  "/images/r1.png",
+  "/images/r2.png",
+  "/images/r3.png",
+  "/images/r4.png",
 ];
 
 const SUBTITLE = "Уборка, которая занимает минуты, а не часы.";
@@ -25,7 +32,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.07,
+      staggerChildren: 0.1,
       delayChildren: 0.15,
     },
   },
@@ -41,7 +48,7 @@ const wordVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.77, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -67,13 +74,30 @@ function AnimatedText({
 export default function SplashScreen() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const slides = isMobile ? MOBILE_SLIDES : DESKTOP_SLIDES;
+  const activeIndex = current % slides.length;
 
   const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % SLIDES.length);
-  }, []);
+    setCurrent((prev) => ((prev % slides.length) + 1) % slides.length);
+  }, [slides.length]);
 
   const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+    setCurrent((prev) => ((prev % slides.length) - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const syncViewport = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    syncViewport();
+    mediaQuery.addEventListener("change", syncViewport);
+
+    return () => mediaQuery.removeEventListener("change", syncViewport);
   }, []);
 
   // Авто-смена каждые 5 секунд, пауза при ручном переключении
@@ -91,11 +115,11 @@ export default function SplashScreen() {
   };
 
   return (
-    <section className="relative h-[82svh] min-h-[640px] w-full overflow-hidden md:h-[84vh] md:min-h-[720px] lg:h-[86vh]">
+    <section className="relative h-[80svh] min-h-[620px] w-full overflow-hidden rounded-b-[28px] md:h-[83vh] md:min-h-[700px] md:rounded-b-none lg:h-[86vh]">
       {/* ── ФОНОВЫЕ СЛАЙДЫ ── */}
       <AnimatePresence initial={false}>
         <motion.div
-          key={current}
+          key={`${isMobile ? "mobile" : "desktop"}-${activeIndex}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -103,10 +127,10 @@ export default function SplashScreen() {
           className="absolute inset-0"
         >
           <Image
-            src={SLIDES[current]}
+            src={slides[activeIndex]}
             alt="UNOUN — паровая швабра"
             fill
-            priority={current === 0}
+            priority={activeIndex === 0}
             sizes="100vw"
             className="object-cover"
           />
@@ -120,7 +144,7 @@ export default function SplashScreen() {
       {/* ── ЛЕВЫЙ ТЕКСТОВЫЙ БЛОК ── */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={current}
+          key={activeIndex}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -131,17 +155,27 @@ export default function SplashScreen() {
             text={SUBTITLE}
             className="text-white/65 text-sm font-medium tracking-widest uppercase mb-4 md:text-base"
           />
-          <AnimatedText
-            text={TITLE}
-            className="text-white text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
-          />
+          <motion.div
+            initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
+            animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }}
+            exit={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
+            transition={{ duration: 1.61, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-visible pr-1 pb-3 pt-3"
+          >
+            <p
+              className="text-white text-[3rem] font-medium leading-[1.06] tracking-[0.01em] sm:text-[4rem] md:text-[5.1rem] lg:text-[6rem]"
+              style={{ fontFamily: "var(--font-script)" }}
+            >
+              {TITLE}
+            </p>
+          </motion.div>
         </motion.div>
       </AnimatePresence>
 
       {/* ── ПРАВЫЙ АКЦЕНТНЫЙ БЛОК ── */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={`accent-${current}`}
+          key={`accent-${activeIndex}`}
           initial={{ opacity: 0, x: 28 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 18 }}
@@ -199,13 +233,13 @@ export default function SplashScreen() {
 
       {/* ── ТОЧКИ-ИНДИКАТОРЫ ── */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        {SLIDES.map((_, i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => handleManual(() => setCurrent(i))}
             aria-label={`Слайд ${i + 1}`}
             className={`rounded-full transition-all duration-400 ${
-              i === current
+              i === activeIndex
                 ? "w-7 h-[6px] bg-white"
                 : "w-[6px] h-[6px] bg-white/40 hover:bg-white/65"
             }`}

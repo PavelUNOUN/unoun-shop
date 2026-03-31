@@ -67,6 +67,13 @@ export default function DescriptionSection() {
     return () => clearInterval(intervalId);
   }, [active, goNext]);
 
+  useEffect(() => {
+    SLIDES.forEach((item) => {
+      const image = new window.Image();
+      image.src = item.image;
+    });
+  }, []);
+
   const handlePointerDown = (event: React.PointerEvent) => {
     pointerStartX.current = event.clientX;
     (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
@@ -113,27 +120,35 @@ export default function DescriptionSection() {
             onPointerUp={handlePointerUp}
           >
             <div className="relative aspect-[16/10] min-h-[300px] sm:min-h-[380px] lg:min-h-[500px]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={slide.image}
-                  initial={{ opacity: 0, scale: 1.015 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.99 }}
-                  transition={{ duration: 0.45, ease: "easeInOut" }}
-                  className="absolute inset-0"
-                >
+              {SLIDES.map((item, index) => {
+                const isActive = index === active;
+
+                return (
+                  <motion.div
+                    key={item.image}
+                    initial={false}
+                    animate={{
+                      opacity: isActive ? 1 : 0,
+                      scale: isActive ? 1 : 1.015,
+                    }}
+                    transition={{ duration: 0.45, ease: "easeInOut" }}
+                    className="absolute inset-0"
+                    style={{ pointerEvents: "none" }}
+                  >
                   <Image
-                    src={slide.image}
-                    alt={slide.title}
+                    src={item.image}
+                    alt={item.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 92vw"
                     className="object-cover object-center bg-[#ddd2c5]"
-                    priority={active === 0}
+                    priority={index < 2}
+                    loading={index < 2 ? "eager" : "lazy"}
                     draggable={false}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/32 via-black/4 to-transparent" />
-                </motion.div>
-              </AnimatePresence>
+                  </motion.div>
+                );
+              })}
 
               <div className="absolute left-5 top-5 rounded-full bg-white/92 px-4 py-2 text-sm font-semibold text-zinc-900 shadow-[0_10px_30px_-20px_rgba(24,24,27,0.35)] backdrop-blur-sm sm:left-6 sm:top-6">
                 {String(active + 1).padStart(2, "0")} / {String(COUNT).padStart(2, "0")}
@@ -154,18 +169,26 @@ export default function DescriptionSection() {
 
               <button
                 type="button"
-                onClick={goPrev}
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  goPrev();
+                }}
                 aria-label="Предыдущий слайд"
-                className="absolute left-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/18 bg-white/10 text-white/88 backdrop-blur-sm transition-all duration-200 hover:bg-white/18 lg:flex"
+                className="absolute left-4 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/18 bg-white/10 text-white/88 backdrop-blur-sm transition-all duration-200 hover:bg-white/18 lg:flex"
               >
                 <ChevronLeft size={18} strokeWidth={1.75} />
               </button>
 
               <button
                 type="button"
-                onClick={goNext}
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  goNext();
+                }}
                 aria-label="Следующий слайд"
-                className="absolute right-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/18 bg-white/10 text-white/88 backdrop-blur-sm transition-all duration-200 hover:bg-white/18 lg:flex"
+                className="absolute right-4 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/18 bg-white/10 text-white/88 backdrop-blur-sm transition-all duration-200 hover:bg-white/18 lg:flex"
               >
                 <ChevronRight size={18} strokeWidth={1.75} />
               </button>
