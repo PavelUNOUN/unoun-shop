@@ -111,13 +111,12 @@ export default function FaqSection() {
             >
               инструкции
             </a>{" "}
-            доступно руководство в PDF. Для покупки и оформления заказа всё также
-            можно сразу перейти к{" "}
+            доступно руководство в PDF. Для покупки можно сразу перейти к{" "}
             <a
               href="/checkout"
               className="font-medium text-zinc-900 transition-colors duration-200 hover:text-zinc-700"
             >
-              новому checkout
+              оформлению заказа
             </a>
             .
           </p>

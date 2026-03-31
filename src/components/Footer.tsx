@@ -5,8 +5,7 @@ const CUSTOMER_LINKS = [
   { label: "Доставка и оплата", href: "/delivery" },
   { label: "Гарантия и сервис", href: "/service" },
   { label: "Частые вопросы", href: "/faq" },
-  { label: "Программа лояльности", href: "/loyalty" },
-  { label: "UNOUN Academy", href: "/academy" },
+  { label: "Статьи", href: "/academy" },
   { label: "Личный кабинет", href: "/account" },
 ] as const;
 
@@ -105,20 +104,20 @@ export default function Footer() {
           <div>
             <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
-                Личный кабинет
+                Аккаунт
               </p>
               <h3 className="mt-3 text-xl font-semibold text-white">
-                Кабинет, бонусы и сервис уже собраны в отдельный контур
+                В аккаунте собраны заказы, бонусы и получатели
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-zinc-400">
-                Теперь в проекте есть обзор кабинета, раздел бонусов, сервисный блок
-                и структура под реальную авторизацию через Яндекс.
+                Войдите через Яндекс, чтобы быстрее оформлять новые покупки,
+                видеть историю заказов и использовать бонусы.
               </p>
               <Link
                 href="/account"
                 className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#E5FF00] px-5 text-sm font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
               >
-                Открыть кабинет
+                Открыть аккаунт
               </Link>
             </div>
           </div>

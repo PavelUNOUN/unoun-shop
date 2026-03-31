@@ -133,7 +133,7 @@ export default async function AccountPage() {
             href="/academy"
             className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 px-5 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-50"
           >
-            Перейти в UNOUN Academy
+            Перейти в статьи
           </Link>
         </div>
       </InfoCard>

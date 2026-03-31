@@ -6,7 +6,6 @@ import UseCasesSection from "@/components/sections/UseCasesSection";
 import NozzlesSection from "@/components/sections/NozzlesSection";
 import AccessoriesPreviewSection from "@/components/sections/AccessoriesPreviewSection";
 import SpecsSection from "@/components/sections/SpecsSection";
-import LoyaltyPreviewSection from "@/components/sections/LoyaltyPreviewSection";
 import LandingCtaSection from "@/components/sections/LandingCtaSection";
 import InstructionSection from "@/components/sections/InstructionSection";
 import FaqSection from "@/components/sections/FaqSection";
@@ -44,10 +43,6 @@ export default function Home() {
 
       <FadeInSection delay={0.1}>
         <SpecsSection />
-      </FadeInSection>
-
-      <FadeInSection delay={0.1}>
-        <LoyaltyPreviewSection />
       </FadeInSection>
 
       <FadeInSection delay={0.1}>

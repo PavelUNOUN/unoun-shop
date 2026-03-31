@@ -4,8 +4,8 @@ import AddToCartButton from "@/components/ui/AddToCartButton";
 
 const BENEFITS = [
   "Покупка как гость без обязательной регистрации",
-  "Авторизация дает 500 бонусов, которые можно списать уже в первом заказе",
-  "Оформление и оплата переходят в отдельный checkout без лишнего шума на главной",
+  "После входа 500 бонусов можно применить уже в первом заказе",
+  "Контакты и данные для оформления подставляются быстрее",
 ] as const;
 
 export default function LandingCtaSection() {
@@ -18,18 +18,18 @@ export default function LandingCtaSection() {
               <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3.5 py-1.5">
                 <Sparkles size={14} className="text-zinc-500" />
                 <span className="text-xs font-semibold text-zinc-600">
-                  Новый сценарий покупки
+                  Покупка без лишних шагов
                 </span>
               </div>
 
               <h2 className="mt-5 font-heading text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
-                Перейдите к оформлению так, как удобно именно вам
+                Всё для быстрой покупки уже собрано в одном месте
               </h2>
 
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-600 sm:text-base">
-                Теперь главная страница продает продукт, а не перегружает вас полями
-                формы. В корзине и checkout можно продолжить как гость или войти в
-                аккаунт, чтобы сразу использовать приветственные бонусы.
+                Добавьте товар в корзину, перейдите к оформлению заказа и оплатите
+                покупку сразу или частями. При входе в аккаунт бонусы и сохранённые
+                данные будут доступны автоматически.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -53,7 +53,7 @@ export default function LandingCtaSection() {
               <div className="flex items-center gap-2 text-white/60">
                 <ShieldCheck size={16} />
                 <span className="text-xs font-semibold uppercase tracking-[0.24em]">
-                  Что меняется
+                  Почему это удобно
                 </span>
               </div>
 
@@ -64,7 +64,7 @@ export default function LandingCtaSection() {
                     className="rounded-[24px] border border-white/10 bg-white/5 p-5"
                   >
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/35">
-                      Пункт {index + 1}
+                      Преимущество {index + 1}
                     </p>
                     <p className="mt-3 text-sm leading-relaxed text-white/70">
                       {benefit}
@@ -74,8 +74,8 @@ export default function LandingCtaSection() {
               </div>
 
               <p className="mt-6 text-sm leading-relaxed text-white/55">
-                На следующем шаге мы подключим здесь полноценную корзину, checkout с
-                оплатой сразу или частями и выбор ПВЗ СДЭК.
+                Заказ можно оформить как гость или через аккаунт, чтобы быстрее
+                использовать сохранённые данные и бонусы.
               </p>
             </div>
           </div>

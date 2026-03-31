@@ -266,7 +266,7 @@ export default function HeroSection() {
 
               <div className="rounded-[22px] border border-[#E5FF00] bg-[#F9FFC8] px-4 py-3 sm:rounded-[24px] sm:px-5 sm:py-4">
                 <p className="text-sm font-medium text-zinc-900">
-                  За авторизацию получите 500 бонусов и сможете применить их в checkout.
+                  За авторизацию получите 500 бонусов и сможете применить их к заказу.
                 </p>
               </div>
             </div>
