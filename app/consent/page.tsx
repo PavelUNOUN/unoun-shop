@@ -30,8 +30,8 @@ export default function ConsentPage() {
       <PageHero
         eyebrow="Согласие на обработку данных"
         badge={`Редакция от ${LEGAL_LAST_UPDATED}`}
-        title="Документ для явного согласия пользователя в checkout и других формах"
-        description="Эта страница предназначена для прямой ссылки из checkbox и иных форм сайта. Документ описывает, на что именно соглашается пользователь, какой объем данных может обрабатываться и как можно отозвать согласие."
+        title="Согласие на обработку персональных данных"
+        description="Эта страница используется в формах сайта и объясняет, на что именно соглашается пользователь, какие данные могут обрабатываться и как можно отозвать согласие."
         className="bg-zinc-50"
       />
 
@@ -42,7 +42,7 @@ export default function ConsentPage() {
               Формулировка согласия
             </p>
             <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
-              Текст, на который ссылается checkout
+              Текст согласия для форм сайта
             </h2>
             <div className="mt-6 rounded-[28px] border border-white/10 bg-white/5 p-5 text-sm leading-relaxed text-white/75 sm:text-base">
               Я, действуя свободно, своей волей и в своем интересе, даю согласие{" "}

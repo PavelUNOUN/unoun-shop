@@ -22,9 +22,8 @@ export default function CartSummary() {
           Корзина пока пустая
         </h2>
         <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-zinc-600 sm:text-base">
-          Мы уже перевели сайт на новую логику покупки. Добавьте товар в корзину с
-          главной страницы, а затем продолжите оформление как гость или с входом в
-          аккаунт.
+          Добавьте товар с главной страницы или из раздела аксессуаров, чтобы
+          перейти к оформлению заказа.
         </p>
 
         <Link
@@ -122,7 +121,7 @@ export default function CartSummary() {
           </div>
           <div className="flex items-center justify-between gap-4 text-sm text-white/70">
             <span>Доставка</span>
-            <span>СДЭК ПВЗ</span>
+            <span>Яндекс ПВЗ</span>
           </div>
           <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-4 text-base font-semibold text-white">
             <span>Итого</span>
@@ -138,8 +137,8 @@ export default function CartSummary() {
         </Link>
 
         <p className="mt-4 text-sm leading-relaxed text-white/55">
-          На следующем шаге можно будет продолжить как гость или войти в аккаунт,
-          чтобы использовать 500 бонусов.
+          На следующем шаге можно продолжить как гость или войти в аккаунт, чтобы
+          использовать бонусы.
         </p>
       </aside>
     </div>

@@ -45,7 +45,7 @@ export default async function AccountOrderDetailPage({
       <InfoCard
         eyebrow={order.dateLabel}
         title="Текущий статус заказа"
-        description="Карточка заказа теперь выводит реальные данные из базы и подходит для контроля покупки без повторного открытия checkout."
+        description="Здесь собрана основная информация по заказу: статус, оплата, состав и выбранный пункт выдачи."
       >
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
@@ -114,7 +114,7 @@ export default async function AccountOrderDetailPage({
       <InfoCard
         eyebrow="Быстрые действия"
         title="Что можно сделать дальше"
-        description="Если нужно, можно вернуться к полной истории покупок или сразу перейти к новому заказу с уже сохранёнными данными."
+        description="Можно вернуться к истории покупок или сразу перейти к новому заказу с уже сохранёнными данными."
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link

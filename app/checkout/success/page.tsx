@@ -23,29 +23,32 @@ export default async function CheckoutSuccessPage({
   searchParams,
 }: CheckoutSuccessPageProps) {
   const params = await searchParams;
-  const orderNumber = params.orderNumber ?? "UNOUN-DEMO";
-  const storageModeLabel =
-    params.mode === "database" ? "MySQL / Prisma" : "mock-режим до подключения БД";
+  const orderNumber = params.orderNumber ?? "UNOUN";
   const isYandexPayFlow = params.provider === "yandex_pay";
   const hasPaymentError = params.payment === "error";
   const title = hasPaymentError
-    ? "Заказ создан, но оплата не была завершена"
+    ? "Заказ сохранён, но оплата не завершена"
     : isYandexPayFlow
-      ? "Заказ создан, статус оплаты сейчас уточняется"
-      : "Заказ подтвержден и передан в следующий этап обработки";
+      ? "Заказ оформлен, ждём подтверждение оплаты"
+      : "Заказ оформлен";
   const description = hasPaymentError
-    ? "Мы сохранили заказ, но тестовая форма Яндекс Pay вернула пользователя без успешной оплаты. Заказ можно будет повторно оплатить после следующего этапа интеграции."
+      ? "Мы сохранили ваш заказ. Попробуйте снова перейти к оплате позже или свяжитесь с поддержкой, если нужна помощь."
     : isYandexPayFlow
-      ? "Заказ уже создан в системе. Пользователь вернулся с формы Яндекс Pay, а следующий шаг для нас — подключить webhook и автоматически синхронизировать статусы оплаты."
-      : "Success-экран уже получает ответ от server-side checkout. После подключения боевой базы, оплаты и СДЭК сюда придут реальные статусы заказа, платежа и доставки.";
+      ? "Заказ уже создан. Как только оплата подтвердится, информация появится в личном кабинете."
+      : "Спасибо за покупку. Детали заказа доступны на этой странице и в личном кабинете.";
+  const paymentLabel = hasPaymentError
+    ? "Не завершена"
+    : isYandexPayFlow
+      ? "Ожидаем подтверждение"
+      : "Статус обновится автоматически";
 
   return (
     <>
       <CheckoutSuccessClearCart />
 
       <PageHero
-        eyebrow="Order Success"
-        badge="Первый success-flow"
+        eyebrow="Заказ UNOUN"
+        badge="Подтверждение заказа"
         title={title}
         description={description}
         className="bg-zinc-50"
@@ -60,18 +63,18 @@ export default async function CheckoutSuccessPage({
 
             <h2 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
               {hasPaymentError
-                ? "Заказ сохранен, но оплата пока не завершена"
+                ? "Заказ сохранён, но оплата пока не завершена"
                 : isYandexPayFlow
-                  ? "Заказ сохранен, а статус оплаты уточняется"
-                  : "Мы сохранили новый путь покупки и закрыли текущий этап"}
+                  ? "Заказ принят, статус оплаты уточняется"
+                  : "Спасибо, ваш заказ принят"}
             </h2>
 
             <p className="mt-4 text-sm leading-relaxed text-zinc-600 sm:text-base">
               {hasPaymentError
-                ? "Заказ уже записан в системе, поэтому его можно обработать вручную. Следующий шаг — довести оплату и автоматические статусы до полностью боевого состояния."
+                ? "Заказ уже сохранён. Вы можете вернуться к оплате позже или связаться с поддержкой, если нужна помощь с завершением покупки."
                 : isYandexPayFlow
-                  ? "Checkout уже умеет создавать заказ и отправлять пользователя на тестовую форму Яндекс Pay. На следующем шаге свяжем success-экран и админку с реальным webhook от оплаты."
-                  : "Checkout уже отдает номер заказа с backend-слоя. После подключения боевой оплаты и доставки сюда придут реальные статусы заказа, платежа и доставки."}
+                  ? "Мы получили данные по заказу и ждём подтверждение оплаты. После этого заказ перейдёт в дальнейшую обработку."
+                  : "Мы отправим информацию по заказу в обработку и покажем дальнейшие обновления в личном кабинете."}
             </p>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -85,10 +88,10 @@ export default async function CheckoutSuccessPage({
               </div>
               <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                  Режим хранения
+                  Оплата
                 </p>
                 <p className="mt-2 text-sm font-semibold text-zinc-900">
-                  {storageModeLabel}
+                  {paymentLabel}
                 </p>
               </div>
             </div>
@@ -117,11 +120,11 @@ export default async function CheckoutSuccessPage({
                 <ShieldCheck size={20} />
               </div>
               <h3 className="mt-5 text-lg font-semibold text-zinc-900">
-                Следующий шаг
+                Что дальше
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-                Подключить реальные статусы заказа, оплату и связку success-экрана с
-                backend-ответом.
+                После подтверждения оплаты мы передадим заказ в дальнейшую
+                обработку и доставку.
               </p>
             </article>
 
@@ -130,11 +133,11 @@ export default async function CheckoutSuccessPage({
                 <Gift size={20} />
               </div>
               <h3 className="mt-5 text-lg font-semibold text-zinc-900">
-                Welcome-бонус
+                Бонусы и аккаунт
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-                После авторизации пользователь получит 500 бонусов и увидит их в
-                checkout и в личном кабинете.
+                В аккаунте доступны бонусы, история заказов и сохранённые данные
+                для следующих покупок.
               </p>
             </article>
 
@@ -146,8 +149,8 @@ export default async function CheckoutSuccessPage({
                 Личный кабинет
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-                Дальше именно кабинет станет местом для истории заказов, бонусов,
-                сервисной информации и повторных покупок.
+                В личном кабинете удобно следить за заказами, бонусами и
+                сервисной информацией после покупки.
               </p>
             </article>
           </div>

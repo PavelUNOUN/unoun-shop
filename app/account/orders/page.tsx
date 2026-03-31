@@ -37,7 +37,7 @@ export default async function AccountOrdersPage() {
           key={order.id}
           eyebrow={order.dateLabel}
           title={order.orderNumber}
-          description="Карточка заказа уже показывает реальные данные и готова к следующему этапу с детальной страницей и доставкой."
+          description="Карточка заказа помогает быстро проверить статус, состав покупки и итоговую сумму."
         >
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">

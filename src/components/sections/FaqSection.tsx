@@ -104,14 +104,15 @@ export default function FaqSection() {
 
         <div className="mx-auto mt-5 max-w-3xl rounded-[24px] border border-zinc-200 bg-zinc-50 px-5 py-4 sm:px-6">
           <p className="text-sm leading-relaxed text-zinc-600">
-            Если нужен полный сценарий использования, в блоке{" "}
+            Если нужна полная инструкция по использованию, в разделе{" "}
             <a
               href="#instruction"
               className="font-medium text-zinc-900 transition-colors duration-200 hover:text-zinc-700"
             >
               инструкции
             </a>{" "}
-            доступно руководство в PDF. Для покупки можно сразу перейти к{" "}
+            доступно руководство в PDF. Если вы уже готовы к покупке, можно сразу
+            перейти к{" "}
             <a
               href="/checkout"
               className="font-medium text-zinc-900 transition-colors duration-200 hover:text-zinc-700"

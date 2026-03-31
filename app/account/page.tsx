@@ -9,7 +9,7 @@ import { getAccountDashboardData } from "@/server/account/profile";
 export const metadata: Metadata = {
   title: "Личный кабинет | UNOUN",
   description:
-    "Личный кабинет UNOUN: реальные заказы, бонусы, получатели и сервисные сценарии.",
+    "Личный кабинет UNOUN: заказы, бонусы, получатели и сервисная информация.",
 };
 
 export default async function AccountPage() {
@@ -41,7 +41,7 @@ export default async function AccountPage() {
           <InfoCard
             eyebrow="Последний заказ"
             title={latestOrder.orderNumber}
-            description="Самый свежий заказ уже подтягивается из базы и показывает реальный статус, оплату и пункт выдачи."
+            description="Здесь можно быстро проверить статус, оплату и выбранный пункт выдачи по последнему заказу."
           >
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-[20px] border border-zinc-200 bg-zinc-50 p-4">
@@ -82,7 +82,7 @@ export default async function AccountPage() {
           <InfoCard
             eyebrow="Первые заказы"
             title="Заказов пока нет"
-            description="Вы уже вошли в аккаунт, поэтому при переходе в checkout контакты, бонусы и сохранённый ПВЗ подставятся автоматически."
+            description="Вы уже вошли в аккаунт, поэтому контакты, бонусы и сохранённый пункт выдачи будут подставлены автоматически при оформлении заказа."
           >
             <Link
               href="/checkout"
@@ -98,7 +98,7 @@ export default async function AccountPage() {
           title={`${formatPrice(account.loyalty.balance)} ₽ на счёте`}
           description={
             account.loyalty.welcomeIssued
-              ? "Приветственный бонус уже начислен и теперь может применяться прямо в checkout после входа."
+              ? "Приветственный бонус уже начислен и доступен при следующем оформлении заказа."
               : "Бонусный счёт уже создан и готов к начислениям."
           }
         >
@@ -113,8 +113,8 @@ export default async function AccountPage() {
 
       <InfoCard
         eyebrow="Быстрые действия"
-        title="Кабинет уже связан с покупкой, оплатой и поддержкой"
-        description="Отсюда можно перейти к новому заказу, посмотреть полную историю покупок или открыть бонусный раздел."
+        title="Покупки, бонусы и поддержка под рукой"
+        description="Отсюда можно перейти к корзине, посмотреть историю заказов или открыть бонусный раздел."
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link

@@ -6,13 +6,13 @@ const SECONDARY_METHODS = [
   {
     title: "Вход по номеру телефона",
     description:
-      "Подготовим как альтернативный сценарий для клиентов, которым удобнее SMS-подтверждение.",
+      "Этот способ входа появится позже для тех, кому удобнее подтверждение по SMS.",
     icon: Phone,
   },
   {
     title: "VK ID",
     description:
-      "Добавим как дополнительный способ входа после подключения основной авторизации.",
+      "Позже появится дополнительный способ входа через VK ID.",
     icon: ShieldCheck,
   },
 ] as const;
@@ -32,7 +32,7 @@ export default function AuthMethodsPanel() {
         <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-3.5 py-1.5">
           <LockKeyhole size={14} className="text-zinc-500" />
           <span className="text-xs font-semibold text-zinc-600">
-            Основной сценарий входа
+            Основной способ входа
           </span>
         </div>
 
@@ -63,8 +63,8 @@ export default function AuthMethodsPanel() {
 
         <p className="mt-4 text-xs leading-relaxed text-zinc-400">
           {isConfigured
-            ? "Кнопка ведет в реальный OAuth-flow Яндекса. После возврата аккаунт создаётся или обновляется автоматически, а покупки подтягиваются в кабинет."
-            : "Вход через Яндекс появится сразу после добавления production-настроек OAuth."}
+            ? "После входа через Яндекс аккаунт автоматически связывается с вашими заказами и бонусами."
+            : "Вход через Яндекс станет доступен после настройки авторизации."}
         </p>
 
         <div className="mt-8 rounded-[24px] border border-zinc-200 bg-zinc-50 p-5">
@@ -120,13 +120,12 @@ export default function AuthMethodsPanel() {
           </p>
 
           <h3 className="mt-4 text-2xl font-semibold tracking-tight">
-            Клуб UNOUN запустим вместе с кабинетом
+            Клуб UNOUN и личный кабинет
           </h3>
 
           <p className="mt-3 text-sm leading-relaxed text-white/65">
-            Бонусы и кабинет уже связаны между собой: после входа пользователь
-            получает доступ к истории заказов, приветственному балансу и
-            сохранённым данным для повторной покупки.
+            После входа вы получаете доступ к истории заказов, приветственному
+            бонусу и сохранённым данным для повторной покупки.
           </p>
 
           <Link

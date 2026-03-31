@@ -266,11 +266,11 @@ export default function CheckoutFlow({
     return (
       <div className="rounded-[32px] border border-zinc-200 bg-white p-8 text-center shadow-[0_24px_80px_-56px_rgba(24,24,27,0.35)]">
         <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
-          В checkout пока нечего оформлять
+          В оформлении пока нет товаров
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-zinc-600 sm:text-base">
-          Добавьте товар в корзину, и мы переведем вас в полноценный сценарий
-          оформления заказа с контактами, ПВЗ Яндекс Доставки, бонусами и выбором оплаты.
+          Добавьте товар в корзину, чтобы перейти к оформлению заказа с выбором
+          пункта выдачи, бонусов и способа оплаты.
         </p>
         <Link
           href="/cart"
@@ -290,8 +290,8 @@ export default function CheckoutFlow({
             <LockKeyhole size={14} className="text-zinc-500" />
             <span className="text-xs font-semibold text-zinc-600">
               {isAuthenticated
-                ? "Аккаунт уже подключён к оформлению"
-                : "Авторизация в приоритете, но не обязательна"}
+                ? "Данные аккаунта уже подставлены"
+                : "Можно оформить как гость или через аккаунт"}
             </span>
           </div>
 
@@ -300,12 +300,12 @@ export default function CheckoutFlow({
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
                 {isAuthenticated
                   ? "Оформление уже подстроено под ваш аккаунт"
-                  : "Продолжить как гость или войти ради бонусов"}
+                  : "Продолжить как гость или войти"}
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-zinc-600 sm:text-base">
                 {isAuthenticated
-                  ? "Контакты, email, сохранённый ПВЗ и бонусный баланс уже подтянуты в checkout. Вам не нужно заново заполнять всё с нуля."
-                  : "После входа пользователь сможет применить приветственные 500 бонусов уже в первом заказе. Гостевой сценарий мы тоже сохраняем, чтобы не терять конверсию."}
+                  ? "Контакты, email, сохранённый пункт выдачи и бонусный баланс уже подставлены. Ничего не нужно заполнять заново."
+                  : "После входа можно использовать приветственные 500 бонусов уже в первом заказе. Если удобнее, покупку можно оформить и без входа."}
               </p>
             </div>
 
@@ -389,8 +389,8 @@ export default function CheckoutFlow({
             </div>
             <div className="inline-flex h-11 items-center rounded-full border border-zinc-200 bg-zinc-50 px-4 text-sm font-semibold text-zinc-700">
               {pickupPointsSource === "live"
-                ? "Яндекс API подключен"
-                : "Локальный список ПВЗ"}
+                ? "Доступные пункты выдачи"
+                : "Пункты выдачи по вашему городу"}
             </div>
           </div>
 
@@ -454,7 +454,7 @@ export default function CheckoutFlow({
                       </div>
 
                       <span className="shrink-0 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-                        {point.eta ?? "Расчет после подключения API"}
+                        {point.eta ?? "Срок уточняется"}
                       </span>
                     </button>
                   );
@@ -509,8 +509,7 @@ export default function CheckoutFlow({
                   Оплатить полностью
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-zinc-600">
-                  Если тестовый Яндекс Pay подключен, после оформления заказа мы
-                  отправим покупателя на платежную форму.
+                  После подтверждения заказа откроется страница оплаты.
                 </p>
               </div>
               <WalletCards size={18} className="shrink-0 text-zinc-500" />
@@ -531,8 +530,8 @@ export default function CheckoutFlow({
                   Оплатить частями
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-zinc-600">
-                  Если тестовый Split активирован, отправим покупателя на форму
-                  оплаты частями в Яндекс Pay.
+                  После подтверждения заказа откроется страница оплаты частями в
+                  Яндекс Pay.
                 </p>
               </div>
               <PackageCheck size={18} className="shrink-0 text-zinc-500" />
@@ -571,8 +570,7 @@ export default function CheckoutFlow({
             Согласие и юридические документы
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-zinc-600 sm:text-base">
-            Для checkout я добавил явное подтверждение обработки персональных данных.
-            Это важный юридический минимум перед боевой интеграцией оформления заказа.
+            Подтвердите согласие с документами, чтобы завершить оформление заказа.
           </p>
 
           <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-[24px] border border-zinc-200 bg-zinc-50 p-5">

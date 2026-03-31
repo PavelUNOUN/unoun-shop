@@ -8,7 +8,7 @@ import { LEGAL_CONTACT_CHANNELS, SELLER_DETAILS } from "@/lib/legal";
 export const metadata: Metadata = {
   title: "Гарантия, возврат и сервис | UNOUN",
   description:
-    "Гарантия, возврат и сервис UNOUN: порядок обращения, условия гарантии, возврата и обмена, а также клиентская логика сопровождения покупки.",
+    "Гарантия, возврат и сервис UNOUN: порядок обращения, условия гарантии, возврата и обмена.",
 };
 
 const SERVICE_STEPS = [
@@ -42,16 +42,16 @@ export default function ServicePage() {
     <>
       <PageHero
         eyebrow="Гарантия, возврат и сервис"
-        badge="Trust-страница по логике референса Luxhomme"
-        title="Понятный сервисный сценарий до и после покупки"
-        description="Мы адаптировали эту страницу под логику premium e-commerce: клиент заранее понимает, как работает гарантия, возврат и сервисное сопровождение, не сталкиваясь с хаотичными формулировками уже после получения товара."
+        badge="Понятные условия поддержки"
+        title="Гарантия, возврат и сервис UNOUN"
+        description="Здесь собраны условия гарантии, возврата и сервисной поддержки до и после покупки."
       />
 
       <section className="bg-zinc-50 py-16 md:py-20">
         <div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 md:grid-cols-3 lg:px-8">
           <InfoCard
             title="Гарантия 24 месяца"
-            description="Срок гарантии вынесен в отдельный trust-блок, потому что для техники это одно из ключевых возражений перед покупкой."
+            description="Официальная гарантия на устройство действует 24 месяца с момента передачи покупателю."
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700">
               <ShieldCheck size={20} />
@@ -60,7 +60,7 @@ export default function ServicePage() {
 
           <InfoCard
             title="Возврат и обмен"
-            description="Условия возврата и обмена описаны отдельно, чтобы клиент сразу понимал, какие сценарии действуют при браке и при возврате качественного товара."
+            description="Здесь описаны условия возврата и обмена как для товара с недостатком, так и для товара надлежащего качества."
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700">
               <Undo2 size={20} />
@@ -68,8 +68,8 @@ export default function ServicePage() {
           </InfoCard>
 
           <InfoCard
-            title="Сервисная логика"
-            description="Пошаговый порядок обращения помогает снизить тревогу и показывает, что сайт и продавец подготовлены к сопровождению клиента после продажи."
+            title="Сервисная поддержка"
+            description="Пошаговый порядок обращения помогает быстро подготовить заявку и получить дальнейшие инструкции."
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700">
               <Wrench size={20} />

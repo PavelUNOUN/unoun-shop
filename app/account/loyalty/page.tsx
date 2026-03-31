@@ -8,7 +8,7 @@ import { getAccountDashboardData } from "@/server/account/profile";
 export const metadata: Metadata = {
   title: "Бонусы | UNOUN",
   description:
-    "Бонусный раздел личного кабинета UNOUN: баланс, welcome-скидка и история начислений.",
+    "Бонусный раздел личного кабинета UNOUN: баланс и история начислений.",
 };
 
 export default async function AccountLoyaltyPage() {
@@ -27,12 +27,12 @@ export default async function AccountLoyaltyPage() {
         <InfoCard
           eyebrow="Баланс"
           title={`${formatPrice(account.loyalty.balance)} ₽`}
-          description="Текущий бонусный баланс уже подтягивается из базы и закреплён за вашим аккаунтом."
+          description="Текущий бонусный баланс закреплён за вашим аккаунтом и доступен при следующих покупках."
         />
         <InfoCard
           eyebrow="Первый заказ"
           title={`${formatPrice(account.loyalty.firstOrderDiscount)} ₽ скидка`}
-          description="Welcome-бонус фиксирован и начисляется один раз при активации аккаунта."
+          description="Приветственный бонус начисляется один раз после входа в аккаунт."
         />
         <InfoCard
           eyebrow="Статус"
@@ -52,7 +52,7 @@ export default async function AccountLoyaltyPage() {
       >
         {account.loyalty.transactions.length === 0 ? (
           <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-5 text-sm leading-relaxed text-zinc-600">
-            Операций по бонусному счёту пока нет. Как только появятся начисления или списания, они появятся здесь.
+            Операций по бонусному счёту пока нет. Когда появятся начисления или списания, они отобразятся здесь.
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">

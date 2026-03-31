@@ -54,7 +54,7 @@ export const ACCOUNT_NAV_ITEMS: AccountNavItem[] = [
   {
     href: "/account/loyalty",
     label: "Бонусы",
-    description: "Баланс, welcome-скидка и будущая логика клуба.",
+    description: "Баланс, приветственный бонус и история начислений.",
   },
   {
     href: "/account/addresses",
@@ -77,7 +77,7 @@ export const ACCOUNT_DASHBOARD_STATS: AccountStat[] = [
   {
     label: "Бонусный баланс",
     value: "500 ₽",
-    hint: "Welcome-бонус подготовлен как сценарий после авторизации.",
+    hint: "Приветственный бонус доступен после входа в аккаунт.",
   },
   {
     label: "Сохраненные получатели",
@@ -122,7 +122,7 @@ export const SAVED_ADDRESSES: SavedAddress[] = [
     title: "Получатель для офиса",
     city: "Нижний Новгород",
     address: "ПВЗ Яндекс Доставки, ул. Максима Горького, 152",
-    note: "Можно переключать на этапе checkout, когда появится реальная интеграция.",
+    note: "Можно выбрать при следующем оформлении заказа.",
   },
 ];
 
@@ -130,14 +130,14 @@ export const LOYALTY_SUMMARY = {
   balance: 500,
   availableAfterLogin: true,
   firstOrderDiscount: 500,
-  nextLevelHint: "После подключения backend здесь появится история начислений.",
+  nextLevelHint: "История начислений появится в этом разделе автоматически.",
 } as const;
 
 export const LOYALTY_EVENTS: LoyaltyEvent[] = [
   {
     title: "Вход в аккаунт",
     description:
-      "Пользователь авторизуется через Яндекс и получает доступ к welcome-механике.",
+      "После входа через Яндекс открывается доступ к бонусному счёту.",
   },
   {
     title: "Первый заказ",
@@ -147,7 +147,7 @@ export const LOYALTY_EVENTS: LoyaltyEvent[] = [
   {
     title: "Повторные покупки",
     description:
-      "На следующих этапах сюда можно добавить механику для аксессуаров и расходников.",
+      "Повторные покупки помогают использовать бонусы и следить за историей начислений.",
   },
 ];
 
@@ -169,8 +169,8 @@ export const SERVICE_TOUCHPOINTS = [
   {
     title: "Статус обращений",
     description:
-      "Раздел помогает быстро перейти к логике доставки и сервисного сопровождения, если понадобится поддержка по заказу.",
+      "Здесь собраны условия доставки и оплаты, которые могут пригодиться по текущему заказу.",
     href: "/delivery",
-    linkLabel: "Посмотреть delivery-flow",
+    linkLabel: "Открыть условия доставки",
   },
 ];

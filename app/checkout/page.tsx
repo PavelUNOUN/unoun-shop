@@ -5,9 +5,9 @@ import { getAuthenticatedAccountUser } from "@/server/account/auth";
 import { getCheckoutAccountProfile } from "@/server/account/profile";
 
 export const metadata: Metadata = {
-  title: "Checkout | UNOUN",
+  title: "Оформление заказа | UNOUN",
   description:
-    "Checkout UNOUN: гость или авторизация, бонусы, ПВЗ Яндекс Доставки и переход к онлайн-оплате.",
+    "Оформление заказа UNOUN: контакты получателя, пункт выдачи Яндекс Доставки, бонусы и онлайн-оплата.",
 };
 
 export default async function CheckoutPage() {
@@ -17,13 +17,13 @@ export default async function CheckoutPage() {
   return (
     <>
       <PageHero
-        eyebrow="Checkout"
-        badge={accountProfile ? "Оформление из аккаунта" : "Новый сценарий оформления"}
+        eyebrow="Оформление заказа"
+        badge={accountProfile ? "Оформление из аккаунта" : "Быстрое оформление"}
         title="Оформление заказа UNOUN"
         description={
           accountProfile
-            ? "Вы уже вошли в аккаунт: контакты, сохранённый ПВЗ и бонусный баланс можно использовать без повторного заполнения формы."
-            : "Это уже живой checkout-сценарий: контакты, выбор ПВЗ Яндекс Доставки, оплата полностью или частями и быстрый вход ради бонусов."
+            ? "Вы уже вошли в аккаунт: контакты, сохранённый пункт выдачи и бонусный баланс можно использовать без повторного заполнения формы."
+            : "Укажите контакты, выберите пункт выдачи Яндекс Доставки и удобный способ оплаты. Войти в аккаунт можно в любой момент, чтобы использовать бонусы."
         }
       />
 
