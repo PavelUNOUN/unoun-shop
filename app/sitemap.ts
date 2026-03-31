@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { ACADEMY_ARTICLES } from "@/lib/academy";
+import { ACCESSORY_PRODUCTS } from "@/lib/catalog";
 import { getSiteUrl } from "@/lib/site";
 
 const STATIC_ROUTES = [
@@ -10,6 +11,7 @@ const STATIC_ROUTES = [
   "/faq",
   "/loyalty",
   "/academy",
+  "/accessories",
   "/account",
   "/account/auth",
   "/account/orders",
@@ -41,5 +43,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticEntries, ...academyEntries];
+  const accessoryEntries: MetadataRoute.Sitemap = ACCESSORY_PRODUCTS.map((product) => ({
+    url: `${siteUrl}/accessories/${product.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [...staticEntries, ...academyEntries, ...accessoryEntries];
 }

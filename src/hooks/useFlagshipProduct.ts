@@ -1,21 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { CatalogProduct } from "@/lib/catalog";
-import { FLAGSHIP_PRODUCT } from "@/lib/catalog";
-
-type StorefrontFlagshipProduct = CatalogProduct & {
-  isActive: boolean;
-  stock: number;
-};
+import { FLAGSHIP_PRODUCT, type StorefrontProduct } from "@/lib/catalog";
 
 export function useFlagshipProduct() {
-  const [product, setProduct] =
-    useState<StorefrontFlagshipProduct>({
-      ...FLAGSHIP_PRODUCT,
-      isActive: true,
-      stock: 20,
-    });
+  const [product, setProduct] = useState<StorefrontProduct>(FLAGSHIP_PRODUCT);
 
   useEffect(() => {
     let isMounted = true;
@@ -30,7 +19,7 @@ export function useFlagshipProduct() {
           return;
         }
 
-        const data = (await response.json()) as StorefrontFlagshipProduct;
+        const data = (await response.json()) as StorefrontProduct;
 
         if (isMounted) {
           setProduct(data);

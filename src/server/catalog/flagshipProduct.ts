@@ -33,6 +33,9 @@ export async function getStorefrontFlagshipProduct() {
     price: product.price,
     originalPrice: product.originalPrice ?? product.price,
     image: product.image,
+    kind: FLAGSHIP_PRODUCT.kind,
+    summary: FLAGSHIP_PRODUCT.summary,
+    highlights: FLAGSHIP_PRODUCT.highlights,
     isActive: product.isActive,
     stock: product.stock ?? 0,
   };

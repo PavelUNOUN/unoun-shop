@@ -146,6 +146,10 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
+            <Link href="/accessories" className={textClass}>
+              Аксессуары
+            </Link>
+
             <Link href="/academy" className={textClass}>
               Статьи
             </Link>
@@ -343,6 +347,19 @@ export default function Header() {
                   )}
                 </AnimatePresence>
               </div>
+
+              <Link
+                href="/accessories"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "py-4 text-base font-medium border-b transition-colors duration-150",
+                  scrolled
+                    ? "text-zinc-800 border-zinc-100 hover:text-zinc-950"
+                    : "text-white/90 border-white/10 hover:text-white"
+                )}
+              >
+                Аксессуары
+              </Link>
 
               <Link
                 href="/academy"

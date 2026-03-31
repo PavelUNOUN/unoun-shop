@@ -4,6 +4,7 @@ import TrustMarquee from "@/components/sections/TrustMarquee";
 import DescriptionSection from "@/components/sections/DescriptionSection";
 import UseCasesSection from "@/components/sections/UseCasesSection";
 import NozzlesSection from "@/components/sections/NozzlesSection";
+import AccessoriesPreviewSection from "@/components/sections/AccessoriesPreviewSection";
 import SpecsSection from "@/components/sections/SpecsSection";
 import LoyaltyPreviewSection from "@/components/sections/LoyaltyPreviewSection";
 import LandingCtaSection from "@/components/sections/LandingCtaSection";
@@ -35,6 +36,10 @@ export default function Home() {
 
       <FadeInSection delay={0.1}>
         <NozzlesSection />
+      </FadeInSection>
+
+      <FadeInSection delay={0.1}>
+        <AccessoriesPreviewSection />
       </FadeInSection>
 
       <FadeInSection delay={0.1}>
