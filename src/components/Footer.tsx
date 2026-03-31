@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SELLER_DETAILS } from "@/lib/legal";
 
 const CUSTOMER_LINKS = [
   { label: "Доставка и оплата", href: "/delivery" },
@@ -75,6 +76,30 @@ export default function Footer() {
                 Yandex Pay · Split · онлайн-оплата
               </p>
             </div>
+
+            <div className="mt-6 rounded-[24px] border border-white/10 bg-white/5 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
+                Продавец
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-300">
+                {SELLER_DETAILS.sellerName}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                ИНН {SELLER_DETAILS.inn} · ОГРНИП {SELLER_DETAILS.ogrnip}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                {SELLER_DETAILS.businessAddress}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-300">
+                {SELLER_DETAILS.supportPhone}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-zinc-300">
+                {SELLER_DETAILS.supportEmail}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-zinc-400">
+                {SELLER_DETAILS.supportHours}
+              </p>
+            </div>
           </div>
 
           <div>
@@ -101,7 +126,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-3 pt-5 text-xs text-zinc-600 md:flex-row md:items-center md:justify-between">
           <p>© 2026 UNOUN. Все права защищены.</p>
-          <p>СДЭК ПВЗ · Yandex Pay / Split · Программа лояльности · Сервисная поддержка</p>
+          <p>Публичная оферта · Политика конфиденциальности · Персональные данные · Сервисная поддержка</p>
         </div>
       </div>
     </footer>
