@@ -1,6 +1,8 @@
 import { getPrismaClient } from "@/lib/prisma";
 import { FLAGSHIP_PRODUCT } from "@/lib/catalog";
 
+const LEGACY_FLAGSHIP_SHORT_TITLES = new Set(["UNOUN 12 в 1"]);
+
 export async function getOrCreateFlagshipProduct() {
   const prisma = getPrismaClient();
 
@@ -24,12 +26,16 @@ export async function getOrCreateFlagshipProduct() {
 
 export async function getStorefrontFlagshipProduct() {
   const product = await getOrCreateFlagshipProduct();
+  const normalizedShortTitle =
+    !product.shortTitle || LEGACY_FLAGSHIP_SHORT_TITLES.has(product.shortTitle)
+      ? FLAGSHIP_PRODUCT.shortTitle
+      : product.shortTitle;
 
   return {
     id: product.id,
     slug: product.slug,
     title: product.title,
-    shortTitle: product.shortTitle ?? product.title,
+    shortTitle: normalizedShortTitle,
     price: product.price,
     originalPrice: product.originalPrice ?? product.price,
     image: product.image,
