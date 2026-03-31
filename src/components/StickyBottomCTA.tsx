@@ -46,12 +46,12 @@ export default function StickyBottomCTA() {
           // z-40 — под FloatingConsultant (z-50), но поверх контента
           className="fixed bottom-3 left-3 right-3 z-40 md:bottom-auto md:left-auto md:right-6 md:top-24 lg:right-8 lg:top-28"
         >
-          <div className="mx-auto flex max-w-6xl items-center gap-2 rounded-[28px] border border-white/20 bg-[rgba(92,80,74,0.48)] p-2.5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)] backdrop-blur-xl md:mx-0 md:w-[404px] md:gap-2 md:rounded-full md:border-[rgba(255,255,255,0.10)] md:bg-[rgba(75,66,61,0.5)] md:px-3 md:py-3">
-            <div className="min-w-0 flex-1 pl-4 md:max-w-[216px] md:pl-8">
-              <p className="text-[14px] font-medium leading-[1.05] text-white sm:text-[15px]">
+          <div className="mx-auto flex max-w-6xl items-center gap-2 rounded-[28px] border border-white/20 bg-[rgba(92,80,74,0.48)] p-2.5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)] backdrop-blur-xl md:mx-0 md:w-[432px] md:gap-3 md:rounded-full md:border-[rgba(255,255,255,0.10)] md:bg-[rgba(75,66,61,0.5)] md:px-3 md:py-3">
+            <div className="min-w-0 flex-1 pl-4 md:max-w-[240px] md:pl-6">
+              <p className="truncate text-[14px] font-medium leading-[1.1] text-white sm:text-[15px]">
                 {product.shortTitle}
               </p>
-              <p className="mt-0.5 text-right text-[13px] leading-none text-white/66 md:pr-1 md:text-[14px]">
+              <p className="mt-1 text-[13px] leading-none text-white/66 md:text-[14px]">
                 {formatPrice(product.price)} ₽
               </p>
             </div>
@@ -59,7 +59,7 @@ export default function StickyBottomCTA() {
             <AddToCartButton
               label="Купить"
               redirectTo="/cart"
-              className="flex h-10 shrink-0 items-center justify-center rounded-full border border-[#E5FF00] bg-transparent px-3 text-xs font-semibold uppercase tracking-[0.06em] text-[#F5F7D5] transition-all duration-150 hover:bg-[#E5FF00]/10 active:scale-[0.98] md:h-10 md:min-w-[120px] md:px-4 md:text-sm"
+              className="flex h-10 shrink-0 items-center justify-center rounded-full border border-[#E5FF00] bg-transparent px-3 text-xs font-semibold uppercase tracking-[0.06em] text-[#F5F7D5] transition-all duration-150 hover:bg-[#E5FF00]/10 active:scale-[0.98] md:h-10 md:min-w-[126px] md:px-5 md:text-sm"
             />
           </div>
         </motion.div>
