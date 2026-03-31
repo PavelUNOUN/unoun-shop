@@ -30,6 +30,44 @@ export default function Footer() {
               Премиальная паровая швабра для сценариев, где важны стерильность,
               визуальная лёгкость и уверенность в сервисе.
             </p>
+
+            <div className="mt-6 rounded-[24px] border border-white/10 bg-white/5 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
+                Продавец
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-200">
+                {SELLER_DETAILS.sellerName}
+              </p>
+
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-zinc-400">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Реквизиты
+                  </p>
+                  <p className="mt-1">
+                    ИНН {SELLER_DETAILS.inn}
+                    <br />
+                    ОГРНИП {SELLER_DETAILS.ogrnip}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Адрес
+                  </p>
+                  <p className="mt-1">{SELLER_DETAILS.businessAddress}</p>
+                </div>
+
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Контакты
+                  </p>
+                  <p className="mt-1 text-zinc-300">{SELLER_DETAILS.supportPhone}</p>
+                  <p className="mt-1 text-zinc-300">{SELLER_DETAILS.supportEmail}</p>
+                  <p className="mt-1">{SELLER_DETAILS.supportHours}</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -73,30 +111,6 @@ export default function Footer() {
               </p>
               <p className="mt-2 text-sm text-zinc-400">
                 Yandex Pay · Split · онлайн-оплата
-              </p>
-            </div>
-
-            <div className="mt-6 rounded-[24px] border border-white/10 bg-white/5 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
-                Продавец
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-                {SELLER_DETAILS.sellerName}
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                ИНН {SELLER_DETAILS.inn} · ОГРНИП {SELLER_DETAILS.ogrnip}
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                {SELLER_DETAILS.businessAddress}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-                {SELLER_DETAILS.supportPhone}
-              </p>
-              <p className="mt-1 text-sm leading-relaxed text-zinc-300">
-                {SELLER_DETAILS.supportEmail}
-              </p>
-              <p className="mt-1 text-sm leading-relaxed text-zinc-400">
-                {SELLER_DETAILS.supportHours}
               </p>
             </div>
           </div>
