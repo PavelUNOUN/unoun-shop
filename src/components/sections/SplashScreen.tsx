@@ -22,9 +22,6 @@ const MOBILE_SLIDES = [
 
 const SUBTITLE = "Уборка, которая занимает минуты, а не часы.";
 const TITLE = "Чистота без компромиссов.";
-const AMBIENT_TITLE = "Чистота в доме.";
-const HANDWRITTEN_NOTE = "без тяжёлой уборки";
-const SCROLL_HINT = "Листайте ниже — дальше кухня, ванная, пол и текстиль.";
 
 // Варианты для контейнера — управляет stagger-задержкой дочерних слов
 const containerVariants = {
@@ -167,49 +164,6 @@ export default function SplashScreen() {
               style={{ fontFamily: "var(--font-script)" }}
             >
               {TITLE}
-            </p>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* ── ПРАВЫЙ АКЦЕНТНЫЙ БЛОК ── */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`accent-${activeIndex}`}
-          initial={{ opacity: 0, x: 28 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 18 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute right-10 top-24 z-10 hidden max-w-[34rem] text-right lg:block xl:right-14 xl:top-26"
-        >
-          <p className="text-[4rem] leading-[0.92] font-light tracking-[-0.05em] text-white/22 xl:text-[5.15rem]">
-            {AMBIENT_TITLE}
-          </p>
-
-          <motion.div
-            initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
-            animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }}
-            exit={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
-            transition={{ duration: 1.15, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-4 overflow-visible pr-1 pb-3 pt-3"
-          >
-            <p
-              className="text-[3.1rem] leading-[1.18] font-medium tracking-[0.01em] text-white/74 xl:text-[3.95rem]"
-              style={{ fontFamily: "var(--font-script)" }}
-            >
-              {HANDWRITTEN_NOTE}
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.75, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="ml-auto mt-6 max-w-sm"
-          >
-            <p className="text-sm leading-relaxed text-white/74">
-              {SCROLL_HINT}
             </p>
           </motion.div>
         </motion.div>

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 const PREVIEW_ROWS = [
   { label: "Цвет", value: "Белый / Серебристый" },
-  { label: "Модель", value: "SC-100 Max" },
+  { label: "Модель", value: "UNOUN One Steam" },
   { label: "Гарантийный срок", value: "2 года" },
   { label: "Мощность устройства", value: "1500 Вт" },
 ];

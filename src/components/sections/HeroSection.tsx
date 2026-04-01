@@ -26,6 +26,7 @@ const GALLERY_IMAGES = [
 const NAV_TABS = [
   { label: "Описание", href: "#description" },
   { label: "Способы применения", href: "#use-cases" },
+  { label: "Отзывы", href: "#reviews" },
   { label: "Аксессуары", href: "#nozzles" },
   { label: "Характеристики", href: "#features" },
   { label: "Инструкция", href: "#instruction" },

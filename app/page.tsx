@@ -2,6 +2,7 @@ import SplashScreen from "@/components/sections/SplashScreen";
 import HeroSection from "@/components/sections/HeroSection";
 import DescriptionSection from "@/components/sections/DescriptionSection";
 import UseCasesSection from "@/components/sections/UseCasesSection";
+import ReviewsSection from "@/components/sections/ReviewsSection";
 import NozzlesSection from "@/components/sections/NozzlesSection";
 import AccessoriesPreviewSection from "@/components/sections/AccessoriesPreviewSection";
 import SpecsSection from "@/components/sections/SpecsSection";
@@ -27,6 +28,10 @@ export default function Home() {
 
       <FadeInSection delay={0.1}>
         <UseCasesSection />
+      </FadeInSection>
+
+      <FadeInSection delay={0.1}>
+        <ReviewsSection />
       </FadeInSection>
 
       <FadeInSection delay={0.1}>

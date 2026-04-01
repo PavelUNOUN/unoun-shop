@@ -91,7 +91,7 @@ export default function NozzlesSection() {
             Комплектация
           </p>
           <h2 className="font-heading font-bold text-zinc-900 text-3xl tracking-tight sm:text-4xl md:text-5xl">
-            Аксессуары для любых задач
+            Насадки для кухни, пола и текстиля
           </h2>
         </div>
 

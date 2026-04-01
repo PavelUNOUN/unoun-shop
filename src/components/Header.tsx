@@ -18,6 +18,7 @@ const DEVICES_MENU = [
 
 // Пункты дропдауна "Покупателям"
 const BUYERS_MENU = [
+  { label: "Отзывы", href: "/#reviews" },
   { label: "Доставка и оплата", href: "/delivery" },
   { label: "Гарантия и сервис", href: "/service" },
   { label: "Частые вопросы", href: "/faq" },
