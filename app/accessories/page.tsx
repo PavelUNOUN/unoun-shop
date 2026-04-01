@@ -5,7 +5,7 @@ import { ACCESSORY_PRODUCTS } from "@/lib/catalog";
 export const metadata: Metadata = {
   title: "Аксессуары UNOUN",
   description:
-    "Набор тряпок и набор насадок для паровой швабры UNOUN.",
+    "Аксессуары UNOUN: набор тряпок и набор насадок для паровой швабры.",
 };
 
 export default function AccessoriesPage() {
@@ -15,15 +15,14 @@ export default function AccessoriesPage() {
         <div className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 md:pb-20 lg:px-8">
           <div className="max-w-3xl">
             <div className="inline-flex rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-zinc-600">
-              Компактная линейка
+              Для ухода и замены
             </div>
             <h1 className="mt-5 font-heading text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl md:text-6xl">
               Аксессуары UNOUN
             </h1>
             <p className="mt-5 text-sm leading-relaxed text-zinc-600 sm:text-base">
-              Здесь собраны аксессуары, которые дополняют основную покупку:
-              сменные тряпки для повседневного ухода и набор насадок для более
-              глубокой очистки разных поверхностей.
+              Здесь собраны аксессуары для регулярного ухода за устройством и более
+              точечной уборки разных поверхностей.
             </p>
           </div>
         </div>

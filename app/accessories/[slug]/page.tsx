@@ -141,8 +141,8 @@ export default async function AccessoryDetailPage({
                 {FLAGSHIP_PRODUCT.shortTitle}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-zinc-600">
-                Главный флагман UNOUN остаётся основным входом в магазин, а
-                аксессуары усиливают первый заказ и повторные покупки.
+                Основное устройство UNOUN для ежедневной уборки дома и быстрой
+                покупки вместе с аксессуарами.
               </p>
               <p className="mt-5 text-xl font-semibold text-zinc-900">
                 {formatPrice(FLAGSHIP_PRODUCT.price)} ₽

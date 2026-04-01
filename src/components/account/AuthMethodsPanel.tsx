@@ -1,25 +1,31 @@
 import Link from "next/link";
-import { ArrowRight, LockKeyhole, Phone, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Gift,
+  LockKeyhole,
+  PackageCheck,
+  ShieldCheck,
+} from "lucide-react";
 import { isYandexOAuthConfigured } from "@/server/account/yandex";
 
-const SECONDARY_METHODS = [
+const INFO_CARDS = [
   {
-    title: "Вход по номеру телефона",
+    title: "Заказы и статусы",
     description:
-      "Этот способ входа появится позже для тех, кому удобнее подтверждение по SMS.",
-    icon: Phone,
+      "После входа в аккаунте доступны история заказов, статусы оплаты и выбранные пункты выдачи.",
+    icon: PackageCheck,
   },
   {
-    title: "VK ID",
+    title: "Бонусы и сохранённые данные",
     description:
-      "Позже появится дополнительный способ входа через VK ID.",
+      "В аккаунте сохраняются бонусы, контакты получателя и данные для следующих покупок.",
     icon: ShieldCheck,
   },
 ] as const;
 
 const BENEFITS = [
   "Быстрый повторный заказ и сохраненные данные получателя",
-  "Отслеживание бонусов и статуса программы лояльности",
+  "Отслеживание бонусов и истории заказов",
   "Доступ к сервисной информации, инструкции и истории заказов",
 ] as const;
 
@@ -86,7 +92,7 @@ export default function AuthMethodsPanel() {
       </div>
 
       <div className="flex flex-col gap-4">
-        {SECONDARY_METHODS.map((method) => {
+        {INFO_CARDS.map((method) => {
           const Icon = method.icon;
 
           return (
@@ -94,13 +100,8 @@ export default function AuthMethodsPanel() {
               key={method.title}
               className="rounded-[28px] border border-zinc-200 bg-white p-6 shadow-[0_24px_80px_-56px_rgba(24,24,27,0.35)]"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700">
-                  <Icon size={20} />
-                </div>
-                <span className="rounded-full border border-zinc-200 px-3 py-1 text-xs font-semibold text-zinc-500">
-                  Скоро
-                </span>
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700">
+                <Icon size={20} />
               </div>
 
               <h3 className="mt-5 text-lg font-semibold text-zinc-900">
@@ -116,11 +117,11 @@ export default function AuthMethodsPanel() {
 
         <div className="rounded-[28px] border border-zinc-200 bg-zinc-950 p-6 text-white shadow-[0_24px_80px_-56px_rgba(24,24,27,0.45)]">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/45">
-            Лояльность и аккаунт
+            После входа
           </p>
 
           <h3 className="mt-4 text-2xl font-semibold tracking-tight">
-            Клуб UNOUN и личный кабинет
+            Бонусы и личный кабинет
           </h3>
 
           <p className="mt-3 text-sm leading-relaxed text-white/65">
@@ -128,11 +129,27 @@ export default function AuthMethodsPanel() {
             бонусу и сохранённым данным для повторной покупки.
           </p>
 
+          <div className="mt-6 rounded-[22px] border border-white/10 bg-white/5 p-4">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white">
+                <Gift size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  500 бонусов после входа
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-white/65">
+                  Бонусы закрепляются за аккаунтом и доступны при следующих покупках.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <Link
-            href="/loyalty"
+            href="/account/auth"
             className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-100"
           >
-            Посмотреть программу
+            Открыть вход через Яндекс
           </Link>
         </div>
       </div>

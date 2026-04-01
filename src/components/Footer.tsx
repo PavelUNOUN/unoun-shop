@@ -27,8 +27,8 @@ export default function Footer() {
               UNOUN
             </span>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-400">
-              Премиальная паровая швабра для сценариев, где важны стерильность,
-              визуальная лёгкость и уверенность в сервисе.
+              Паровая швабра и аксессуары для дома, где важны чистота,
+              аккуратная подача и уверенность в сервисе.
             </p>
 
             <div className="mt-6 rounded-[24px] border border-white/10 bg-white/5 p-5">
@@ -121,11 +121,11 @@ export default function Footer() {
                 Аккаунт
               </p>
               <h3 className="mt-3 text-xl font-semibold text-white">
-                В аккаунте собраны заказы, бонусы и получатели
+                Аккаунт для повторных покупок
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-zinc-400">
                 Войдите через Яндекс, чтобы быстрее оформлять новые покупки,
-                видеть историю заказов и использовать бонусы.
+                видеть историю заказов и сохранять данные получателя.
               </p>
               <Link
                 href="/account"

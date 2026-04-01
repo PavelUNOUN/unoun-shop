@@ -121,7 +121,7 @@ export default function CartSummary() {
           </div>
           <div className="flex items-center justify-between gap-4 text-sm text-white/70">
             <span>Доставка</span>
-            <span>Яндекс ПВЗ</span>
+            <span>Пункт выдачи</span>
           </div>
           <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-4 text-base font-semibold text-white">
             <span>Итого</span>
@@ -138,7 +138,7 @@ export default function CartSummary() {
 
         <p className="mt-4 text-sm leading-relaxed text-white/55">
           На следующем шаге можно продолжить как гость или войти в аккаунт, чтобы
-          использовать бонусы.
+          использовать бонусы и сохранить данные получателя.
         </p>
       </aside>
     </div>

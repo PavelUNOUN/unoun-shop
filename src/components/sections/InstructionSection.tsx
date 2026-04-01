@@ -19,8 +19,8 @@ export default function InstructionSection() {
             </div>
 
             <p className="max-w-md text-sm leading-relaxed text-zinc-500 sm:text-base">
-              В этом блоке можно скачать PDF с полной инструкцией по
-              использованию и уходу за паровой шваброй.
+              Скачайте PDF с инструкцией по использованию, уходу и базовой
+              комплектации устройства.
             </p>
           </div>
 

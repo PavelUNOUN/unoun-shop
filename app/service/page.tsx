@@ -253,7 +253,7 @@ export default function ServicePage() {
                 href="/account/auth"
                 className="mt-8 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-zinc-950 px-6 text-sm font-semibold text-white transition-colors duration-150 hover:bg-black"
               >
-                Перейти ко входу
+                Открыть личный кабинет
                 <ArrowRight size={16} />
               </Link>
             </div>

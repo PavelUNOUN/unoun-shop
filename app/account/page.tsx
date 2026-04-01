@@ -22,7 +22,7 @@ export default async function AccountPage() {
       user={account.user}
       eyebrow="Личный кабинет"
       title={`Здравствуйте, ${account.user.fullName || "покупатель UNOUN"}`}
-      description="Здесь собраны ваши заказы, бонусный баланс, сохранённые пункты выдачи и быстрые действия после покупки."
+      description="Здесь собраны ваши заказы, бонусный баланс, сохранённые получатели и быстрые действия после покупки."
       currentPath="/account"
     >
       <section className="grid gap-5 md:grid-cols-3">
@@ -82,7 +82,7 @@ export default async function AccountPage() {
           <InfoCard
             eyebrow="Первые заказы"
             title="Заказов пока нет"
-            description="Вы уже вошли в аккаунт, поэтому контакты, бонусы и сохранённый пункт выдачи будут подставлены автоматически при оформлении заказа."
+            description="Контакты, бонусы и выбранный пункт выдачи будут подставляться автоматически, как только появится первый заказ."
           >
             <Link
               href="/checkout"
@@ -99,7 +99,7 @@ export default async function AccountPage() {
           description={
             account.loyalty.welcomeIssued
               ? "Приветственный бонус уже начислен и доступен при следующем оформлении заказа."
-              : "Бонусный счёт уже создан и готов к начислениям."
+              : "Бонусный баланс уже создан и готов к начислению."
           }
         >
           <Link
@@ -114,7 +114,7 @@ export default async function AccountPage() {
       <InfoCard
         eyebrow="Быстрые действия"
         title="Покупки, бонусы и поддержка под рукой"
-        description="Отсюда можно перейти к корзине, посмотреть историю заказов или открыть бонусный раздел."
+        description="Отсюда можно перейти к корзине, открыть историю заказов и быстро перейти к полезным разделам сайта."
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link

@@ -31,7 +31,7 @@ export default function AccountShell({
         <div className="max-w-3xl">
           <div className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3.5 py-1.5">
             <span className="text-xs font-semibold text-zinc-600">
-              Личный кабинет UNOUN
+              Аккаунт UNOUN
             </span>
           </div>
 
@@ -97,7 +97,7 @@ export default function AccountShell({
                       Аккаунт
                     </p>
                     <p className="mt-2 text-base font-semibold text-white">
-                      {user.fullName || "Пользователь UNOUN"}
+                      {user.fullName || "Аккаунт UNOUN"}
                     </p>
                     {user.email ? (
                       <p className="mt-1 break-all text-sm text-white/70">

@@ -167,7 +167,7 @@ export default function CheckoutFlow({
         setPickupPoints([]);
         setSelectedPickupPointId("");
         setPickupPointsError(
-          "Не удалось загрузить ПВЗ Яндекс Доставки. Попробуйте изменить город или обновить страницу."
+          "Не удалось загрузить доступные пункты выдачи. Попробуйте изменить город или обновить страницу."
         );
       } finally {
         if (!controller.signal.aborted) {
@@ -379,7 +379,7 @@ export default function CheckoutFlow({
           <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900">
-                Выбор ПВЗ Яндекс Доставки
+                Выбор пункта выдачи
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-zinc-600 sm:text-base">
                 Список ПВЗ подгружается по введенному городу. Если в аккаунте уже
@@ -397,7 +397,7 @@ export default function CheckoutFlow({
           <div className="mt-6">
             {isPickupPointsLoading ? (
               <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-5 text-sm text-zinc-600">
-                Загружаем доступные ПВЗ Яндекс Доставки для города {contact.city}...
+                Загружаем доступные пункты выдачи для города {contact.city}...
               </div>
             ) : pickupPointsError ? (
               <div className="rounded-[24px] border border-red-200 bg-red-50 p-5 text-sm leading-relaxed text-red-700">
@@ -654,7 +654,7 @@ export default function CheckoutFlow({
               <span>
                 {selectedPickupPoint
                   ? selectedPickupPoint.title
-                  : "ПВЗ Яндекс Доставки"}
+                  : "Пункт выдачи"}
               </span>
             </div>
             <div className="flex items-center justify-between gap-4 text-white/70">

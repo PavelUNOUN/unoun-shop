@@ -7,7 +7,7 @@ import PageHero from "@/components/ui/page/PageHero";
 export const metadata: Metadata = {
   title: "Заказ подтвержден | UNOUN",
   description:
-    "UNOUN: заказ подтвержден, следующий шаг — оплата, личный кабинет и welcome-бонус после авторизации.",
+    "UNOUN: заказ оформлен, статус оплаты и дальнейшие шаги после покупки.",
 };
 
 type CheckoutSuccessPageProps = {
@@ -34,7 +34,7 @@ export default async function CheckoutSuccessPage({
   const description = hasPaymentError
       ? "Мы сохранили ваш заказ. Попробуйте снова перейти к оплате позже или свяжитесь с поддержкой, если нужна помощь."
     : isYandexPayFlow
-      ? "Заказ уже создан. Как только оплата подтвердится, информация появится в личном кабинете."
+      ? "Заказ уже создан. Как только оплата подтвердится, обновления появятся в личном кабинете."
       : "Спасибо за покупку. Детали заказа доступны на этой странице и в личном кабинете.";
   const paymentLabel = hasPaymentError
     ? "Не завершена"
@@ -108,7 +108,7 @@ export default async function CheckoutSuccessPage({
                 href="/account/auth"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-zinc-200 px-6 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-50"
               >
-                Войти в аккаунт
+                Открыть аккаунт
                 <ArrowRight size={16} />
               </Link>
             </div>
@@ -123,8 +123,7 @@ export default async function CheckoutSuccessPage({
                 Что дальше
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-                После подтверждения оплаты мы передадим заказ в дальнейшую
-                обработку и доставку.
+                После подтверждения оплаты заказ перейдёт в обработку, а затем в доставку.
               </p>
             </article>
 

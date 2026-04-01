@@ -20,7 +20,7 @@ export default async function AccountLoyaltyPage() {
       user={account.user}
       eyebrow="Бонусы"
       title="Бонусный счёт"
-      description="Здесь отображается ваш реальный бонусный баланс и история начислений по аккаунту."
+      description="Здесь отображаются ваш бонусный баланс и история операций по аккаунту."
       currentPath="/account/loyalty"
     >
       <section className="grid gap-5 md:grid-cols-3">
@@ -40,7 +40,7 @@ export default async function AccountLoyaltyPage() {
           description={
             account.loyalty.welcomeIssued
               ? "Приветственный бонус уже выдан и закреплён за вашим профилем."
-              : "Бонусный счёт готов, а начисление появится сразу после первой подходящей операции."
+              : "Бонусный счёт уже создан, а начисление появится после подходящей операции."
           }
         />
       </section>
@@ -48,7 +48,7 @@ export default async function AccountLoyaltyPage() {
       <InfoCard
         eyebrow="История операций"
         title="Начисления и списания по бонусному счёту"
-        description="Здесь уже отображаются реальные операции по бонусному счёту, связанные с вашим аккаунтом."
+        description="Здесь отображаются все начисления и списания, связанные с вашим аккаунтом."
       >
         {account.loyalty.transactions.length === 0 ? (
           <div className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-5 text-sm leading-relaxed text-zinc-600">

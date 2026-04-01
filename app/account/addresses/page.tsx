@@ -19,7 +19,7 @@ export default async function AccountAddressesPage() {
       user={account.user}
       eyebrow="Получатели"
       title="Сохранённые получатели и пункты выдачи"
-      description="Контакты и ПВЗ подтягиваются из реальных заказов и готовы для быстрого повторного оформления."
+      description="Контакты и выбранные пункты выдачи сохраняются после заказов и помогают быстрее оформить следующую покупку."
       currentPath="/account/addresses"
     >
       <InfoCard

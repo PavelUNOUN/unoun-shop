@@ -9,7 +9,7 @@ import { getAccountDashboardData } from "@/server/account/profile";
 export const metadata: Metadata = {
   title: "Заказы | UNOUN",
   description:
-    "История заказов в личном кабинете UNOUN: реальные статусы, способ оплаты, доставка и сумма заказа.",
+    "История заказов в личном кабинете UNOUN: статусы, способ оплаты, доставка и сумма заказа.",
 };
 
 export default async function AccountOrdersPage() {
@@ -21,14 +21,14 @@ export default async function AccountOrdersPage() {
       user={account.user}
       eyebrow="Заказы"
       title="История заказов"
-      description="Здесь отображаются ваши реальные заказы из базы: статус оплаты, пункт выдачи, состав и итоговая сумма."
+      description="Здесь собраны ваши заказы: статус оплаты, выбранный пункт выдачи, состав и итоговая сумма."
       currentPath="/account/orders"
     >
       {account.orders.length === 0 ? (
         <InfoCard
           eyebrow="История покупок"
           title="Пока нет оформленных заказов"
-          description="После первой покупки сюда автоматически попадут номер заказа, статус оплаты, состав и выбранный пункт выдачи."
+          description="После первой покупки здесь появятся номер заказа, состав, статус оплаты и выбранный пункт выдачи."
         />
       ) : null}
 
@@ -79,7 +79,7 @@ export default async function AccountOrdersPage() {
               Доставка и бонусы
             </p>
             <p className="mt-2 text-sm leading-relaxed text-zinc-700">
-              {order.deliveryLabel}. Списано бонусов: {formatPrice(order.bonusUsed)} ₽.
+              {order.deliveryLabel}. Использовано бонусов: {formatPrice(order.bonusUsed)} ₽.
             </p>
           </div>
 
