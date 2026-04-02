@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 // Порог скролла в пикселях, после которого панель появляется
 const SCROLL_THRESHOLD = 400;
-const BONUS_PANEL_START_ID = "reviews";
+const BONUS_PANEL_START_ID = "nozzles";
 const BONUS_PANEL_END_ID = "accessories-preview";
 
 export default function StickyBottomCTA() {
