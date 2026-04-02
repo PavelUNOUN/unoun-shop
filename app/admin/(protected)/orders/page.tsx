@@ -3,6 +3,7 @@ import AdminShell from "@/components/admin/AdminShell";
 import {
   ADMIN_ORDER_STATUS_OPTIONS,
   formatOrderStatusLabel,
+  formatPaymentStatusLabel,
   getAdminOrders,
 } from "@/server/admin/orders";
 
@@ -63,7 +64,7 @@ export default async function AdminOrdersPage() {
                     {order.city}
                   </p>
                   <p className="md:col-span-2">
-                    <span className="font-semibold text-zinc-950">ПВЗ:</span>{" "}
+                    <span className="font-semibold text-zinc-950">ПВЗ Яндекс Доставки:</span>{" "}
                     {order.pickupPointTitle}, {order.pickupPointAddress}
                   </p>
                 </div>
@@ -100,6 +101,14 @@ export default async function AdminOrdersPage() {
                 <p className="mt-1 text-sm text-zinc-500">
                   Способ оплаты: {order.paymentMethod === "SPLIT" ? "Split" : "Полная онлайн-оплата"}
                 </p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Статус оплаты: {formatPaymentStatusLabel(order.paymentStatus)}
+                </p>
+                {order.paymentReference ? (
+                  <p className="mt-1 break-all text-xs text-zinc-400">
+                    Payment ref: {order.paymentReference}
+                  </p>
+                ) : null}
 
                 <form action="/api/admin/orders/status" method="POST" className="mt-5 space-y-3">
                   <input type="hidden" name="orderId" value={order.id} />

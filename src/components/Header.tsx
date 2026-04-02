@@ -10,10 +10,8 @@ import { useCartStore } from "@/store/cartStore";
 
 // Пункты дропдауна "Устройства"
 const DEVICES_MENU = [
-  { label: "Паровая швабра", href: "/#description" },
-  { label: "Способы применения", href: "/#use-cases" },
-  { label: "Комплектация", href: "/#nozzles" },
-  { label: "Инструкция", href: "/#instruction" },
+  { label: "Белая паровая швабра", href: "/" },
+  { label: "Черная паровая швабра", href: "/chernaya-parovaya-shvabra" },
 ];
 
 // Пункты дропдауна "Покупателям"

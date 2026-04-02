@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
 import useEmblaCarousel from "embla-carousel-react";
 
-const GALLERY_IMAGES = [
+const DEFAULT_GALLERY_IMAGES = [
   "/images/card-2.png",
   "/images/use-kitchen.png",
   "/images/use-bathroom.png",
@@ -23,7 +23,7 @@ const GALLERY_IMAGES = [
   "/images/card-4.jpg",
 ];
 
-const NAV_TABS = [
+const DEFAULT_NAV_TABS = [
   { label: "Описание", href: "#description" },
   { label: "Способы применения", href: "#use-cases" },
   { label: "Отзывы", href: "#reviews" },
@@ -32,12 +32,24 @@ const NAV_TABS = [
   { label: "Инструкция", href: "#instruction" },
 ];
 
-export default function HeroSection() {
+export type HeroSectionProps = {
+  galleryImages?: string[];
+  navTabs?: Array<{ label: string; href: string }>;
+  title?: string;
+  subtitle?: string;
+};
+
+export default function HeroSection({
+  galleryImages = DEFAULT_GALLERY_IMAGES,
+  navTabs = DEFAULT_NAV_TABS,
+  title = "Паровая швабра UNOUN.",
+  subtitle = "Идеальная чистота без усилий.",
+}: HeroSectionProps) {
   const router = useRouter();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<(typeof NAV_TABS)[number]["href"]>(
-    NAV_TABS[0].href
+  const [activeTab, setActiveTab] = useState<(typeof navTabs)[number]["href"]>(
+    navTabs[0]?.href ?? "#description"
   );
   const [isNavPinned, setIsNavPinned] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
@@ -112,24 +124,24 @@ export default function HeroSection() {
       setIsNavPinned(anchorTop <= headerOffset);
 
       const checkpoint = window.scrollY + headerOffset + (navHeight || 56) + 12;
-      let currentTab = NAV_TABS[0].href;
+      let currentTab = navTabs[0]?.href ?? "#description";
 
-      for (let index = 0; index < NAV_TABS.length; index += 1) {
-        const currentSection = document.querySelector(NAV_TABS[index].href);
+      for (let index = 0; index < navTabs.length; index += 1) {
+        const currentSection = document.querySelector(navTabs[index].href);
         if (!currentSection) continue;
 
         const currentTop =
           currentSection.getBoundingClientRect().top + window.scrollY;
         const nextSection =
-          index < NAV_TABS.length - 1
-            ? document.querySelector(NAV_TABS[index + 1].href)
+          index < navTabs.length - 1
+            ? document.querySelector(navTabs[index + 1].href)
             : null;
         const nextTop = nextSection
           ? nextSection.getBoundingClientRect().top + window.scrollY
           : Number.POSITIVE_INFINITY;
 
         if (checkpoint >= currentTop && checkpoint < nextTop) {
-          currentTab = NAV_TABS[index].href;
+          currentTab = navTabs[index].href;
           break;
         }
       }
@@ -141,7 +153,7 @@ export default function HeroSection() {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [navHeight]);
+  }, [navHeight, navTabs]);
 
   const handleTabClick = (href: string) => {
     const section = document.querySelector(href);
@@ -175,7 +187,7 @@ export default function HeroSection() {
               ref={emblaRef}
             >
               <div className="flex">
-                {GALLERY_IMAGES.map((src, i) => (
+                {galleryImages.map((src, i) => (
                   <div
                     key={i}
                     className="relative h-[62svh] min-h-[480px] w-full shrink-0 sm:h-[68svh] md:h-[44rem] md:min-h-0 lg:h-[48rem] xl:h-[52rem]"
@@ -213,7 +225,7 @@ export default function HeroSection() {
 
             {/* Точки-индикаторы */}
             <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1.5 sm:bottom-5">
-              {GALLERY_IMAGES.map((_, i) => (
+              {galleryImages.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => emblaApi?.scrollTo(i)}
@@ -247,12 +259,12 @@ export default function HeroSection() {
 
             {/* Заголовок */}
             <h1 className="font-heading font-bold text-zinc-900 text-3xl leading-tight tracking-tight sm:text-4xl lg:text-5xl">
-              Паровая швабра UNOUN.
+              {title}
             </h1>
 
             {/* Подзаголовок */}
             <p className="text-xl font-medium text-zinc-700 sm:text-2xl">
-              Идеальная чистота без усилий.
+              {subtitle}
             </p>
 
             <div className="flex items-baseline gap-3">
@@ -369,7 +381,7 @@ export default function HeroSection() {
           >
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex justify-center gap-1 overflow-x-auto">
-                {NAV_TABS.map(({ label, href }) => {
+                {navTabs.map(({ label, href }) => {
                   const isActive = activeTab === href;
 
                   return (

@@ -42,7 +42,7 @@ This project is no longer a landing-only funnel. The approved direction is a sma
   - full online payment;
   - split / installment payment.
 - Cash on delivery is removed from the target product flow.
-- Delivery MVP uses `CDEK pickup points` only.
+- Delivery MVP uses `Yandex pickup points` only.
 
 ---
 
@@ -181,7 +181,7 @@ The homepage must not be the final place where a full real order is completed in
 ### MVP checkout flow
 1. Contact details
 2. City / location context
-3. Pickup point selection via CDEK
+3. Pickup point selection via Yandex Delivery
 4. Payment choice
 5. Order review
 6. Redirect to payment / success state
@@ -235,7 +235,7 @@ The project is moving away from Supabase planning and toward MySQL-backed archit
 ```ts
 type PaymentMethod = "full_online" | "split";
 
-type DeliveryMethod = "cdek_pickup";
+type DeliveryMethod = "yandex_pickup";
 
 type OrderStatus =
   | "new"

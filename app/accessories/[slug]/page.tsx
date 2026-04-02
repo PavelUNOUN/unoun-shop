@@ -58,14 +58,14 @@ export default async function AccessoryDetailPage({
     <main className="bg-white pt-28 md:pt-36">
       <section className="border-b border-zinc-100 bg-zinc-50 pb-14 md:pb-20">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-8">
-          <div className="overflow-hidden rounded-[36px] border border-zinc-200 bg-white p-6 shadow-[0_30px_100px_-60px_rgba(24,24,27,0.32)] sm:p-8">
-            <div className="relative flex min-h-[320px] items-center justify-center rounded-[28px] bg-zinc-50 p-8">
+          <div className="overflow-hidden rounded-[36px] border border-zinc-200 bg-white p-5 shadow-[0_30px_100px_-60px_rgba(24,24,27,0.32)] sm:p-8">
+            <div className="relative flex min-h-[380px] items-center justify-center rounded-[28px] bg-zinc-50 p-6 sm:min-h-[460px] sm:p-8">
               <Image
                 src={product.image}
                 alt={product.title}
-                width={420}
-                height={420}
-                className="max-h-[320px] w-auto object-contain"
+                width={560}
+                height={560}
+                className="max-h-[360px] w-auto object-contain sm:max-h-[440px]"
               />
             </div>
           </div>
@@ -105,14 +105,12 @@ export default async function AccessoryDetailPage({
                 product={product}
                 className="inline-flex h-14 items-center justify-center rounded-full bg-[#E5FF00] px-8 text-base font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
               />
-              <Link
-                href={product.ozonUrl ?? "/accessories"}
-                target="_blank"
-                rel="noreferrer"
+              <AddToCartButton
+                label="Купить в 1 клик"
+                redirectTo="/checkout"
+                product={product}
                 className="inline-flex h-14 items-center justify-center rounded-full border border-zinc-200 bg-white px-8 text-base font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-100"
-              >
-                Открыть на Ozon
-              </Link>
+              />
             </div>
           </div>
         </div>

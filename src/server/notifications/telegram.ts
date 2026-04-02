@@ -38,7 +38,7 @@ function buildMessage(input: TelegramOrderNotificationInput) {
     `Телефон: ${escapeTelegramMarkdown(input.customerPhone)}`,
     `Email: ${escapeTelegramMarkdown(input.customerEmail)}`,
     `Город: ${escapeTelegramMarkdown(input.city)}`,
-    `ПВЗ: ${escapeTelegramMarkdown(input.pickupPointTitle)}`,
+    `ПВЗ Яндекс Доставки: ${escapeTelegramMarkdown(input.pickupPointTitle)}`,
     `Адрес: ${escapeTelegramMarkdown(input.pickupPointAddress)}`,
     `Сумма: *${escapeTelegramMarkdown(formatPrice(input.grandTotal))} ₽*`,
     "",

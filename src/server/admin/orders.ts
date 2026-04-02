@@ -1,5 +1,6 @@
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, PaymentStatus } from "@prisma/client";
 import { getPrismaClient } from "@/lib/prisma";
+import { getCheckoutStorageMode } from "@/server/config";
 
 export const ADMIN_ORDER_STATUS_OPTIONS: OrderStatus[] = [
   OrderStatus.NEW,
@@ -33,7 +34,26 @@ export function formatOrderStatusLabel(status: OrderStatus) {
   }
 }
 
+export function formatPaymentStatusLabel(status: PaymentStatus) {
+  switch (status) {
+    case PaymentStatus.PENDING:
+      return "Ожидает обработки";
+    case PaymentStatus.REQUIRES_ACTION:
+      return "Ожидает оплаты";
+    case PaymentStatus.PAID:
+      return "Оплачено";
+    case PaymentStatus.FAILED:
+      return "Ошибка оплаты";
+    case PaymentStatus.REFUNDED:
+      return "Возврат";
+  }
+}
+
 export async function getAdminOrders() {
+  if (getCheckoutStorageMode() !== "database") {
+    return [];
+  }
+
   const prisma = getPrismaClient();
 
   return prisma.order.findMany({
@@ -50,6 +70,12 @@ export async function updateAdminOrderStatus(
   orderId: string,
   status: OrderStatus
 ) {
+  if (getCheckoutStorageMode() !== "database") {
+    throw new Error(
+      "Admin order status update is unavailable until database mode is enabled."
+    );
+  }
+
   const prisma = getPrismaClient();
 
   return prisma.order.update({

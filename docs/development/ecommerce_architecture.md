@@ -35,7 +35,7 @@ The user can enter the purchase flow from:
    - log in for benefits
    - continue as guest
 6. User fills contacts or sees prefilled data
-7. User selects `СДЭК ПВЗ`
+7. User selects `Яндекс ПВЗ`
 8. User chooses payment:
    - full online payment
    - split
@@ -132,7 +132,7 @@ Incorrect tone:
 ## 6. Delivery Architecture
 
 ### MVP delivery method
-- `CDEK pickup point`
+- `Yandex pickup point`
 
 ### What must be stored in the order
 - city
@@ -151,7 +151,6 @@ Incorrect tone:
 
 ### Not included in MVP
 - courier delivery;
-- Yandex Delivery;
 - Ozon pickup points.
 
 ---

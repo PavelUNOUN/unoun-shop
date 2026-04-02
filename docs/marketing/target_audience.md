@@ -36,7 +36,7 @@
 | **Original price** | 12,990 ₽ |
 | **Discount** | −38% |
 | **Payment** | Full online payment, Yandex Pay, Split |
-| **Delivery** | CDEK pickup points, 3–7 business days, Russia |
+| **Delivery** | Yandex pickup points, 2–5 business days, Russia |
 
 ## Why They Buy (Purchase Motivators)
 

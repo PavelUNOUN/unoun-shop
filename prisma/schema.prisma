@@ -37,7 +37,7 @@ enum PaymentStatus {
 }
 
 enum DeliveryMethod {
-  CDEK_PICKUP
+  YANDEX_PICKUP
 }
 
 enum BonusTransactionType {
@@ -100,7 +100,7 @@ model Order {
   status             OrderStatus    @default(NEW)
   paymentMethod      PaymentMethod
   paymentStatus      PaymentStatus  @default(PENDING)
-  deliveryMethod     DeliveryMethod @default(CDEK_PICKUP)
+  deliveryMethod     DeliveryMethod @default(YANDEX_PICKUP)
   checkoutMode       String         @default("guest")
   customerName       String
   customerPhone      String
@@ -118,6 +118,10 @@ model Order {
   bonusApplied       Int            @default(0)
   currencyCode       String         @default("RUB")
   paymentReference   String?
+  deliveryExternalId String?
+  deliveryOfferId    String?
+  deliveryStatus     String?
+  deliveryRaw        Json?
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
   user               User?          @relation(fields: [userId], references: [id], onDelete: SetNull)

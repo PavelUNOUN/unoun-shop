@@ -4,7 +4,7 @@ import { ACCESSORY_PRODUCTS } from "@/lib/catalog";
 
 export default function AccessoriesPreviewSection() {
   return (
-    <section className="w-full bg-zinc-50 py-16 md:py-24">
+    <section id="accessories-preview" className="w-full bg-zinc-50 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
           <div className="inline-flex rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-zinc-600">

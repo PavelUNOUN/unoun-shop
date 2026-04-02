@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 type StepId = 1 | 2 | 3;
-type DeliveryMethod = "cdek" | "yandex" | "";
+type DeliveryMethod = "yandex" | "";
 
 type ContactData = {
   name: string;
@@ -32,16 +32,10 @@ const STEP_LABELS: Record<StepId, string> = {
 
 const DELIVERY_OPTIONS = [
   {
-    id: "cdek" as const,
-    label: "СДЭК",
-    sublabel: "До пункта выдачи · 3–7 рабочих дней",
-    price: "Бесплатно",
-  },
-  {
     id: "yandex" as const,
     label: "Яндекс Доставка",
-    sublabel: "Курьером до двери · 1–3 рабочих дня",
-    price: "от 299 ₽",
+    sublabel: "ПВЗ -> ПВЗ · самый выгодный сценарий",
+    price: "расчет при подключении API",
   },
 ];
 
@@ -279,7 +273,7 @@ function Step2Content({
   isValid,
 }: {
   delivery: DeliveryData;
-  onMethodChange: (method: "cdek" | "yandex") => void;
+  onMethodChange: (method: "yandex") => void;
   onAddressChange: (address: string) => void;
   onNext: () => void;
   onBack: () => void;
@@ -344,7 +338,7 @@ function Step2Content({
         </label>
         <input
           type="text"
-          placeholder="Город, улица, дом, квартира"
+          placeholder="Город и выбранный ПВЗ"
           value={delivery.address}
           onChange={(e) => onAddressChange(e.target.value)}
           autoComplete="street-address"
@@ -408,7 +402,7 @@ function Step3Content({
       label: "Доставка",
       value: `${deliveryLabel} · ${delivery.address}`,
     },
-    { label: "Оплата", value: "При получении" },
+    { label: "Оплата", value: "Онлайн-оплата" },
     { label: "Итого", value: "7 990 ₽", highlight: true },
   ];
 
@@ -553,7 +547,7 @@ export default function OrderSection() {
             Оформить заказ
           </h2>
           <p className="mt-3 text-base text-zinc-500">
-            Доставка по всей России · Оплата при получении
+            Доставка по всей России через Яндекс ПВЗ
           </p>
         </div>
 

@@ -17,13 +17,13 @@ type TrustItem = {
 
 const TRUST_ITEMS: TrustItem[] = [
   { icon: ShieldCheck, text: "Гарантия 2 года" },
-  { icon: Truck, text: "CDEK по всей России" },
-  { icon: Package, text: "Оплата при получении" },
+  { icon: Truck, text: "Яндекс Доставка по России" },
+  { icon: Package, text: "ПВЗ -> ПВЗ" },
   { icon: Star, text: "4.9 / 5 — 2 400+ отзывов" },
   { icon: CreditCard, text: "Visa · Mastercard · Мир" },
   { icon: Zap, text: "Немецкие технологии" },
   { icon: ShieldCheck, text: "14 дней на возврат" },
-  { icon: Truck, text: "Яндекс Доставка" },
+  { icon: Truck, text: "Получение в пункте выдачи" },
 ];
 
 export default function TrustMarquee() {

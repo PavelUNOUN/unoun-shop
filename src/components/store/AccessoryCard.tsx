@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import AddToCartButton from "@/components/ui/AddToCartButton";
 import { formatPrice, type StorefrontProduct } from "@/lib/catalog";
 
@@ -14,13 +13,13 @@ export default function AccessoryCard({
 }: AccessoryCardProps) {
   return (
     <article className="overflow-hidden rounded-[32px] border border-zinc-200 bg-white shadow-[0_24px_80px_-56px_rgba(24,24,27,0.28)]">
-      <div className="relative flex min-h-[220px] items-center justify-center bg-zinc-50 p-6 sm:min-h-[260px]">
+      <div className="relative flex min-h-[250px] items-center justify-center bg-zinc-50 p-4 sm:min-h-[320px] sm:p-6">
         <Image
           src={product.image}
           alt={product.title}
-          width={340}
-          height={340}
-          className="max-h-[220px] w-auto object-contain sm:max-h-[260px]"
+          width={440}
+          height={440}
+          className="max-h-[260px] w-auto object-contain sm:max-h-[320px]"
         />
       </div>
 
@@ -62,12 +61,12 @@ export default function AccessoryCard({
             className="inline-flex h-12 items-center justify-center rounded-full bg-[#E5FF00] px-6 text-sm font-semibold text-zinc-900 transition-all duration-150 hover:brightness-95 active:scale-[0.98]"
           />
 
-          <Link
-            href={`/accessories/${product.slug}`}
-            className="inline-flex h-12 items-center justify-center rounded-full border border-zinc-200 px-6 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-50"
-          >
-            Открыть страницу
-          </Link>
+          <AddToCartButton
+            label="Купить в 1 клик"
+            redirectTo="/checkout"
+            product={product}
+            className="inline-flex h-12 items-center justify-center rounded-full border border-zinc-200 bg-white px-6 text-sm font-semibold text-zinc-900 transition-colors duration-150 hover:bg-zinc-50"
+          />
         </div>
       </div>
     </article>
