@@ -253,6 +253,7 @@ export default function ReviewsSection() {
 
         <div className="mt-8 flex justify-center lg:justify-start">
           <Link
+            id="reviews-ozon-link"
             href={OZON_PRODUCT_URL}
             target="_blank"
             rel="noreferrer"

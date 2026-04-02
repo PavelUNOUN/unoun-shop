@@ -86,7 +86,7 @@ export default function NozzlesSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Заголовок */}
-        <div className="mb-10 md:mb-14">
+        <div id="nozzles-showcase" className="mb-10 md:mb-14">
           <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-400">
             Комплектация
           </p>
@@ -96,7 +96,7 @@ export default function NozzlesSection() {
         </div>
 
         {/* Обёртка с кнопками по бокам */}
-        <div className="relative overflow-x-clip">
+        <div id="nozzles-carousel" className="relative overflow-x-clip">
 
           {/* Кнопка влево */}
           <button

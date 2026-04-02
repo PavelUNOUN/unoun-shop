@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 // Порог скролла в пикселях, после которого панель появляется
 const SCROLL_THRESHOLD = 400;
-const BONUS_PANEL_START_ID = "nozzles";
+const BONUS_PANEL_START_ID = "nozzles-carousel";
 const BONUS_PANEL_END_ID = "accessories-preview";
 
 export default function StickyBottomCTA() {
@@ -41,11 +41,15 @@ export default function StickyBottomCTA() {
         return;
       }
 
-      const offset = window.innerWidth >= 768 ? 180 : 120;
-      const start = startSection.getBoundingClientRect().top + window.scrollY - offset;
-      const end = endSection.getBoundingClientRect().top + window.scrollY - offset;
+      const startRect = startSection.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const carouselCenter = startRect.top + startRect.height / 2;
+      const endRect = endSection.getBoundingClientRect();
+      const accessoriesCenter = endRect.top + endRect.height / 2;
 
-      setIsExpanded(scrollY >= start && scrollY < end);
+      setIsExpanded(
+        carouselCenter <= viewportCenter && accessoriesCenter > viewportCenter
+      );
     };
 
     // Проверяем сразу при монтировании (вдруг страница уже проскроллена)
